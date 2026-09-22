@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Sports Club | Member Dashboard</title>
+
+    <!-- ============================================================
+         AUTH GUARD — runs BEFORE anything else loads.
+         Unauthenticated users get redirected to login.html.
+         ============================================================ -->
+    <script>
+      (function guardMemberDashboard() {
+        try {
+          const raw = sessionStorage.getItem('sc_session') || localStorage.getItem('sc_session');
+          const session = raw ? JSON.parse(raw) : null;
+          const now = Date.now();
+
+          const isValid =
+            session &&
+            session.authenticated === true &&
+            typeof session.expiresAt === 'number' &&
+            session.expiresAt > now &&
+            session.role === 'member';
+
+          if (!isValid) {
+            sessionStorage.removeItem('sc_session');
+            localStorage.removeItem('sc_session');
+            window.location.replace('login.html');
+            throw new Error('AUTH_REDIRECT');
+          }
+
+          window.__SC_USER__ = session;
+        } catch (err) {
+          if (err && err.message === 'AUTH_REDIRECT') return;
+          try {
+            sessionStorage.removeItem('sc_session');
+            localStorage.removeItem('sc_session');
+          } catch (_) {}
+          window.location.replace('login.html');
+        }
+      })();
+    </script>
+
+    <style>
+      html, body { visibility: hidden; }
+      body.sc-ready { visibility: visible; }
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            navy: '#0A1F44',
+                            navyDark: '#061530',
+                            gold: '#F5B301',
+                            goldHover: '#FFC933'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #F5F7FA; }
+        ::-webkit-scrollbar-thumb { background: #0A1F44; border-radius: 10px; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F7FA;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            border: 1px solid rgba(245, 179, 1, 0.12);
+            box-shadow: 0 4px 18px rgba(10, 31, 68, 0.05);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: all 0.3s ease;
+            overflow: visible;
+        }
+        .card:hover {
+            box-shadow: 0 8px 25px rgba(245, 179, 1, 0.18);
+            transform: translateY(-2px);
+            border-color: rgba(245, 179, 1, 0.3);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(10, 31, 68, 0.05), 0 2px 4px -1px rgba(10, 31, 68, 0.03);
+        }
+
+        .chart-h-1 { height: 130px; width: 100%; }
+        .chart-h-2 { height: 120px; width: 100%; }
+        .chart-h-3 { height: 160px; width: 100%; }
+        .chart-h-4 { height: 200px; width: 100%; }
+
+        .sidebar {
+            height: 100vh;
+            max-height: 100vh;
+            margin: 0;
+            border: none;
+            border-right: 3px solid #F5B301;
+            box-shadow: 4px 0 24px rgba(10, 31, 68, 0.15);
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(180deg, #0A1F44 0%, #061530 100%);
+            border-radius: 0 !important;
+        }
+        .sidebar-logo-area {
+            height: 72px;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            border-bottom: 1px solid rgba(245, 179, 1, 0.15);
+            flex-shrink: 0;
+        }
+        .sidebar .nav-link {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding: 8px 12px !important;
+            font-size: 0.8rem !important;
+            color: #E6ECF5;
+            border-left: 3px solid transparent;
+            border-radius: 0 12px 12px 0;
+        }
+        .sidebar .nav-link i { color: #B9C4D6; transition: all 0.3s ease; }
+        .sidebar .nav-link:hover {
+            background: rgba(245, 179, 1, 0.12);
+            color: #F5B301;
+            border-left-color: #F5B301;
+        }
+        .sidebar .nav-link:hover i { color: #F5B301; }
+        .sidebar .nav-link.active {
+            background: linear-gradient(135deg, #F5B301, #FFC933) !important;
+            color: #0A1F44 !important;
+            border-radius: 12px;
+            border-left-color: #F5B301;
+            box-shadow: 0 4px 14px rgba(245, 179, 1, 0.4);
+        }
+        .sidebar .nav-link.active i { color: #0A1F44 !important; }
+        .sidebar hr { border-color: rgba(245, 179, 1, 0.18); }
+
+        .stat-card-mini .stat-content { gap: 1px; }
+        .stat-card-mini .stat-value { font-size: 1.2rem; }
+        .stat-card-mini .stat-label { font-size: 0.6rem; }
+
+        .nav-scroll { overflow-y: auto; flex: 1; }
+        .nav-scroll::-webkit-scrollbar { width: 3px; }
+        .nav-scroll::-webkit-scrollbar-thumb { background: #F5B301; border-radius: 10px; }
+        .nav-scroll::-webkit-scrollbar-track { background: transparent; }
+
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+
+        .next-match-hero {
+            background: linear-gradient(135deg, #0A1F44 0%, #1E3A6B 100%);
+            border-radius: 16px;
+            padding: 26px 28px;
+            color: #fff;
+            margin-bottom: 22px;
+            box-shadow: 0 6px 24px rgba(10, 31, 68, 0.25), inset 0 -3px 0 0 #F5B301;
+            border: 1px solid rgba(245, 179, 1, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .next-match-hero::before {
+            content: '⚽';
+            position: absolute;
+            font-size: 8rem;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.08;
+        }
+
+        .membership-card {
+            background: linear-gradient(135deg, #F5B301 0%, #FFC933 100%);
+            border-radius: 16px;
+            padding: 24px;
+            color: #0A1F44;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(245, 179, 1, 0.35);
+            border: 1px solid rgba(10, 31, 68, 0.1);
+        }
+        .membership-card::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 160px;
+            height: 160px;
+            background: rgba(10, 31, 68, 0.06);
+            border-radius: 50%;
+        }
+        .membership-card::after {
+            content: '🏆';
+            position: absolute;
+            bottom: -10px;
+            right: 20px;
+            font-size: 5rem;
+            opacity: 0.15;
+        }
+
+        .progress-bar {
+            background: #EEF2F8;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #F5B301, #FFC933);
+            border-radius: 10px;
+            transition: width 0.6s ease;
+        }
+
+        .mobile-nav-bar {
+            display: none;
+            background: linear-gradient(180deg, #0A1F44 0%, #061530 100%);
+            border-bottom: 3px solid #F5B301;
+            padding: 12px 16px;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            gap: 8px;
+        }
+        .mobile-nav-bar::-webkit-scrollbar { display: none; }
+        .mobile-nav-bar .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: none;
+            padding: 8px 18px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #E6ECF5;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.3s;
+            font-family: inherit;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+        .mobile-nav-bar .nav-btn i { color: #F5B301; font-size: 0.9rem; }
+        .mobile-nav-bar .nav-btn:hover { background: rgba(245, 179, 1, 0.15); color: #F5B301; }
+        .mobile-nav-bar .nav-btn.active {
+            background: linear-gradient(135deg, #F5B301, #FFC933);
+            color: #0A1F44;
+            box-shadow: 0 4px 15px rgba(245, 179, 1, 0.4);
+        }
+        .mobile-nav-bar .nav-btn.active i { color: #0A1F44; }
+
+        .mobile-header-logo { display: none; }
+
+        .notification-dropdown {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: white;
+            border-radius: 16px;
+            border: 1px solid rgba(245, 179, 1, 0.2);
+            box-shadow: 0 20px 60px rgba(10, 31, 68, 0.25);
+            width: 380px;
+            z-index: 99999;
+            padding: 8px 0;
+            max-height: 460px;
+            overflow-y: auto;
+            border-top: 3px solid #F5B301;
+        }
+        .notification-dropdown.show { display: block; animation: dropdownSlide 0.25s ease; }
+        @keyframes dropdownSlide {
+            from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .notification-dropdown .notif-header {
+            padding: 12px 20px 10px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: #0A1F44;
+            border-bottom: 1px solid rgba(245, 179, 1, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
+            border-radius: 16px 16px 0 0;
+            z-index: 2;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .notification-dropdown .notif-header .notif-badge {
+            background: #F5B301;
+            color: #0A1F44;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .notification-dropdown .notif-item {
+            padding: 12px 20px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            border-bottom: 1px solid #EEF2F8;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .notification-dropdown .notif-item:hover { background: #F5F7FA; }
+        .notification-dropdown .notif-item .notif-icon {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+        .notification-dropdown .notif-item .notif-content { flex: 1; min-width: 0; }
+        .notification-dropdown .notif-item .notif-title { font-size: 0.85rem; font-weight: 700; color: #0A1F44; }
+        .notification-dropdown .notif-item .notif-desc { font-size: 0.75rem; color: #5A6B85; margin-top: 2px; word-wrap: break-word; }
+        .notification-dropdown .notif-item .notif-time { font-size: 0.6rem; color: #97A3B8; margin-top: 3px; }
+        .notification-dropdown .notif-footer {
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #F5B301;
+            font-weight: 700;
+            cursor: pointer;
+            border-top: 1px solid rgba(245, 179, 1, 0.15);
+            position: sticky;
+            bottom: 0;
+            background: white;
+            border-radius: 0 0 16px 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .notification-dropdown .notif-footer:hover { background: #F5F7FA; color: #0A1F44; }
+
+        @media (max-width: 1023px) {
+            .sidebar { display: none !important; }
+            body { padding: 0 !important; overflow-x: hidden !important; }
+            .ml-4 { margin-left: 0 !important; }
+            .mobile-nav-bar { display: flex !important; padding: 16px 20px !important; gap: 12px !important; }
+            .mobile-nav-bar .nav-btn { padding: 12px 24px !important; font-size: 0.9rem !important; gap: 12px !important; }
+            .mobile-nav-bar .nav-btn i { font-size: 1.1rem !important; }
+            .mobile-header-logo { display: block !important; }
+            .mobile-header-logo img { height: 58px !important; width: auto !important; object-fit: contain !important; }
+            .main-header { padding-left: 16px !important; padding-right: 16px !important; min-height: 78px !important; height: auto !important; flex-wrap: wrap !important; gap: 8px !important; }
+            .main-header .flex.items-center.gap-4 { flex-wrap: wrap !important; gap: 6px !important; }
+            .main-header #pageTitle { font-size: 0.95rem !important; }
+            .main-header #pageSubtitle { font-size: 0.65rem !important; }
+            .main-content-wrapper { height: 100vh !important; max-width: 100vw !important; overflow-x: hidden !important; }
+            .dashboard-body-scroll { overflow-x: hidden !important; max-width: 100% !important; padding: 16px !important; }
+            .flex-1 { max-width: 100% !important; }
+            .grid { max-width: 100% !important; }
+            .card, .card-shadow { max-width: 100% !important; overflow: visible !important; }
+            .grid-cols-2.lg\:grid-cols-5 { grid-template-columns: repeat(2, 1fr) !important; }
+            .lg\:grid-cols-\[50\%_25\%_25\%\] { grid-template-columns: 1fr !important; }
+            .lg\:grid-cols-\[35\%_40\%_25\%\] { grid-template-columns: 1fr !important; }
+            .lg\:grid-cols-\[75\%_25\%\] { grid-template-columns: 1fr !important; }
+            .lg\:grid-cols-\[60\%_40\%\] { grid-template-columns: 1fr !important; }
+            .lg\:grid-cols-\[40\%_35\%_25\%\] { grid-template-columns: 1fr !important; }
+            .chart-h-1 { height: 180px; }
+            .chart-h-2 { height: 160px; }
+            .chart-h-3 { height: 180px; }
+            .chart-h-4 { height: 220px; }
+            .section-gap { margin-bottom: 24px !important; }
+            .card.p-4 { padding: 16px !important; }
+            .card.p-2\\.5 { padding: 12px !important; }
+            .notification-dropdown { width: 360px !important; right: 20px !important; top: 68px !important; }
+        }
+
+        @media (max-width: 768px) {
+            .notification-dropdown { width: 340px !important; right: 16px !important; top: 66px !important; max-height: 400px !important; }
+            .notification-dropdown .notif-item { padding: 10px 16px !important; gap: 10px !important; }
+            .notification-dropdown .notif-item .notif-icon { width: 36px !important; height: 36px !important; min-width: 36px !important; font-size: 0.75rem !important; border-radius: 10px !important; }
+            .notification-dropdown .notif-item .notif-title { font-size: 0.8rem !important; }
+            .notification-dropdown .notif-item .notif-desc { font-size: 0.7rem !important; }
+            .notification-dropdown .notif-header { padding: 10px 16px !important; font-size: 0.8rem !important; }
+            .notification-dropdown .notif-footer { padding: 10px 16px !important; font-size: 0.7rem !important; }
+        }
+
+        @media (max-width: 640px) {
+            .header-date-range { display: none !important; }
+            .header-user-text { display: none !important; }
+            .grid-cols-2.lg\:grid-cols-5 { grid-template-columns: 1fr !important; gap: 12px !important; }
+            .chart-h-1 { height: 180px; }
+            .chart-h-2 { height: 160px; }
+            .chart-h-3 { height: 180px; }
+            .chart-h-4 { height: 200px; }
+            .p-4.lg\:p-6 { padding: 12px !important; }
+            .px-8 { padding-left: 12px !important; padding-right: 12px !important; }
+            .gap-6 { gap: 10px !important; }
+            .gap-3 { gap: 8px !important; }
+            .gap-4 { gap: 12px !important; }
+            .mobile-nav-bar { padding: 14px 14px !important; gap: 10px !important; }
+            .mobile-nav-bar .nav-btn { padding: 10px 18px !important; font-size: 0.75rem !important; gap: 10px !important; }
+            .mobile-nav-bar .nav-btn i { font-size: 0.85rem !important; }
+            .border-l, .border-r { border: none !important; }
+            .px-4 { padding-left: 8px !important; padding-right: 8px !important; }
+            .mobile-date-badge { display: flex !important; padding: 4px 12px !important; font-size: 0.65rem !important; }
+            .desktop-date { display: none !important; }
+            .dashboard-body-scroll { padding: 12px !important; }
+            .main-content-wrapper { max-width: 100vw !important; overflow-x: hidden !important; }
+            .section-gap { margin-bottom: 16px !important; }
+            .mobile-header-logo img { height: 60px !important; width: auto !important; object-fit: contain !important; }
+            .main-header #pageTitle { font-size: 0.9rem !important; line-height: 1.2 !important; }
+            .main-header #pageSubtitle { font-size: 0.6rem !important; line-height: 1.2 !important; white-space: normal !important; word-wrap: break-word !important; }
+            .card { overflow: visible !important; }
+            .stat-card-mini .stat-value { font-size: 1.2rem !important; }
+            .stat-card-mini .stat-label { font-size: 0.7rem !important; }
+            .chart-container-mobile { min-height: 160px !important; }
+            .content-section.active { display: block !important; width: 100% !important; overflow: visible !important; }
+            .grid > * { min-width: 0 !important; overflow: visible !important; }
+            .notification-dropdown { width: 320px !important; right: 12px !important; top: 64px !important; max-height: 380px !important; border-radius: 14px !important; padding: 6px 0 !important; }
+            .notification-dropdown .notif-item { padding: 8px 14px !important; gap: 8px !important; }
+            .notification-dropdown .notif-item .notif-icon { width: 32px !important; height: 32px !important; min-width: 32px !important; font-size: 0.7rem !important; border-radius: 8px !important; }
+            .notification-dropdown .notif-item .notif-title { font-size: 0.75rem !important; }
+            .notification-dropdown .notif-item .notif-desc { font-size: 0.65rem !important; }
+            .notification-dropdown .notif-item .notif-time { font-size: 0.55rem !important; }
+            .notification-dropdown .notif-header { padding: 8px 14px !important; font-size: 0.75rem !important; }
+            .notification-dropdown .notif-header .notif-badge { font-size: 0.55rem !important; padding: 1px 8px !important; }
+            .notification-dropdown .notif-footer { padding: 8px 14px !important; font-size: 0.65rem !important; }
+        }
+
+        @media (max-width: 480px) {
+            .notification-dropdown { width: 290px !important; right: 10px !important; top: 62px !important; max-height: 350px !important; border-radius: 12px !important; padding: 4px 0 !important; }
+            .notification-dropdown .notif-item { padding: 6px 12px !important; gap: 6px !important; }
+            .notification-dropdown .notif-item .notif-icon { width: 28px !important; height: 28px !important; min-width: 28px !important; font-size: 0.6rem !important; border-radius: 6px !important; }
+            .notification-dropdown .notif-item .notif-title { font-size: 0.7rem !important; }
+            .notification-dropdown .notif-item .notif-desc { font-size: 0.6rem !important; }
+            .notification-dropdown .notif-item .notif-time { font-size: 0.5rem !important; }
+            .notification-dropdown .notif-header { padding: 6px 12px !important; font-size: 0.7rem !important; }
+            .notification-dropdown .notif-header .notif-badge { font-size: 0.5rem !important; padding: 1px 6px !important; }
+            .notification-dropdown .notif-footer { padding: 6px 12px !important; font-size: 0.6rem !important; }
+            .mobile-header-logo img { height: 62px !important; width: auto !important; object-fit: contain !important; }
+            .main-header #pageTitle { font-size: 0.85rem !important; }
+            .main-header #pageSubtitle { font-size: 0.55rem !important; }
+        }
+
+        .mobile-date-badge {
+            display: none;
+            background: #EEF2F8;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            color: #0A1F44;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+        }
+
+        .main-content-wrapper {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            max-width: 100vw;
+            overflow-x: hidden;
+            background: #F5F7FA;
+        }
+        .dashboard-body-scroll {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-width: 100%;
+            background: #F5F7FA;
+        }
+        .main-header { border-radius: 0 !important; }
+        .section-gap { margin-bottom: 28px; }
+        .overflow-hidden { overflow: hidden !important; }
+        .overflow-y-auto { overflow-y: auto !important; overflow-x: hidden !important; }
+        .sidebar .nav-link i { width: 20px; font-size: 0.85rem; }
+        .activity-item { display: flex; gap: 10px; padding: 6px 0; }
+        .dropdown-toggle { cursor: pointer; }
+        #memberDropdownMenu { display: none; }
+        #memberDropdownMenu.show { display: block; }
+
+        .achievement-badge {
+            background: linear-gradient(135deg, #F5B301, #FFC933);
+            color: #0A1F44;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 14px rgba(245, 179, 1, 0.35);
+            border: 3px solid #ffffff;
+        }
+        .achievement-badge.locked {
+            background: #EEF2F8;
+            color: #97A3B8;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden bg-[#F5F7FA] p-0">
+
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col overflow-hidden flex-shrink-0 z-20 sidebar">
+        <div class="sidebar-logo-area">
+            <a href="index.html" class="flex items-center">
+                <img src="SLogo.webp" alt="Sports Club" class="h-12 w-auto object-contain">
+            </a>
+        </div>
+
+        <nav class="nav-scroll px-4 py-3 space-y-0.5 flex-1">
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 nav-link active mt-2" data-page="dashboard">
+                <i class="fa-solid fa-border-all w-5 text-sm"></i>
+                <span class="font-semibold text-sm">Dashboard</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 nav-link" data-page="teams">
+                <i class="fa-solid fa-shield-halved w-5 text-sm"></i>
+                <span class="font-semibold">My Teams</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 nav-link" data-page="schedule">
+                <i class="fa-solid fa-calendar-days w-5 text-sm"></i>
+                <span class="font-semibold">My Schedule</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 nav-link" data-page="achievements">
+                <i class="fa-solid fa-trophy w-5 text-sm"></i>
+                <span class="font-semibold">Achievements</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 nav-link" data-page="payments">
+                <i class="fa-solid fa-credit-card w-5 text-sm"></i>
+                <span class="font-semibold">Payments</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 nav-link" data-page="membership">
+                <i class="fa-solid fa-id-card w-5 text-sm"></i>
+                <span class="font-semibold">Membership</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 nav-link" data-page="profile">
+                <i class="fa-solid fa-user w-5 text-sm"></i>
+                <span class="font-semibold">Profile</span>
+            </a>
+
+            <div class="pt-2 pb-1.5"><hr></div>
+
+            <a href="login.html" class="flex items-center gap-3 px-4 py-2.5 text-red-400 hover:bg-red-500/10 hover:text-red-300 transition text-sm nav-link" onclick="handleLogout(event)">
+                <i class="fa-solid fa-right-from-bracket w-5 text-sm"></i>
+                <span class="font-semibold">Logout</span>
+            </a>
+            <div class="h-4"></div>
+        </nav>
+
+        <div class="px-4 pb-4 flex-shrink-0">
+            <div class="bg-[#061530] rounded-2xl p-3 border border-[#F5B301]/20 text-center relative overflow-hidden">
+                <div class="absolute -top-4 -right-4 w-10 h-10 bg-[#F5B301]/20 rounded-full opacity-60"></div>
+                <div class="w-7 h-7 bg-[#F5B301]/20 rounded-full flex items-center justify-center text-[#F5B301] mx-auto mb-1">
+                    <i class="fa-solid fa-trophy text-xs"></i>
+                </div>
+                <p class="text-[9px] font-bold text-white">Member Panel</p>
+                <p class="text-[8px] text-[#B9C4D6] mt-0.5 mb-1.5">Train · Compete · Win</p>
+                <div class="flex items-center justify-center gap-1.5 bg-[#0A1F44] rounded-full px-2.5 py-1 border border-[#F5B301]/30 shadow-sm w-max mx-auto">
+                    <span class="w-1.5 h-1.5 bg-green-400 rounded-full"></span>
+                    <span class="text-[8px] font-bold text-green-400">Fit &amp; Ready</span>
+                </div>
+            </div>
+            <div class="text-center mt-2 text-[8px] text-[#B9C4D6]/70">© 2026 Sports Club</div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-[#F5F7FA] ml-0 main-content-wrapper">
+
+        <header class="bg-white border-b border-gray-200 px-8 flex items-center justify-between h-[72px] flex-shrink-0 main-header">
+            <div class="flex items-center gap-4">
+                <div class="mobile-header-logo">
+                    <a href="index.html" class="flex items-center">
+                        <img src="SLogo.webp" alt="Sports Club" class="h-12 w-auto object-contain">
+                    </a>
+                </div>
+                <div>
+                    <h1 class="text-lg font-extrabold text-[#0A1F44] tracking-tight" id="pageTitle">Member Dashboard</h1>
+                    <p class="text-xs text-[#7A8AA3] leading-tight mt-0.5 font-medium" id="pageSubtitle">Welcome back. Let's get ready to win.</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2 bg-[#F5F7FA] border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-[#0A1F44] cursor-pointer hover:bg-gray-50 transition desktop-date font-semibold" id="dateRangePicker">
+                    <i class="fa-regular fa-calendar text-[#F5B301]"></i>
+                    <span class="font-medium" id="dateRangeText">Jul 1 - Jul 23, 2026</span>
+                    <i class="fa-solid fa-chevron-down text-[9px] ml-1 text-[#7A8AA3]"></i>
+                </div>
+                <div class="mobile-date-badge" id="mobileDateBadge">
+                    <i class="fa-regular fa-calendar text-[#F5B301]"></i>
+                    <span id="mobileDateText">Jul 1-23</span>
+                </div>
+                <div class="relative cursor-pointer text-[#0A1F44] hover:text-[#F5B301] transition dropdown-toggle" id="notificationBell">
+                    <i class="fa-regular fa-bell text-base sm:text-lg"></i>
+                    <span class="absolute -top-1 -right-1 bg-[#F5B301] text-[#0A1F44] text-[8px] font-extrabold w-4 h-4 flex items-center justify-center rounded-full border-2 border-white">2</span>
+
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notif-header">
+                            <span>Notifications</span>
+                            <span class="notif-badge">2 new</span>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-icon bg-[#F5B301]/15 text-[#F5B301]"><i class="fa-solid fa-calendar-check"></i></div>
+                            <div class="notif-content">
+                                <div class="notif-title">Match Tomorrow</div>
+                                <div class="notif-desc">Rivals FC vs Sports Club · Sat 6 PM</div>
+                                <div class="notif-time">10 min ago</div>
+                            </div>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-icon bg-green-50 text-green-600"><i class="fa-solid fa-medal"></i></div>
+                            <div class="notif-content">
+                                <div class="notif-title">New Achievement</div>
+                                <div class="notif-desc">You earned the "Top Scorer" badge!</div>
+                                <div class="notif-time">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="notif-footer">View all notifications →</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 border-l pl-6 border-gray-200">
+                    <div class="text-right hidden sm:block header-user-text">
+                        <p class="text-xs font-extrabold text-[#0A1F44] leading-tight" id="headerUserName">Member</p>
+                        <p class="text-[9px] text-[#7A8AA3] font-bold leading-tight mt-0.5 uppercase">Member</p>
+                    </div>
+                    <div class="w-8 h-8 bg-[#F5B301] rounded-full flex items-center justify-center text-[#0A1F44] font-extrabold text-[10px] cursor-pointer relative hover:bg-[#FFC933] transition dropdown-toggle" id="profileDropdown">
+                        <span id="avatarInitials">M</span>
+                        <span class="absolute bottom-0 right-0 w-3 h-3 bg-white rounded-full flex items-center justify-center border-2 border-[#F5B301]">
+                            <i class="fa-solid fa-chevron-down text-[6px] text-[#F5B301]"></i>
+                        </span>
+                        <div class="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg w-40 py-1 z-50" id="memberDropdownMenu">
+                            <a href="404.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fa-regular fa-user mr-2 text-[#F5B301]"></i>My Profile</a>
+                            <a href="404.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fa-solid fa-id-card mr-2 text-[#F5B301]"></i>Membership</a>
+                            <hr class="my-1">
+                            <a href="login.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50" onclick="handleLogout(event)"><i class="fa-solid fa-right-from-bracket mr-2"></i>Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- MOBILE NAV BAR -->
+        <div class="mobile-nav-bar">
+            <a href="#" class="nav-btn active" data-page="dashboard"><i class="fa-solid fa-border-all"></i> Dashboard</a>
+            <a href="#" class="nav-btn" data-page="teams"><i class="fa-solid fa-shield-halved"></i> Teams</a>
+            <a href="#" class="nav-btn" data-page="schedule"><i class="fa-solid fa-calendar-days"></i> Schedule</a>
+            <a href="#" class="nav-btn" data-page="achievements"><i class="fa-solid fa-trophy"></i> Achievements</a>
+            <a href="#" class="nav-btn" data-page="payments"><i class="fa-solid fa-credit-card"></i> Payments</a>
+            <a href="#" class="nav-btn" data-page="membership"><i class="fa-solid fa-id-card"></i> Membership</a>
+            <a href="#" class="nav-btn" data-page="profile"><i class="fa-solid fa-user"></i> Profile</a>
+            <a href="login.html" class="nav-btn" onclick="handleLogout(event)"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </div>
+
+        <!-- DASHBOARD BODY -->
+        <div class="flex-1 overflow-y-auto p-4 lg:p-6 bg-[#F5F7FA] dashboard-body-scroll">
+
+            <div id="section-dashboard" class="content-section active">
+
+                <div class="next-match-hero">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+                        <div>
+                            <div class="text-[0.7rem] font-bold text-[#F5B301] uppercase tracking-widest mb-2">🏆 Next Match</div>
+                            <h2 class="text-xl md:text-2xl font-extrabold mb-2 text-white">Sports Club <span class="text-[#F5B301]">vs</span> Rivals FC</h2>
+                            <div class="flex flex-wrap gap-4 md:gap-6 text-sm text-[#B9C4D6] font-medium">
+                                <span><i class="fa-regular fa-calendar mr-1.5 text-[#F5B301]"></i> Sat, 12 Oct</span>
+                                <span><i class="fa-regular fa-clock mr-1.5 text-[#F5B301]"></i> 6:00 PM</span>
+                                <span><i class="fa-solid fa-location-dot mr-1.5 text-[#F5B301]"></i> Home Ground</span>
+                            </div>
+                        </div>
+                        <a href="404.html" class="bg-[#F5B301] text-[#0A1F44] px-5 py-2.5 rounded-full font-extrabold text-xs uppercase tracking-wider hover:bg-[#FFC933] transition self-start md:self-center whitespace-nowrap shadow-lg">
+                            <i class="fa-regular fa-bell mr-1.5"></i> Remind Me
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 section-gap">
+                    <div class="card p-3 stat-card stat-card-mini">
+                        <div class="stat-content">
+                            <div class="flex items-center justify-between">
+                                <div class="w-8 h-8 bg-[#F5B301]/15 rounded-lg flex items-center justify-center text-[#F5B301]"><i class="fa-solid fa-shield-halved text-xs"></i></div>
+                                <span class="text-[9px] text-gray-400 flex items-center gap-1 font-semibold"><i class="fa-solid fa-check text-green-500 text-[7px]"></i> Active</span>
+                            </div>
+                            <p class="text-[10px] text-[#7A8AA3] font-bold mt-1 uppercase tracking-wide">My Teams</p>
+                            <div class="flex items-baseline gap-1"><span class="text-xl font-extrabold text-[#0A1F44]">3</span><span class="text-[9px] text-gray-400 font-medium">joined</span></div>
+                        </div>
+                    </div>
+                    <div class="card p-3 stat-card stat-card-mini">
+                        <div class="stat-content">
+                            <div class="flex items-center justify-between">
+                                <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600"><i class="fa-solid fa-futbol text-xs"></i></div>
+                                <span class="text-[9px] text-gray-400 flex items-center gap-1 font-semibold"><i class="fa-solid fa-arrow-up text-green-500 text-[7px]"></i> +5</span>
+                            </div>
+                            <p class="text-[10px] text-[#7A8AA3] font-bold mt-1 uppercase tracking-wide">Matches Played</p>
+                            <div class="flex items-baseline gap-1"><span class="text-xl font-extrabold text-[#0A1F44]">42</span><span class="text-[9px] text-gray-400 font-medium">total</span></div>
+                        </div>
+                    </div>
+                    <div class="card p-3 stat-card stat-card-mini">
+                        <div class="stat-content">
+                            <div class="flex items-center justify-between">
+                                <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center text-green-600"><i class="fa-solid fa-trophy text-xs"></i></div>
+                                <span class="text-[9px] text-gray-400 flex items-center gap-1 font-semibold"><i class="fa-solid fa-arrow-up text-green-500 text-[7px]"></i> +3</span>
+                            </div>
+                            <p class="text-[10px] text-[#7A8AA3] font-bold mt-1 uppercase tracking-wide">Wins</p>
+                            <div class="flex items-baseline gap-1"><span class="text-xl font-extrabold text-[#0A1F44]">28</span><span class="text-[9px] text-gray-400 font-medium">this season</span></div>
+                        </div>
+                    </div>
+                    <div class="card p-3 stat-card stat-card-mini">
+                        <div class="stat-content">
+                            <div class="flex items-center justify-between">
+                                <div class="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center text-purple-600"><i class="fa-solid fa-ranking-star text-xs"></i></div>
+                                <span class="text-[9px] text-gray-400 flex items-center gap-1 font-semibold"><i class="fa-solid fa-arrow-up text-green-500 text-[7px]"></i> +2</span>
+                            </div>
+                            <p class="text-[10px] text-[#7A8AA3] font-bold mt-1 uppercase tracking-wide">Club Rank</p>
+                            <div class="flex items-baseline gap-1"><span class="text-xl font-extrabold text-[#0A1F44]">#7</span><span class="text-[9px] text-gray-400 font-medium">of 120</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-3 lg:gap-4 section-gap">
+                    <div class="card p-4 card-shadow">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-extrabold text-[#0A1F44] text-[13px]">📈 My Performance</h3>
+                            <span class="text-[8px] text-[#7A8AA3] bg-[#EEF2F8] px-2 py-0.5 rounded-full font-bold uppercase">Last 6 Weeks</span>
+                        </div>
+                        <div class="chart-h-4"><canvas id="lineChart"></canvas></div>
+                    </div>
+
+                    <div class="card p-4 card-shadow">
+                        <h3 class="font-extrabold text-[#0A1F44] text-[13px] mb-3">🎯 Skill Progress</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[11px] font-bold text-[#0A1F44]">⚽ Shooting</span>
+                                    <span class="text-[10px] font-extrabold text-[#F5B301]">85%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 85%;"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[11px] font-bold text-[#0A1F44]">🎯 Passing</span>
+                                    <span class="text-[10px] font-extrabold text-[#F5B301]">78%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 78%;"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[11px] font-bold text-[#0A1F44]">⚡ Speed</span>
+                                    <span class="text-[10px] font-extrabold text-[#F5B301]">92%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 92%;"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[11px] font-bold text-[#0A1F44]">💪 Stamina</span>
+                                    <span class="text-[10px] font-extrabold text-[#F5B301]">70%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 70%;"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[11px] font-bold text-[#0A1F44]">🛡️ Defense</span>
+                                    <span class="text-[10px] font-extrabold text-[#F5B301]">65%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 65%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-[35%_30%_35%] gap-3 lg:gap-4 section-gap">
+
+                    <div class="card p-4 card-shadow">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-extrabold text-[#0A1F44] text-[13px]">🛡️ My Teams</h3>
+                            <a href="404.html" class="text-[10px] text-[#F5B301] font-bold hover:underline uppercase">View All</a>
+                        </div>
+                        <div class="space-y-2 flex-1">
+                            <div class="flex items-center gap-3 border-b border-gray-100 pb-2">
+                                <div class="w-9 h-9 bg-[#F5B301]/15 rounded-lg flex items-center justify-center text-xl">⚽</div>
+                                <div class="flex-1">
+                                    <p class="text-[11px] font-extrabold text-[#0A1F44]">Football</p>
+                                    <p class="text-[9px] text-[#7A8AA3] font-semibold">Striker · #10</p>
+                                </div>
+                                <span class="text-[8px] text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-bold">Active</span>
+                            </div>
+                            <div class="flex items-center gap-3 border-b border-gray-100 pb-2">
+                                <div class="w-9 h-9 bg-[#F5B301]/15 rounded-lg flex items-center justify-center text-xl">🏏</div>
+                                <div class="flex-1">
+                                    <p class="text-[11px] font-extrabold text-[#0A1F44]">Cricket</p>
+                                    <p class="text-[9px] text-[#7A8AA3] font-semibold">Batsman · #7</p>
+                                </div>
+                                <span class="text-[8px] text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-bold">Active</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 bg-[#F5B301]/15 rounded-lg flex items-center justify-center text-xl">🏀</div>
+                                <div class="flex-1">
+                                    <p class="text-[11px] font-extrabold text-[#0A1F44]">Basketball</p>
+                                    <p class="text-[9px] text-[#7A8AA3] font-semibold">Point Guard · #5</p>
+                                </div>
+                                <span class="text-[8px] text-yellow-600 bg-yellow-50 px-2 py-0.5 rounded-full font-bold">Practice</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="membership-card">
+                        <div class="relative z-10">
+                            <p class="text-[9px] font-extrabold uppercase tracking-widest text-[#0A1F44]/70 mb-1">Sports Club</p>
+                            <p class="text-base font-extrabold mb-4">Premium Member</p>
+                            <p class="text-[10px] font-bold text-[#0A1F44]/70 mb-1">MEMBER SINCE</p>
+                            <p class="text-sm font-extrabold mb-3">Jan 2023</p>
+                            <p class="text-[10px] font-bold text-[#0A1F44]/70 mb-1">VALID UNTIL</p>
+                            <p class="text-sm font-extrabold mb-4">Dec 2026</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-extrabold tracking-wider" id="memberCardId">ID: —</span>
+                                <i class="fa-solid fa-trophy text-2xl opacity-60"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-4 card-shadow">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-extrabold text-[#0A1F44] text-[13px]">📅 Upcoming Schedule</h3>
+                            <a href="404.html" class="text-[10px] text-[#F5B301] font-bold hover:underline uppercase">View All</a>
+                        </div>
+                        <div class="space-y-1 flex-1">
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                                <div>
+                                    <p class="text-[10px] font-extrabold text-[#0A1F44]">Football Practice</p>
+                                    <p class="text-[8px] text-[#7A8AA3] font-semibold">Today · 5:00 PM</p>
+                                </div>
+                                <span class="text-[8px] text-[#F5B301] bg-[#F5B301]/15 px-2 py-0.5 rounded-full font-bold">Today</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                                <div>
+                                    <p class="text-[10px] font-extrabold text-[#0A1F44]">Match vs Rivals FC</p>
+                                    <p class="text-[8px] text-[#7A8AA3] font-semibold">Sat · 6:00 PM</p>
+                                </div>
+                                <span class="text-[8px] text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-bold">Confirmed</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="text-[10px] font-extrabold text-[#0A1F44]">Cricket Nets</p>
+                                    <p class="text-[8px] text-[#7A8AA3] font-semibold">Sun · 9:00 AM</p>
+                                </div>
+                                <span class="text-[8px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full font-bold">Practice</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-[60%_40%] gap-3 lg:gap-4">
+                    <div class="card p-4 card-shadow">
+                        <h3 class="font-extrabold text-[#0A1F44] text-[13px] mb-3">🏅 Recent Achievements</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div class="text-center">
+                                <div class="achievement-badge mx-auto">🥇</div>
+                                <p class="text-[10px] font-extrabold text-[#0A1F44] mt-2">MVP Player</p>
+                                <p class="text-[8px] text-[#7A8AA3] font-semibold">Oct 2026</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="achievement-badge mx-auto">⚽</div>
+                                <p class="text-[10px] font-extrabold text-[#0A1F44] mt-2">Top Scorer</p>
+                                <p class="text-[8px] text-[#7A8AA3] font-semibold">Sep 2026</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="achievement-badge mx-auto">🏆</div>
+                                <p class="text-[10px] font-extrabold text-[#0A1F44] mt-2">Champion</p>
+                                <p class="text-[8px] text-[#7A8AA3] font-semibold">Aug 2026</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="achievement-badge locked mx-auto">🔒</div>
+                                <p class="text-[10px] font-extrabold text-[#97A3B8] mt-2">50 Matches</p>
+                                <p class="text-[8px] text-[#97A3B8] font-semibold">8 to go</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-4 card-shadow">
+                        <h3 class="font-extrabold text-[#0A1F44] text-[13px] mb-3">💬 Coach's Message</h3>
+                        <div class="bg-[#F5F7FA] p-4 rounded-xl border-l-4 border-[#F5B301]">
+                            <p class="text-[11px] text-[#3A4A63] italic leading-relaxed">
+                                "Great progress this week! Your shooting form has improved a lot. Focus on stamina before Saturday's match."
+                            </p>
+                            <p class="text-[10px] font-extrabold text-[#0A1F44] mt-3">— Coach Alex</p>
+                            <p class="text-[8px] text-[#7A8AA3] font-semibold">2 hours ago</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ===== MY TEAMS SECTION ===== -->
+            <div id="section-teams" class="content-section">
+                <div class="card p-6 card-shadow">
+                    <h2 class="text-xl font-extrabold text-[#0A1F44] mb-4 uppercase"><i class="fa-solid fa-shield-halved text-[#F5B301] mr-2"></i> My Teams</h2>
+                    <p class="text-[#3A4A63] mb-4 font-medium">All teams you're part of.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-[#F5F7FA] p-5 rounded-xl border border-[#F5B301]/15 text-center">
+                            <p class="text-4xl mb-2">⚽</p>
+                            <p class="font-extrabold text-[#0A1F44]">Football</p>
+                            <p class="text-sm text-[#7A8AA3]">Striker · #10</p>
+                            <p class="text-xs text-green-600 font-bold mt-2">22 Players</p>
+                        </div>
+                        <div class="bg-[#F5F7FA] p-5 rounded-xl border border-[#F5B301]/15 text-center">
+                            <p class="text-4xl mb-2">🏏</p>
+                            <p class="font-extrabold text-[#0A1F44]">Cricket</p>
+                            <p class="text-sm text-[#7A8AA3]">Batsman · #7</p>
+                            <p class="text-xs text-green-600 font-bold mt-2">18 Players</p>
+                        </div>
+                        <div class="bg-[#F5F7FA] p-5 rounded-xl border border-[#F5B301]/15 text-center">
+                            <p class="text-4xl mb-2">🏀</p>
+                            <p class="font-extrabold text-[#0A1F44]">Basketball</p>
+                            <p class="text-sm text-[#7A8AA3]">Point Guard · #5</p>
+                            <p class="text-xs text-green-600 font-bold mt-2">14 Players</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== MY SCHEDULE SECTION ===== -->
+            <div id="section-schedule" class="content-section">
+                <div class="card p-6 card-shadow">
+                    <h2 class="text-xl font-extrabold text-[#0A1F44] mb-4 uppercase"><i class="fa-solid fa-calendar-days text-[#F5B301] mr-2"></i> My Schedule</h2>
+                    <p class="text-[#3A4A63] mb-4 font-medium">Your practices, matches &amp; events.</p>
+                    <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center border-b pb-3">
+                                <div>
+                                    <p class="font-extrabold text-[#0A1F44]">Football Practice</p>
+                                    <p class="text-xs text-[#7A8AA3]">Today · 5:00 PM · Home Ground</p>
+                                </div>
+                                <span class="text-[10px] text-[#F5B301] bg-[#F5B301]/15 px-2 py-0.5 rounded-full font-bold">TODAY</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-3">
+                                <div>
+                                    <p class="font-extrabold text-[#0A1F44]">Match vs Rivals FC</p>
+                                    <p class="text-xs text-[#7A8AA3]">Sat · 6:00 PM · Home Ground</p>
+                                </div>
+                                <span class="text-[10px] text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-bold">CONFIRMED</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-3">
+                                <div>
+                                    <p class="font-extrabold text-[#0A1F44]">Cricket Nets</p>
+                                    <p class="text-xs text-[#7A8AA3]">Sun · 9:00 AM · Nets A</p>
+                                </div>
+                                <span class="text-[10px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full font-bold">PRACTICE</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="font-extrabold text-[#0A1F44]">Basketball Match</p>
+                                    <p class="text-xs text-[#7A8AA3]">Wed · 7:30 PM · Indoor Arena</p>
+                                </div>
+                                <span class="text-[10px] text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-bold">CONFIRMED</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== ACHIEVEMENTS SECTION ===== -->
+            <div id="section-achievements" class="content-section">
+                <div class="card p-6 card-shadow">
+                    <h2 class="text-xl font-extrabold text-[#0A1F44] mb-4 uppercase"><i class="fa-solid fa-trophy text-[#F5B301] mr-2"></i> Achievements</h2>
+                    <p class="text-[#3A4A63] mb-4 font-medium">All badges you've earned with Sports Club.</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-[#F5F7FA] p-5 rounded-xl text-center border border-[#F5B301]/15">
+                            <div class="achievement-badge mx-auto">🥇</div>
+                            <p class="font-extrabold text-[#0A1F44] mt-3">MVP Player</p>
+                            <p class="text-xs text-[#7A8AA3]">Oct 2026</p>
+                        </div>
+                        <div class="bg-[#F5F7FA] p-5 rounded-xl text-center border border-[#F5B301]/15">
+                            <div class="achievement-badge mx-auto">⚽</div>
+                            <p class="font-extrabold text-[#0A1F44] mt-3">Top Scorer</p>
+                            <p class="text-xs text-[#7A8AA3]">Sep 2026</p>
+                        </div>
+                        <div class="bg-[#F5F7FA] p-5 rounded-xl text-center border border-[#F5B301]/15">
+                            <div class="achievement-badge mx-auto">🏆</div>
+                            <p class="font-extrabold text-[#0A1F44] mt-3">Champion</p>
+                            <p class="text-xs text-[#7A8AA3]">Aug 2026</p>
+                        </div>
+                        <div class="bg-[#F5F7FA] p-5 rounded-xl text-center border border-[#F5B301]/15 opacity-60">
+                            <div class="achievement-badge locked mx-auto">🔒</div>
+                            <p class="font-extrabold text-[#97A3B8] mt-3">50 Matches</p>
+                            <p class="text-xs text-[#97A3B8]">8 to go</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== PAYMENTS SECTION ===== -->
+            <div id="section-payments" class="content-section">
+                <div class="card p-6 card-shadow">
+                    <h2 class="text-xl font-extrabold text-[#0A1F44] mb-4 uppercase"><i class="fa-solid fa-credit-card text-[#F5B301] mr-2"></i> Payments</h2>
+                    <p class="text-[#3A4A63] mb-4 font-medium">Your membership payment history.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div class="bg-[#F5F7FA] p-4 rounded-xl border border-[#F5B301]/15">
+                            <p class="text-sm text-[#3A4A63] font-semibold">Next Payment</p>
+                            <p class="text-2xl font-extrabold text-[#F5B301]">$49</p>
+                            <p class="text-xs text-[#7A8AA3]">Due Dec 1</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+                            <p class="text-sm text-[#3A4A63] font-semibold">Total Paid</p>
+                            <p class="text-2xl font-extrabold text-green-600">$588</p>
+                            <p class="text-xs text-[#7A8AA3]">This year</p>
+                        </div>
+                        <div class="bg-[#F5F7FA] p-4 rounded-xl border border-[#F5B301]/15">
+                            <p class="text-sm text-[#3A4A63] font-semibold">Status</p>
+                            <p class="text-2xl font-extrabold text-[#F5B301]">Active</p>
+                            <p class="text-xs text-[#7A8AA3]">No dues</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-xl">
+                        <p class="text-sm text-[#3A4A63] font-bold uppercase mb-2">💳 Recent Transactions</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="font-bold text-[#0A1F44]">Nov 2026 Membership</span>
+                                <span class="text-[#3A4A63]">Nov 1</span>
+                                <span class="text-green-600 text-sm font-bold">$49.00</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="font-bold text-[#0A1F44]">Oct 2026 Membership</span>
+                                <span class="text-[#3A4A63]">Oct 1</span>
+                                <span class="text-green-600 text-sm font-bold">$49.00</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-[#0A1F44]">Sep 2026 Membership</span>
+                                <span class="text-[#3A4A63]">Sep 1</span>
+                                <span class="text-green-600 text-sm font-bold">$49.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== MEMBERSHIP SECTION ===== -->
+            <div id="section-membership" class="content-section">
+                <div class="grid grid-cols-1 lg:grid-cols-[50%_50%] gap-4">
+                    <div class="membership-card">
+                        <div class="relative z-10">
+                            <p class="text-[10px] font-extrabold uppercase tracking-widest text-[#0A1F44]/70 mb-1">Sports Club</p>
+                            <p class="text-2xl font-extrabold mb-6">Premium Member</p>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <p class="text-[9px] font-bold text-[#0A1F44]/70 mb-0.5">MEMBER NAME</p>
+                                    <p class="text-sm font-extrabold" id="memberSectionName">—</p>
+                                </div>
+                                <div>
+                                    <p class="text-[9px] font-bold text-[#0A1F44]/70 mb-0.5">MEMBER ID</p>
+                                    <p class="text-sm font-extrabold" id="memberSectionId">—</p>
+                                </div>
+                                <div>
+                                    <p class="text-[9px] font-bold text-[#0A1F44]/70 mb-0.5">MEMBER SINCE</p>
+                                    <p class="text-sm font-extrabold">Jan 2023</p>
+                                </div>
+                                <div>
+                                    <p class="text-[9px] font-bold text-[#0A1F44]/70 mb-0.5">VALID UNTIL</p>
+                                    <p class="text-sm font-extrabold">Dec 2026</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between mt-6">
+                                <span class="text-[10px] font-extrabold tracking-widest">PREMIUM</span>
+                                <i class="fa-solid fa-trophy text-3xl opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-6 card-shadow">
+                        <h3 class="font-extrabold text-[#0A1F44] text-base mb-3 uppercase">Membership Benefits</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3"><i class="fa-solid fa-check text-[#F5B301]"></i><span class="text-sm text-[#3A4A63] font-medium">Unlimited access to all sports facilities</span></div>
+                            <div class="flex items-center gap-3"><i class="fa-solid fa-check text-[#F5B301]"></i><span class="text-sm text-[#3A4A63] font-medium">Free training sessions with pro coaches</span></div>
+                            <div class="flex items-center gap-3"><i class="fa-solid fa-check text-[#F5B301]"></i><span class="text-sm text-[#3A4A63] font-medium">Priority match selection</span></div>
+                            <div class="flex items-center gap-3"><i class="fa-solid fa-check text-[#F5B301]"></i><span class="text-sm text-[#3A4A63] font-medium">Free club jersey &amp; equipment kit</span></div>
+                            <div class="flex items-center gap-3"><i class="fa-solid fa-check text-[#F5B301]"></i><span class="text-sm text-[#3A4A63] font-medium">Exclusive member events &amp; tournaments</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== PROFILE SECTION ===== -->
+            <div id="section-profile" class="content-section">
+                <div class="card p-6 card-shadow">
+                    <h2 class="text-xl font-extrabold text-[#0A1F44] mb-4 uppercase"><i class="fa-solid fa-user text-[#F5B301] mr-2"></i> My Profile</h2>
+                    <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+                        <div class="w-24 h-24 bg-[#F5B301] rounded-full flex items-center justify-center text-[#0A1F44] font-extrabold text-3xl flex-shrink-0" id="profileAvatar">M</div>
+                        <div class="flex-1">
+                            <p class="text-2xl font-extrabold text-[#0A1F44] mb-1" id="profileName">Member</p>
+                            <p class="text-sm text-[#7A8AA3] font-semibold mb-4" id="profileEmail">—</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-[#F5F7FA] p-3 rounded-lg">
+                                    <p class="text-[9px] font-bold text-[#7A8AA3] uppercase">Phone</p>
+                                    <p class="text-sm font-extrabold text-[#0A1F44]">+1 555 0100</p>
+                                </div>
+                                <div class="bg-[#F5F7FA] p-3 rounded-lg">
+                                    <p class="text-[9px] font-bold text-[#7A8AA3] uppercase">City</p>
+                                    <p class="text-sm font-extrabold text-[#0A1F44]">Mumbai</p>
+                                </div>
+                                <div class="bg-[#F5F7FA] p-3 rounded-lg">
+                                    <p class="text-[9px] font-bold text-[#7A8AA3] uppercase">Primary Sport</p>
+                                    <p class="text-sm font-extrabold text-[#0A1F44]">Football</p>
+                                </div>
+                                <div class="bg-[#F5F7FA] p-3 rounded-lg">
+                                    <p class="text-[9px] font-bold text-[#7A8AA3] uppercase">Joined</p>
+                                    <p class="text-sm font-extrabold text-[#0A1F44]">Jan 2023</p>
+                                </div>
+                            </div>
+                            <a href="404.html" class="inline-block mt-4 bg-[#F5B301] text-[#0A1F44] px-5 py-2 rounded-full font-extrabold text-xs uppercase tracking-wider hover:bg-[#FFC933] transition">
+                                <i class="fa-solid fa-pen mr-1.5"></i> Edit Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-4"></div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // ===== PERSONALIZE FROM SESSION =====
+            const session = window.__SC_USER__;
+            if (session) {
+                const displayName = session.name || 'Member';
+                const initial = displayName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+
+                const subtitle = document.getElementById('pageSubtitle');
+                if (subtitle) subtitle.textContent = "Welcome back, " + displayName.split(' ')[0] + ". Let's get ready to win.";
+
+                const headerName = document.getElementById('headerUserName');
+                if (headerName) headerName.textContent = displayName;
+
+                const avatar = document.getElementById('avatarInitials');
+                if (avatar) avatar.textContent = initial;
+
+                const memberCardId = document.getElementById('memberCardId');
+                if (memberCardId && session.userId) memberCardId.textContent = 'ID: ' + session.userId;
+
+                const memberSectionName = document.getElementById('memberSectionName');
+                if (memberSectionName) memberSectionName.textContent = displayName;
+                const memberSectionId = document.getElementById('memberSectionId');
+                if (memberSectionId && session.userId) memberSectionId.textContent = session.userId;
+
+                const profileAvatar = document.getElementById('profileAvatar');
+                if (profileAvatar) profileAvatar.textContent = initial;
+                const profileName = document.getElementById('profileName');
+                if (profileName) profileName.textContent = displayName;
+                const profileEmail = document.getElementById('profileEmail');
+                if (profileEmail && session.email) profileEmail.textContent = session.email;
+            }
+
+            const pageTitles = {
+                'dashboard': ['Member Dashboard', "Welcome back. Let's get ready to win."],
+                'teams': ['My Teams', 'All teams you are part of.'],
+                'schedule': ['My Schedule', 'Your practices, matches & events.'],
+                'achievements': ['Achievements', 'All badges you have earned with Sports Club.'],
+                'payments': ['Payments', 'Your membership payment history.'],
+                'membership': ['Membership', 'Your Sports Club membership details.'],
+                'profile': ['My Profile', 'Your personal information.']
+            };
+
+            function navigateTo(page) {
+                document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+                const targetSection = document.getElementById('section-' + page);
+                if (targetSection) targetSection.classList.add('active');
+
+                if (pageTitles[page]) {
+                    document.getElementById('pageTitle').textContent = pageTitles[page][0];
+                    document.getElementById('pageSubtitle').textContent = pageTitles[page][1];
+                }
+
+                document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('data-page') === page) link.classList.add('active');
+                });
+
+                document.querySelectorAll('.mobile-nav-bar .nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-page') === page) btn.classList.add('active');
+                });
+            }
+
+            document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('data-page');
+                    if (page) navigateTo(page);
+                });
+            });
+
+            document.querySelectorAll('.mobile-nav-bar .nav-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const page = this.getAttribute('data-page');
+                    if (page) { e.preventDefault(); navigateTo(page); }
+                });
+            });
+
+            const dateRangePicker = document.getElementById('dateRangePicker');
+            const dateRangeText = document.getElementById('dateRangeText');
+            const mobileDateText = document.getElementById('mobileDateText');
+            if (dateRangePicker) {
+                dateRangePicker.addEventListener('click', function() {
+                    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                    const today = new Date();
+                    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+                    const lastDay = new Date(today.getFullYear(), today.getMonth()+1, 0);
+                    const startDate = firstDay.getDate() + ' ' + months[firstDay.getMonth()];
+                    const endDate = lastDay.getDate() + ' ' + months[lastDay.getMonth()] + ', ' + today.getFullYear();
+                    dateRangeText.textContent = startDate + ' - ' + endDate;
+                    mobileDateText.textContent = startDate + '-' + lastDay.getDate();
+                });
+            }
+
+            const notificationBell = document.getElementById('notificationBell');
+            const notificationDropdown = document.getElementById('notificationDropdown');
+            if (notificationBell && notificationDropdown) {
+                notificationBell.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    notificationDropdown.classList.toggle('show');
+                });
+                document.addEventListener('click', function(e) {
+                    if (!notificationBell.contains(e.target)) notificationDropdown.classList.remove('show');
+                });
+            }
+
+            const profileDropdown = document.getElementById('profileDropdown');
+            const memberMenu = document.getElementById('memberDropdownMenu');
+            if (profileDropdown && memberMenu) {
+                profileDropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    memberMenu.classList.toggle('show');
+                });
+                document.addEventListener('click', function(e) {
+                    if (!profileDropdown.contains(e.target)) memberMenu.classList.remove('show');
+                });
+            }
+
+            navigateTo('dashboard');
+
+            // ===== REVEAL BODY AFTER AUTH GUARD PASSED =====
+            document.body.classList.add('sc-ready');
+        });
+
+        function handleLogout(e) {
+            if (e) e.preventDefault();
+            sessionStorage.removeItem('sc_session');
+            localStorage.removeItem('sc_session');
+            window.location.replace('login.html');
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const baseOpts = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 10, padding: 8, font: { size: 9, family: 'Inter' } } } } };
+            const colors = {
+                gold: '#F5B301',
+                goldLight: 'rgba(245, 179, 1, 0.15)',
+                navy: '#0A1F44',
+                blue: '#3B82F6',
+                green: '#1B8A3E',
+                purple: '#8B5CF6',
+                red: '#EF4444'
+            };
+
+            new Chart(document.getElementById('lineChart'), {
+                type: 'line',
+                data: {
+                    labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6'],
+                    datasets: [
+                        { label: 'Goals Scored', data: [2, 4, 3, 6, 5, 7], borderColor: colors.gold, backgroundColor: colors.goldLight, tension: 0.4, borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: colors.gold, fill: true },
+                        { label: 'Assists', data: [1, 2, 3, 2, 4, 5], borderColor: colors.navy, tension: 0.4, borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: colors.navy, fill: false }
+                    ]
+                },
+                options: {
+                    ...baseOpts,
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#EEF2F8', drawBorder: false }, ticks: { font: { size: 9, family: 'Inter' } } },
+                        x: { grid: { display: false }, ticks: { font: { size: 9, family: 'Inter' } } }
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script>
+      window.addEventListener('pageshow', function (e) {
+        if (!e.persisted) return;
+        const raw = sessionStorage.getItem('sc_session') || localStorage.getItem('sc_session');
+        const session = raw ? JSON.parse(raw) : null;
+        const valid = session && session.authenticated === true &&
+                      session.expiresAt > Date.now() &&
+                      session.role === 'member';
+        if (!valid) window.location.replace('login.html');
+      });
+    </script>
+
+</body>
+</html>

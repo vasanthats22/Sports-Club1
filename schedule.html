@@ -1,0 +1,2817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sports Club | Schedule</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    :root {
+      --navy: #0A1F44;
+      --navy-dark: #061530;
+      --gold: #F5B301;
+      --gold-hover: #FFC933;
+      --bg: #F5F7FA;
+      --white: #ffffff;
+      --text: #3A4A63;
+      --muted: #7A8AA3;
+      --green: #1B8A3E;
+      --red: #EF4444;
+      --blue: #3B82F6;
+      --purple: #8B5CF6;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    #header-placeholder { width: 100%; flex-shrink: 0; }
+    #footer-placeholder { width: 100%; flex-shrink: 0; margin-top: auto; }
+
+    .main-wrapper {
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem 16px 0;
+      overflow-x: hidden;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Shared */
+    .section-eyebrow {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .section-title span { color: var(--gold); }
+    .section-sub {
+      font-size: 0.9rem;
+      color: var(--text);
+      max-width: 580px;
+      margin: 0 auto 2rem;
+      text-align: center;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+    .section-sub strong { color: var(--gold); font-weight: 700; }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--navy);
+      padding: 13px 28px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      transition: all 0.35s ease;
+      box-shadow: 0 6px 20px rgba(245, 179, 1, 0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+    .btn-gold:hover {
+      background: var(--gold-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(245, 179, 1, 0.55);
+    }
+    .btn-gold:disabled {
+      opacity: 0.7;
+      cursor: wait;
+      transform: none;
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--navy);
+      padding: 13px 28px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-decoration: none;
+      border: 2px solid var(--navy);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      transition: all 0.35s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+    .btn-outline:hover {
+      background: var(--navy);
+      color: #fff;
+      transform: translateY(-3px);
+    }
+    .btn-dark {
+      background: var(--navy);
+      color: #fff;
+      padding: 13px 28px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      transition: all 0.35s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+    .btn-dark:hover {
+      background: var(--gold);
+      color: var(--navy);
+      transform: translateY(-3px);
+    }
+    .btn-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    section.block {
+      padding: 2rem 0;
+      overflow: visible;
+    }
+
+    /* ============================================================
+       SECTION 1 — HERO (with REAL video)
+       ============================================================ */
+    .s-hero {
+      position: relative;
+      background: var(--navy);
+      border-radius: 24px;
+      padding: 0;
+      margin-bottom: 2rem;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(10, 31, 68, 0.25);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 460px;
+    }
+    .s-hero-left {
+      padding: 60px 46px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(135deg, #0A1F44 0%, #1E3A6B 100%);
+    }
+    .s-hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 179, 1, 0.18);
+      color: var(--gold);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      border: 1px solid rgba(245, 179, 1, 0.35);
+      align-self: flex-start;
+    }
+    .s-hero h1 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -1.5px;
+      margin-bottom: 18px;
+      color: #ffffff;
+    }
+    .s-hero h1 span { color: var(--gold); }
+    .s-hero p {
+      font-size: 1rem;
+      color: #D6DEF0;
+      line-height: 1.7;
+      margin-bottom: 30px;
+      max-width: 440px;
+      font-weight: 500;
+    }
+    .s-hero-btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .s-hero-right {
+      position: relative;
+      overflow: hidden;
+      background: #061530;
+      min-height: 300px;
+    }
+    .s-hero-right video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.65;
+      cursor: pointer;
+    }
+    .s-hero-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, #0A1F44 0%, transparent 40%, transparent 100%);
+      pointer-events: none;
+    }
+    .s-hero-play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .s-hero-play button {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--navy);
+      border: 6px solid rgba(255,255,255,0.25);
+      font-size: 1.6rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.35s ease;
+      box-shadow: 0 12px 40px rgba(245,179,1,0.5);
+      animation: pulse 2.2s ease-in-out infinite;
+      position: relative;
+      z-index: 4;
+      pointer-events: auto;
+    }
+    .s-hero-play button:hover {
+      transform: scale(1.12);
+      background: var(--gold-hover);
+    }
+    .s-hero-play button.playing {
+      background: var(--red);
+      color: #fff;
+      animation: none;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 12px 40px rgba(245,179,1,0.5); }
+      50% { box-shadow: 0 12px 60px rgba(245,179,1,0.8), 0 0 0 12px rgba(245,179,1,0.15); }
+    }
+    .s-hero-play-label {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(10,31,68,0.85);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(6px);
+      z-index: 5;
+    }
+    .s-hero-play-label i { color: var(--gold); }
+
+    /* ============================================================
+       SECTION 2 — WEEKLY DAY PICKER
+       ============================================================ */
+    .s-days {
+      background: var(--navy);
+      border-radius: 18px;
+      padding: 22px 26px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+      box-shadow: 0 12px 36px rgba(10,31,68,0.2);
+    }
+    .s-days-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .s-days-header h3 {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .s-days-header h3 span { color: var(--gold); }
+    .s-days-header .s-today {
+      font-size: 0.72rem;
+      color: #B9C4D6;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .s-days-header .s-today span {
+      color: var(--gold);
+      font-weight: 800;
+    }
+    .s-days-strip {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 6px 0 12px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold) transparent;
+    }
+    .s-days-strip::-webkit-scrollbar { height: 5px; }
+    .s-days-strip::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+    .s-day {
+      flex: 0 0 auto;
+      min-width: 90px;
+      padding: 14px 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(245,179,1,0.18);
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #fff;
+      text-decoration: none;
+      position: relative;
+      top: 0;
+    }
+    .s-day:hover {
+      background: rgba(245,179,1,0.15);
+      border-color: var(--gold);
+      top: -3px;
+    }
+    .s-day.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--navy);
+      box-shadow: 0 8px 22px rgba(245,179,1,0.4);
+    }
+    .s-day .d-name {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      color: var(--gold);
+    }
+    .s-day.active .d-name { color: var(--navy); }
+    .s-day .d-num {
+      font-size: 1.4rem;
+      font-weight: 900;
+      line-height: 1;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .s-day.active .d-num { color: var(--navy); }
+    .s-day .d-events {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: #B9C4D6;
+      text-transform: uppercase;
+    }
+    .s-day.active .d-events { color: rgba(10,31,68,0.7); }
+
+    /* ============================================================
+       SECTION 3 — TODAY'S TIMELINE
+       ============================================================ */
+    .s-timeline {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      padding-left: 0;
+    }
+    .s-timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 68px;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--gold), rgba(245,179,1,0.1));
+      border-radius: 3px;
+    }
+    .s-event {
+      display: grid;
+      grid-template-columns: 90px 40px 1fr;
+      gap: 0;
+      align-items: start;
+      margin-bottom: 22px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .s-event:hover { transform: translateX(4px); }
+    .s-event-time {
+      text-align: right;
+      padding-right: 18px;
+      padding-top: 16px;
+    }
+    .s-event-time .t-hour {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .s-event-time .t-period {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 3px;
+    }
+    .s-event-dot {
+      position: relative;
+      width: 40px;
+      display: flex;
+      justify-content: center;
+      padding-top: 22px;
+    }
+    .s-event-dot::before {
+      content: '';
+      width: 18px;
+      height: 18px;
+      background: #fff;
+      border: 4px solid var(--gold);
+      border-radius: 50%;
+      box-shadow: 0 4px 14px rgba(245,179,1,0.4);
+      z-index: 2;
+      transition: all 0.3s ease;
+    }
+    .s-event:hover .s-event-dot::before {
+      background: var(--gold);
+      transform: scale(1.15);
+    }
+    .s-event-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 18px 22px;
+      border: 1px solid rgba(245,179,1,0.15);
+      box-shadow: 0 4px 16px rgba(10,31,68,0.06);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.35s ease;
+      margin-left: 8px;
+    }
+    .s-event:hover .s-event-card {
+      border-color: var(--gold);
+      box-shadow: 0 10px 30px rgba(245,179,1,0.18);
+    }
+    .s-event-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .s-event-icon.football { background: linear-gradient(135deg, #22C55E, #16A34A); }
+    .s-event-icon.cricket { background: linear-gradient(135deg, #3B82F6, #1E40AF); }
+    .s-event-icon.basket { background: linear-gradient(135deg, #F59E0B, #D97706); }
+    .s-event-icon.tennis { background: linear-gradient(135deg, #A855F7, #7C3AED); }
+    .s-event-icon.gym { background: linear-gradient(135deg, #EF4444, #B91C1C); }
+    .s-event-icon.swim { background: linear-gradient(135deg, #06B6D4, #0E7490); }
+    .s-event-body { flex: 1; min-width: 0; }
+    .s-event-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .s-event-meta {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .s-event-meta span i { color: var(--gold); margin-right: 4px; }
+    .s-event-badge {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .s-event-badge.confirmed { background: rgba(27,138,62,0.12); color: var(--green); }
+    .s-event-badge.pending { background: rgba(245,179,1,0.2); color: #B37F00; }
+    .s-event-badge.live { background: rgba(239,68,68,0.12); color: var(--red); }
+
+    /* ============================================================
+       SECTION 4 — MATCHES GRID
+       ============================================================ */
+    .s-matches-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .s-match {
+      background: #fff;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(245,179,1,0.15);
+      transition: all 0.35s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .s-match:hover {
+      transform: translateY(-6px);
+      border-color: var(--gold);
+      box-shadow: 0 16px 40px rgba(245,179,1,0.18);
+    }
+    .s-match-top {
+      background: linear-gradient(135deg, #0A1F44 0%, #1E3A6B 100%);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+    }
+    .s-match-sport {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .s-match-date {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #B9C4D6;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .s-match-body {
+      padding: 26px 22px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
+      align-items: center;
+      flex: 1;
+    }
+    .s-team { text-align: center; }
+    .s-team-logo {
+      width: 62px;
+      height: 62px;
+      background: #F5F7FA;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin: 0 auto 10px;
+      border: 2px solid rgba(245,179,1,0.2);
+      transition: all 0.3s ease;
+    }
+    .s-match:hover .s-team-logo {
+      border-color: var(--gold);
+      transform: scale(1.05);
+    }
+    .s-team-name {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .s-team-sub {
+      font-size: 0.65rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-top: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .s-vs {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .s-vs .vs-label {
+      font-size: 0.72rem;
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+    .s-vs .vs-time {
+      font-size: 0.9rem;
+      font-weight: 900;
+      color: var(--navy);
+      background: rgba(245,179,1,0.15);
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+    .s-match-foot {
+      padding: 14px 20px;
+      background: #F9FAFC;
+      border-top: 1px solid rgba(245,179,1,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .s-match-venue {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .s-match-venue i { color: var(--gold); }
+    .s-match-cta {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: var(--gold);
+      transition: all 0.3s ease;
+    }
+    .s-match-cta:hover {
+      background: var(--gold-hover);
+      transform: translateX(3px);
+    }
+
+    /* ============================================================
+       SECTION 5 — VIDEO HIGHLIGHT (REAL video with controls)
+       ============================================================ */
+    .s-video {
+      position: relative;
+      border-radius: 22px;
+      overflow: hidden;
+      background: #000;
+      aspect-ratio: 16/8;
+      box-shadow: 0 20px 60px rgba(10,31,68,0.3);
+      margin-bottom: 1rem;
+    }
+    .s-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.75;
+      cursor: pointer;
+    }
+    .s-video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(10,31,68,0.7) 0%, rgba(10,31,68,0.2) 60%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 40px 40px;
+      color: #fff;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .s-video-overlay > * {
+      pointer-events: auto;
+    }
+    .s-video-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--red);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      align-self: flex-start;
+      animation: liveBlink 1.5s ease-in-out infinite;
+    }
+    @keyframes liveBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.55; }
+    }
+    .s-video h3 {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -0.8px;
+      margin-bottom: 8px;
+      max-width: 620px;
+    }
+    .s-video h3 span { color: var(--gold); }
+    .s-video p {
+      font-size: 0.88rem;
+      color: #D6DEF0;
+      max-width: 520px;
+      line-height: 1.6;
+      margin-bottom: 18px;
+      font-weight: 500;
+    }
+    .s-video-btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .s-video-btns .btn-gold,
+    .s-video-btns .btn-outline {
+      padding: 11px 22px;
+      font-size: 0.75rem;
+    }
+    .s-video-btns .btn-outline {
+      color: #fff;
+      border-color: rgba(255,255,255,0.5);
+    }
+    .s-video-btns .btn-outline:hover {
+      background: var(--gold);
+      color: var(--navy);
+      border-color: var(--gold);
+    }
+    .s-video-play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--navy);
+      border: 6px solid rgba(255,255,255,0.25);
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4;
+      transition: all 0.35s ease;
+      box-shadow: 0 12px 40px rgba(245,179,1,0.5);
+    }
+    .s-video-play-btn:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+      background: var(--gold-hover);
+    }
+    .s-video-play-btn.playing {
+      background: var(--red);
+      color: #fff;
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    /* ============================================================
+       SECTION 6 — MONTHLY CALENDAR GRID
+       ============================================================ */
+    .s-calendar {
+      background: #fff;
+      border-radius: 18px;
+      padding: 28px 26px;
+      border: 1px solid rgba(245,179,1,0.15);
+      box-shadow: 0 8px 30px rgba(10,31,68,0.06);
+      overflow: hidden;
+    }
+    .s-cal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .s-cal-header h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .s-cal-header h3 i { color: var(--gold); }
+    .s-cal-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .s-cal-nav button {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: #F5F7FA;
+      border: 1.5px solid rgba(245,179,1,0.2);
+      color: var(--navy);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 0.8rem;
+    }
+    .s-cal-nav button:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--navy);
+    }
+    .s-cal-month {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0 10px;
+      min-width: 100px;
+      text-align: center;
+    }
+    .s-cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+    .s-cal-dow {
+      text-align: center;
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(245,179,1,0.15);
+    }
+    .s-cal-day {
+      aspect-ratio: 1;
+      background: #F9FAFC;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--navy);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      border: 1.5px solid transparent;
+      padding: 4px;
+    }
+    .s-cal-day:hover {
+      background: rgba(245,179,1,0.1);
+      border-color: var(--gold);
+      transform: scale(1.04);
+    }
+    .s-cal-day.empty {
+      background: transparent;
+      cursor: default;
+      pointer-events: none;
+    }
+    .s-cal-day.empty:hover { transform: none; border-color: transparent; background: transparent; }
+    .s-cal-day.today {
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 900;
+      box-shadow: 0 6px 18px rgba(245,179,1,0.4);
+    }
+    .s-cal-day.has-event::after {
+      content: '';
+      position: absolute;
+      bottom: 6px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--navy);
+    }
+    .s-cal-day.today.has-event::after { background: var(--navy); }
+    .s-cal-legend {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .s-cal-legend span {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .s-cal-legend span::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      display: block;
+    }
+    .s-cal-legend .lg-today::before { background: var(--gold); }
+    .s-cal-legend .lg-event::before { background: var(--navy); border-radius: 50%; }
+    .s-cal-legend .lg-empty::before { background: #F9FAFC; border: 1px solid rgba(0,0,0,0.06); }
+
+    /* ============================================================
+       SECTION 7 — WEEKLY STATS BAR CHART
+       ============================================================ */
+    .s-weekstats {
+      background: linear-gradient(135deg, #0A1F44 0%, #061530 100%);
+      border-radius: 20px;
+      padding: 40px 34px;
+      color: #fff;
+      box-shadow: 0 16px 45px rgba(10,31,68,0.25),
+                  inset 0 -4px 0 0 var(--gold);
+      overflow: hidden;
+      position: relative;
+    }
+    .s-weekstats::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(245,179,1,0.15), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .s-weekstats-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+    }
+    .s-weekstats h3 {
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: -0.3px;
+      text-transform: uppercase;
+    }
+    .s-weekstats h3 span { color: var(--gold); }
+    .s-weekstats .ws-sub {
+      font-size: 0.75rem;
+      color: #B9C4D6;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .s-weekstats .ws-total {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+    .s-weekstats .ws-total small {
+      font-size: 0.7rem;
+      color: #B9C4D6;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: block;
+      margin-top: 4px;
+    }
+    .s-bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 14px;
+      height: 200px;
+      padding: 0 6px;
+      position: relative;
+      z-index: 2;
+    }
+    .s-bar-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      height: 100%;
+    }
+    .s-bar {
+      width: 100%;
+      max-width: 40px;
+      border-radius: 8px 8px 0 0;
+      background: linear-gradient(to top, var(--gold), var(--gold-hover));
+      transition: all 0.4s ease;
+      cursor: pointer;
+      box-shadow: 0 -4px 20px rgba(245,179,1,0.3);
+      position: relative;
+    }
+    .s-bar:hover {
+      transform: scaleY(1.05);
+      filter: brightness(1.15);
+    }
+    .s-bar::before {
+      content: attr(data-value);
+      position: absolute;
+      top: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--gold);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+    }
+    .s-bar:hover::before { opacity: 1; }
+    .s-bar-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #B9C4D6;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ============================================================
+       SECTION 8 — UPCOMING EVENTS
+       ============================================================ */
+    .s-events-scroll {
+      display: flex;
+      gap: 18px;
+      overflow-x: auto;
+      padding: 8px 4px 20px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold) transparent;
+    }
+    .s-events-scroll::-webkit-scrollbar { height: 6px; }
+    .s-events-scroll::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+    .s-events-scroll::-webkit-scrollbar-track { background: rgba(245,179,1,0.1); border-radius: 4px; }
+    .s-event-card {
+      flex: 0 0 300px;
+      background: #fff;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(245,179,1,0.15);
+      box-shadow: 0 6px 24px rgba(10,31,68,0.06);
+      transition: all 0.35s ease;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+    }
+    .s-event-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--gold);
+      box-shadow: 0 18px 44px rgba(245,179,1,0.2);
+    }
+    .s-event-img-wrap {
+      position: relative;
+      height: 170px;
+      overflow: hidden;
+    }
+    .s-event-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .s-event-card:hover .s-event-img { transform: scale(1.08); }
+    .s-event-img-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,31,68,0.6), transparent 60%);
+    }
+    .s-event-date-tag {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: var(--gold);
+      color: var(--navy);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.65rem;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      z-index: 2;
+      box-shadow: 0 4px 14px rgba(245,179,1,0.5);
+    }
+    .s-event-category {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(10,31,68,0.85);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.6rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      backdrop-filter: blur(6px);
+      z-index: 2;
+    }
+    .s-event-body {
+      padding: 20px 20px 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .s-event-body h4 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      line-height: 1.3;
+    }
+    .s-event-body p {
+      font-size: 0.8rem;
+      color: var(--text);
+      line-height: 1.6;
+      font-weight: 500;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+    .s-event-info {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(245,179,1,0.25);
+      margin-bottom: 14px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 600;
+      flex-wrap: wrap;
+    }
+    .s-event-info span i { color: var(--gold); margin-right: 4px; }
+    .s-event-card .btn-gold {
+      padding: 10px 20px;
+      font-size: 0.72rem;
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* ============================================================
+       SECTION 9 — TRAINING SPLITS
+       ============================================================ */
+    .s-splits {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    .s-split {
+      background: #fff;
+      border-radius: 16px;
+      padding: 26px 20px;
+      border: 1px solid rgba(245,179,1,0.15);
+      transition: all 0.35s ease;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .s-split::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-hover));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .s-split:hover::before { transform: scaleX(1); }
+    .s-split:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 35px rgba(245,179,1,0.18);
+    }
+    .s-split-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
+      background: rgba(245,179,1,0.12);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 16px;
+      transition: all 0.35s ease;
+    }
+    .s-split:hover .s-split-icon {
+      background: var(--gold);
+      color: var(--navy);
+      transform: rotate(-6deg) scale(1.08);
+    }
+    .s-split-name {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .s-split-days {
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .s-split-bar {
+      height: 6px;
+      background: #EEF2F8;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .s-split-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-hover));
+      border-radius: 6px;
+      transition: width 0.6s ease;
+    }
+    .s-split-percent {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: 0.5px;
+    }
+
+    /* ============================================================
+       SECTION 10 — REGISTRATION CTA
+       ============================================================ */
+    .s-cta {
+      background: linear-gradient(135deg, #0A1F44 0%, #1E3A6B 100%);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(10,31,68,0.25);
+      margin: 2rem 0 2.5rem;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      position: relative;
+    }
+    .s-cta-content {
+      padding: 50px 46px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+    .s-cta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245,179,1,0.18);
+      color: var(--gold);
+      padding: 7px 16px;
+      border-radius: 30px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      border: 1px solid rgba(245,179,1,0.35);
+      align-self: flex-start;
+    }
+    .s-cta h2 {
+      font-size: 2.1rem;
+      font-weight: 900;
+      letter-spacing: -0.8px;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .s-cta h2 span { color: var(--gold); }
+    .s-cta p {
+      font-size: 0.92rem;
+      color: #D6DEF0;
+      line-height: 1.7;
+      margin-bottom: 26px;
+      font-weight: 500;
+    }
+    .s-cta-form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .s-cta-form input {
+      flex: 1;
+      min-width: 200px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 500;
+      outline: none;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+    .s-cta-form input::placeholder { color: #B9C4D6; }
+    .s-cta-form input:focus {
+      border-color: var(--gold);
+      background: rgba(255,255,255,0.12);
+      box-shadow: 0 0 0 3px rgba(245,179,1,0.2);
+    }
+    .s-cta-image {
+      position: relative;
+      overflow: hidden;
+      background: #061530;
+    }
+    .s-cta-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.7;
+    }
+    .s-cta-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, #0A1F44 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* ===== SUBSCRIBE FEEDBACK MESSAGE ===== */
+    .s-subscribe-feedback {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      line-height: 1.5;
+      text-align: left;
+      max-width: 100%;
+    }
+    .s-subscribe-feedback.show { display: block; }
+    .s-subscribe-feedback.success {
+      background: rgba(27, 138, 62, 0.15);
+      color: #4ADE80;
+      border: 1px solid rgba(74, 222, 128, 0.35);
+    }
+    .s-subscribe-feedback.error {
+      background: rgba(239, 68, 68, 0.15);
+      color: #FCA5A5;
+      border: 1px solid rgba(252, 165, 165, 0.35);
+    }
+    .s-subscribe-feedback i { margin-right: 6px; }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 992px) {
+      .s-hero { grid-template-columns: 1fr; min-height: auto; }
+      .s-hero-left { padding: 44px 32px; }
+      .s-hero h1 { font-size: 2.2rem; }
+      .s-hero-right { min-height: 320px; }
+      .s-hero-right::after { background: linear-gradient(to top, #0A1F44 0%, transparent 60%); }
+      .s-matches-grid { grid-template-columns: 1fr; }
+      .s-splits { grid-template-columns: repeat(2, 1fr); }
+      .s-cta { grid-template-columns: 1fr; }
+      .s-cta-content { padding: 40px 30px; }
+      .s-cta h2 { font-size: 1.7rem; }
+      .s-cta-image { min-height: 260px; }
+      .s-cta-image::after { background: linear-gradient(to top, #0A1F44 0%, transparent 60%); }
+      .s-video { aspect-ratio: 16/10; }
+      .s-video-overlay { padding: 30px 26px; }
+      .s-video h3 { font-size: 1.5rem; }
+    }
+
+    @media (max-width: 768px) {
+      .section-title { font-size: 1.5rem; }
+      .section-sub { font-size: 0.82rem; margin-bottom: 1.6rem; }
+      .s-hero-left { padding: 36px 24px; }
+      .s-hero h1 { font-size: 1.9rem; }
+      .s-hero p { font-size: 0.9rem; }
+      .btn-gold, .btn-outline, .btn-dark { padding: 11px 22px; font-size: 0.76rem; }
+      .s-days { padding: 18px 18px; }
+      .s-timeline::before { left: 52px; }
+      .s-event { grid-template-columns: 68px 34px 1fr; }
+      .s-event-time .t-hour { font-size: 0.9rem; }
+      .s-event-card { padding: 14px 16px; gap: 12px; }
+      .s-event-icon { width: 44px; height: 44px; font-size: 1.15rem; }
+      .s-event-title { font-size: 0.85rem; }
+      .s-event-meta { font-size: 0.68rem; gap: 10px; }
+      .s-video { aspect-ratio: 4/3; }
+      .s-video-overlay { padding: 24px 20px; }
+      .s-video h3 { font-size: 1.2rem; }
+      .s-video p { font-size: 0.8rem; }
+      .s-calendar { padding: 20px 16px; }
+      .s-cal-grid { gap: 4px; }
+      .s-cal-day { font-size: 0.75rem; border-radius: 8px; }
+      .s-cal-dow { font-size: 0.6rem; }
+      .s-weekstats { padding: 30px 22px; }
+      .s-weekstats .ws-total { font-size: 1.9rem; }
+      .s-bars { height: 160px; gap: 8px; }
+      .s-event-card { flex: 0 0 260px; }
+      .s-splits { grid-template-columns: 1fr; }
+      .s-cta-content { padding: 34px 24px; }
+      .s-cta h2 { font-size: 1.4rem; }
+      .s-cta p { font-size: 0.85rem; }
+      .s-cta-form input { min-width: 100%; }
+      .s-cta-form .btn-gold { width: 100%; justify-content: center; }
+      .btn-row { flex-direction: column; }
+      .btn-row a { width: 100%; justify-content: center; }
+      .s-video-play-btn { width: 64px; height: 64px; font-size: 1.2rem; }
+    }
+
+    @media (max-width: 520px) {
+      .main-wrapper { padding: 1rem 12px 0; }
+      .s-hero { border-radius: 18px; }
+      .s-hero-left { padding: 30px 20px; }
+      .s-hero h1 { font-size: 1.55rem; letter-spacing: -0.8px; }
+      .s-hero-tag { font-size: 0.62rem; padding: 6px 14px; }
+      .s-hero-btns { flex-direction: column; }
+      .s-hero-btns a { width: 100%; justify-content: center; }
+      .s-hero-play button { width: 64px; height: 64px; font-size: 1.2rem; }
+      .s-hero-play-label { bottom: 16px; right: 16px; font-size: 0.6rem; padding: 7px 12px; }
+      .s-days { padding: 14px; }
+      .s-day { min-width: 74px; padding: 10px 8px; }
+      .s-day .d-num { font-size: 1.15rem; }
+      .s-day .d-name { font-size: 0.6rem; }
+      .s-day .d-events { font-size: 0.55rem; }
+      .s-timeline::before { left: 44px; }
+      .s-event { grid-template-columns: 56px 30px 1fr; }
+      .s-event-time { padding-right: 12px; padding-top: 14px; }
+      .s-event-time .t-hour { font-size: 0.82rem; }
+      .s-event-time .t-period { font-size: 0.58rem; }
+      .s-event-card { padding: 12px 14px; gap: 10px; margin-left: 4px; border-radius: 12px; }
+      .s-event-icon { width: 38px; height: 38px; font-size: 1rem; border-radius: 10px; }
+      .s-event-title { font-size: 0.8rem; }
+      .s-event-meta { font-size: 0.62rem; gap: 8px; }
+      .s-event-badge { padding: 4px 9px; font-size: 0.58rem; }
+      .s-match-body { padding: 18px 14px; gap: 10px; }
+      .s-team-logo { width: 48px; height: 48px; font-size: 1.2rem; }
+      .s-team-name { font-size: 0.72rem; }
+      .s-vs .vs-time { font-size: 0.78rem; padding: 3px 8px; }
+      .s-match-top { padding: 10px 14px; }
+      .s-match-sport, .s-match-date { font-size: 0.6rem; }
+      .s-match-foot { padding: 12px 14px; }
+      .s-video h3 { font-size: 1rem; }
+      .s-video p { font-size: 0.75rem; }
+      .s-video-btns { flex-direction: column; }
+      .s-video-btns a { width: 100%; justify-content: center; }
+      .s-calendar { padding: 16px 12px; }
+      .s-cal-header { flex-direction: column; align-items: flex-start; }
+      .s-cal-day { font-size: 0.68rem; }
+      .s-weekstats { padding: 24px 16px; }
+      .s-weekstats h3 { font-size: 0.95rem; }
+      .s-weekstats .ws-total { font-size: 1.5rem; }
+      .s-bars { height: 130px; gap: 5px; }
+      .s-bar-label { font-size: 0.6rem; }
+      .s-event-card { flex: 0 0 240px; }
+      .s-cta-content { padding: 28px 20px; }
+      .s-cta h2 { font-size: 1.25rem; }
+      .s-cta-form { flex-direction: column; }
+      .s-subscribe-feedback { font-size: 0.75rem; padding: 8px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="header-placeholder"></div>
+
+  <div class="main-wrapper">
+
+    <!-- ============================================================
+         SECTION 1 — HERO (REAL video with functional play/pause)
+         ============================================================ -->
+    <section class="s-hero" id="heroSection">
+      <div class="s-hero-left">
+        <span class="s-hero-tag" data-aos="fade-right">
+          <i class="fas fa-calendar-days"></i> Season 2026
+        </span>
+        <h1 data-aos="fade-up" data-aos-delay="100">
+          Match &amp; <span>Training Schedule</span>
+        </h1>
+        <p data-aos="fade-up" data-aos-delay="200">
+          Stay ahead of the game. Every match, practice, and event at Sports Club — updated daily, always on time.
+        </p>
+        <div class="s-hero-btns" data-aos="fade-up" data-aos-delay="300">
+          <a href="#" class="btn-gold" id="downloadCalendarBtn">
+            <i class="fas fa-download"></i> Download Full Calendar
+          </a>
+          <a href="404.html" class="btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.5);">
+            <i class="fas fa-bell"></i> Subscribe Alerts
+          </a>
+        </div>
+      </div>
+      <div class="s-hero-right">
+        <video id="heroVideo" muted loop playsinline
+               poster="sc3.webp">
+          <source src="sportsv2.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div class="s-hero-play">
+          <button id="heroPlayBtn" aria-label="Play season intro" data-aos="zoom-in" data-aos-delay="400">
+            <i class="fas fa-play" id="heroPlayIcon"></i>
+          </button>
+        </div>
+        <div class="s-hero-play-label">
+          <i class="fas fa-video"></i> Watch Season Intro
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 2 — WEEKLY DAY PICKER
+         ============================================================ -->
+    <section class="block" id="daysSection">
+      <div class="s-days" data-aos="fade-up">
+        <div class="s-days-header">
+          <h3><i class="fas fa-calendar-week" style="color:#F5B301;margin-right:8px;"></i>This <span>Week</span></h3>
+          <div class="s-today">
+            <i class="fas fa-circle" style="color:#F5B301;font-size:6px;"></i>
+            Today is <span>Wednesday, 17 Sep</span>
+          </div>
+        </div>
+        <div class="s-days-strip">
+          <a href="404.html" class="s-day">
+            <div class="d-name">Mon</div>
+            <div class="d-num">15</div>
+            <div class="d-events">3 Events</div>
+          </a>
+          <a href="404.html" class="s-day">
+            <div class="d-name">Tue</div>
+            <div class="d-num">16</div>
+            <div class="d-events">4 Events</div>
+          </a>
+          <a href="404.html" class="s-day active">
+            <div class="d-name">Wed</div>
+            <div class="d-num">17</div>
+            <div class="d-events">5 Events</div>
+          </a>
+          <a href="404.html" class="s-day">
+            <div class="d-name">Thu</div>
+            <div class="d-num">18</div>
+            <div class="d-events">3 Events</div>
+          </a>
+          <a href="404.html" class="s-day">
+            <div class="d-name">Fri</div>
+            <div class="d-num">19</div>
+            <div class="d-events">6 Events</div>
+          </a>
+          <a href="404.html" class="s-day">
+            <div class="d-name">Sat</div>
+            <div class="d-num">20</div>
+            <div class="d-events">8 Events</div>
+          </a>
+          <a href="404.html" class="s-day">
+            <div class="d-name">Sun</div>
+            <div class="d-num">21</div>
+            <div class="d-events">4 Events</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 3 — TODAY'S TIMELINE
+         ============================================================ -->
+    <section class="block" id="timelineSection">
+      <span class="section-eyebrow" data-aos="fade-up">Live Today</span>
+      <h2 class="section-title" data-aos="fade-up">Today's <span>Timeline</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        All events happening <strong>Wednesday, 17 September 2026</strong> at Sports Club.
+      </p>
+
+      <div class="s-timeline">
+
+        <div class="s-event" data-aos="fade-up" data-aos-delay="0">
+          <div class="s-event-time">
+            <div class="t-hour">6:30</div>
+            <div class="t-period">AM</div>
+          </div>
+          <div class="s-event-dot"></div>
+          <div class="s-event-card">
+            <div class="s-event-icon gym"><i class="fas fa-dumbbell"></i></div>
+            <div class="s-event-body">
+              <div class="s-event-title">Morning Fitness Bootcamp</div>
+              <div class="s-event-meta">
+                <span><i class="fas fa-user-tie"></i> Coach Alex</span>
+                <span><i class="fas fa-map-marker-alt"></i> Gym Hall A</span>
+                <span><i class="fas fa-clock"></i> 60 min</span>
+              </div>
+            </div>
+            <span class="s-event-badge confirmed">Confirmed</span>
+          </div>
+        </div>
+
+        <div class="s-event" data-aos="fade-up" data-aos-delay="100">
+          <div class="s-event-time">
+            <div class="t-hour">9:00</div>
+            <div class="t-period">AM</div>
+          </div>
+          <div class="s-event-dot"></div>
+          <div class="s-event-card">
+            <div class="s-event-icon cricket"><i class="fas fa-baseball"></i></div>
+            <div class="s-event-body">
+              <div class="s-event-title">Cricket Nets Session</div>
+              <div class="s-event-meta">
+                <span><i class="fas fa-user-tie"></i> Coach Sara</span>
+                <span><i class="fas fa-map-marker-alt"></i> Nets A</span>
+                <span><i class="fas fa-clock"></i> 90 min</span>
+              </div>
+            </div>
+            <span class="s-event-badge confirmed">Confirmed</span>
+          </div>
+        </div>
+
+        <div class="s-event" data-aos="fade-up" data-aos-delay="200">
+          <div class="s-event-time">
+            <div class="t-hour">12:30</div>
+            <div class="t-period">PM</div>
+          </div>
+          <div class="s-event-dot"></div>
+          <div class="s-event-card">
+            <div class="s-event-icon swim"><i class="fas fa-person-swimming"></i></div>
+            <div class="s-event-body">
+              <div class="s-event-title">Swimming Practice</div>
+              <div class="s-event-meta">
+                <span><i class="fas fa-user-tie"></i> Coach Emily</span>
+                <span><i class="fas fa-map-marker-alt"></i> Aqua Center</span>
+                <span><i class="fas fa-clock"></i> 45 min</span>
+              </div>
+            </div>
+            <span class="s-event-badge pending">Pending</span>
+          </div>
+        </div>
+
+        <div class="s-event" data-aos="fade-up" data-aos-delay="300">
+          <div class="s-event-time">
+            <div class="t-hour">5:00</div>
+            <div class="t-period">PM</div>
+          </div>
+          <div class="s-event-dot"></div>
+          <div class="s-event-card">
+            <div class="s-event-icon football"><i class="fas fa-futbol"></i></div>
+            <div class="s-event-body">
+              <div class="s-event-title">Football Practice</div>
+              <div class="s-event-meta">
+                <span><i class="fas fa-user-tie"></i> Coach Alex</span>
+                <span><i class="fas fa-map-marker-alt"></i> Home Ground</span>
+                <span><i class="fas fa-clock"></i> 120 min</span>
+              </div>
+            </div>
+            <span class="s-event-badge confirmed">Confirmed</span>
+          </div>
+        </div>
+
+        <div class="s-event" data-aos="fade-up" data-aos-delay="400">
+          <div class="s-event-time">
+            <div class="t-hour">7:30</div>
+            <div class="t-period">PM</div>
+          </div>
+          <div class="s-event-dot"></div>
+          <div class="s-event-card">
+            <div class="s-event-icon basket"><i class="fas fa-basketball"></i></div>
+            <div class="s-event-body">
+              <div class="s-event-title">Basketball Match vs United BC</div>
+              <div class="s-event-meta">
+                <span><i class="fas fa-user-tie"></i> Coach Mike</span>
+                <span><i class="fas fa-map-marker-alt"></i> Indoor Arena</span>
+                <span><i class="fas fa-clock"></i> 90 min</span>
+              </div>
+            </div>
+            <span class="s-event-badge live">Live</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="btn-row" data-aos="fade-up" data-aos-delay="500">
+        <a href="404.html" class="btn-gold"><i class="fas fa-plus-circle"></i> Add Your Own Session</a>
+        <a href="404.html" class="btn-outline"><i class="fas fa-print"></i> Print Today's Schedule</a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 4 — MATCHES GRID
+         ============================================================ -->
+    <section class="block" id="matchesSection">
+      <span class="section-eyebrow" data-aos="fade-up">Fixtures</span>
+      <h2 class="section-title" data-aos="fade-up">Upcoming <span>Matches</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        This week's biggest clashes — support your team in person or online.
+      </p>
+
+      <div class="s-matches-grid">
+
+        <div class="s-match" data-aos="fade-up" data-aos-delay="0">
+          <div class="s-match-top">
+            <div class="s-match-sport"><i class="fas fa-futbol"></i> Football</div>
+            <div class="s-match-date"><i class="fas fa-calendar-day"></i> Sat, 20 Sep · 6 PM</div>
+          </div>
+          <div class="s-match-body">
+            <div class="s-team">
+              <div class="s-team-logo">⚽</div>
+              <div class="s-team-name">Sports Club</div>
+              <div class="s-team-sub">Home</div>
+            </div>
+            <div class="s-vs">
+              <div class="vs-label">VS</div>
+              <div class="vs-time">6:00 PM</div>
+            </div>
+            <div class="s-team">
+              <div class="s-team-logo">🦁</div>
+              <div class="s-team-name">Rivals FC</div>
+              <div class="s-team-sub">Away</div>
+            </div>
+          </div>
+          <div class="s-match-foot">
+            <div class="s-match-venue"><i class="fas fa-map-marker-alt"></i> Home Ground · Field 1</div>
+            <a href="404.html" class="s-match-cta">Match Info <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="s-match" data-aos="fade-up" data-aos-delay="100">
+          <div class="s-match-top">
+            <div class="s-match-sport"><i class="fas fa-baseball"></i> Cricket</div>
+            <div class="s-match-date"><i class="fas fa-calendar-day"></i> Sun, 21 Sep · 4 PM</div>
+          </div>
+          <div class="s-match-body">
+            <div class="s-team">
+              <div class="s-team-logo">🏏</div>
+              <div class="s-team-name">City CC</div>
+              <div class="s-team-sub">Home</div>
+            </div>
+            <div class="s-vs">
+              <div class="vs-label">VS</div>
+              <div class="vs-time">4:00 PM</div>
+            </div>
+            <div class="s-team">
+              <div class="s-team-logo">🏆</div>
+              <div class="s-team-name">Sports Club</div>
+              <div class="s-team-sub">Away</div>
+            </div>
+          </div>
+          <div class="s-match-foot">
+            <div class="s-match-venue"><i class="fas fa-map-marker-alt"></i> City Stadium</div>
+            <a href="404.html" class="s-match-cta">Match Info <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="s-match" data-aos="fade-up" data-aos-delay="200">
+          <div class="s-match-top">
+            <div class="s-match-sport"><i class="fas fa-basketball"></i> Basketball</div>
+            <div class="s-match-date"><i class="fas fa-calendar-day"></i> Wed, 24 Sep · 7:30 PM</div>
+          </div>
+          <div class="s-match-body">
+            <div class="s-team">
+              <div class="s-team-logo">🏀</div>
+              <div class="s-team-name">Sports Club</div>
+              <div class="s-team-sub">Home</div>
+            </div>
+            <div class="s-vs">
+              <div class="vs-label">VS</div>
+              <div class="vs-time">7:30 PM</div>
+            </div>
+            <div class="s-team">
+              <div class="s-team-logo">🔥</div>
+              <div class="s-team-name">United BC</div>
+              <div class="s-team-sub">Away</div>
+            </div>
+          </div>
+          <div class="s-match-foot">
+            <div class="s-match-venue"><i class="fas fa-map-marker-alt"></i> Indoor Arena A</div>
+            <a href="404.html" class="s-match-cta">Match Info <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="s-match" data-aos="fade-up" data-aos-delay="300">
+          <div class="s-match-top">
+            <div class="s-match-sport"><i class="fas fa-table-tennis-paddle-ball"></i> Tennis</div>
+            <div class="s-match-date"><i class="fas fa-calendar-day"></i> Sat, 27 Sep · 5 PM</div>
+          </div>
+          <div class="s-match-body">
+            <div class="s-team">
+              <div class="s-team-logo">🎾</div>
+              <div class="s-team-name">Elite TC</div>
+              <div class="s-team-sub">Home</div>
+            </div>
+            <div class="s-vs">
+              <div class="vs-label">VS</div>
+              <div class="vs-time">5:00 PM</div>
+            </div>
+            <div class="s-team">
+              <div class="s-team-logo">🏆</div>
+              <div class="s-team-name">Sports Club</div>
+              <div class="s-team-sub">Away</div>
+            </div>
+          </div>
+          <div class="s-match-foot">
+            <div class="s-match-venue"><i class="fas fa-map-marker-alt"></i> Elite Courts · 2</div>
+            <a href="404.html" class="s-match-cta">Match Info <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="btn-row" data-aos="fade-up" data-aos-delay="400">
+        <a href="404.html" class="btn-gold"><i class="fas fa-calendar-plus"></i> View Full Fixtures</a>
+        <a href="404.html" class="btn-outline"><i class="fas fa-ticket"></i> Buy Match Tickets</a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 5 — VIDEO HIGHLIGHT (REAL video with functional play/pause)
+         ============================================================ -->
+    <section class="block" id="videoSection">
+      <span class="section-eyebrow" data-aos="fade-up">Last Week's Highlights</span>
+      <h2 class="section-title" data-aos="fade-up">Match <span>Highlights</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        Relive the best moments — goals, wickets, and champions in action.
+      </p>
+
+      <div class="s-video" data-aos="zoom-in">
+        <video id="highlightVideo" muted loop playsinline
+               poster="sc4.webp">
+          <source src="sportv1.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="s-video-play-btn" id="videoPlayBtn" aria-label="Play highlight video">
+          <i class="fas fa-play" id="videoPlayIcon"></i>
+        </button>
+        <div class="s-video-overlay">
+          <span class="s-video-badge"><i class="fas fa-circle" style="font-size:6px;"></i> Live Replay</span>
+          <h3>Sports Club <span>4 – 2</span> Rivals FC</h3>
+          <p>An unforgettable comeback — watch every goal, save, and moment from last Saturday's epic home victory.</p>
+          <div class="s-video-btns">
+            <a href="404.html" class="btn-gold"><i class="fas fa-play"></i> Watch Full Replay</a>
+            <a href="404.html" class="btn-outline"><i class="fas fa-share-alt"></i> Share Highlight</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 6 — MONTHLY CALENDAR GRID
+         ============================================================ -->
+    <section class="block" id="calendarSection">
+      <span class="section-eyebrow" data-aos="fade-up">Month At A Glance</span>
+      <h2 class="section-title" data-aos="fade-up">Monthly <span>Calendar</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        September 2026 — every match, practice, and club event.
+      </p>
+
+      <div class="s-calendar" data-aos="fade-up" data-aos-delay="200">
+        <div class="s-cal-header">
+          <h3><i class="fas fa-calendar-alt"></i> <span id="calendarTitle">September 2026</span></h3>
+          <div class="s-cal-nav">
+            <button id="calPrevBtn" aria-label="Previous month"><i class="fas fa-chevron-left"></i></button>
+            <span class="s-cal-month" id="calMonthLabel">Sep 2026</span>
+            <button id="calNextBtn" aria-label="Next month"><i class="fas fa-chevron-right"></i></button>
+          </div>
+        </div>
+
+        <div class="s-cal-grid" id="calendarGrid"></div>
+
+        <div class="s-cal-legend">
+          <span class="lg-today">Today</span>
+          <span class="lg-event">Has Event</span>
+          <span class="lg-empty">No Event</span>
+        </div>
+      </div>
+
+      <div class="btn-row" data-aos="fade-up" data-aos-delay="300">
+        <a href="#" class="btn-gold" id="downloadCalendarBtnBottom"><i class="fas fa-file-pdf"></i> Download September Schedule</a>
+        <a href="404.html" class="btn-outline"><i class="fas fa-calendar-check"></i> Add to Google Calendar</a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 7 — WEEKLY STATS BAR CHART
+         ============================================================ -->
+    <section class="block" id="weekStatsSection">
+      <span class="section-eyebrow" data-aos="fade-up">Activity Report</span>
+      <h2 class="section-title" data-aos="fade-up">Weekly <span>Activity</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        Hours of training and matches scheduled for this week.
+      </p>
+
+      <div class="s-weekstats" data-aos="fade-up" data-aos-delay="200">
+        <div class="s-weekstats-head">
+          <div>
+            <h3>This Week's <span>Total</span></h3>
+            <div class="ws-sub">Mon 15 Sep – Sun 21 Sep 2026</div>
+          </div>
+          <div class="ws-total">
+            33h
+            <small>Total Sessions</small>
+          </div>
+        </div>
+
+        <div class="s-bars">
+          <div class="s-bar-wrap">
+            <div class="s-bar" style="height: 55%;" data-value="3h"></div>
+            <div class="s-bar-label">Mon</div>
+          </div>
+          <div class="s-bar-wrap">
+            <div class="s-bar" style="height: 70%;" data-value="4h"></div>
+            <div class="s-bar-label">Tue</div>
+          </div>
+          <div class="s-bar-wrap">
+            <div class="s-bar" style="height: 90%;" data-value="5h"></div>
+            <div class="s-bar-label">Wed</div>
+          </div>
+          <div class="s-bar-wrap">
+            <div class="s-bar" style="height: 55%;" data-value="3h"></div>
+            <div class="s-bar-label">Thu</div>
+          </div>
+          <div class="s-bar-wrap">
+            <div class="s-bar" style="height: 100%;" data-value="6h"></div>
+            <div class="s-bar-label">Fri</div>
+          </div>
+          <div class="s-bar-wrap">
+            <div class="s-bar" style="height: 85%;" data-value="5h"></div>
+            <div class="s-bar-label">Sat</div>
+          </div>
+          <div class="s-bar-wrap">
+            <div class="s-bar" style="height: 70%;" data-value="4h"></div>
+            <div class="s-bar-label">Sun</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row" data-aos="fade-up" data-aos-delay="300">
+        <a href="404.html" class="btn-gold"><i class="fas fa-chart-line"></i> View Detailed Report</a>
+        <a href="404.html" class="btn-outline"><i class="fas fa-download"></i> Export as CSV</a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 8 — UPCOMING EVENTS
+         ============================================================ -->
+    <section class="block" id="eventsSection">
+      <span class="section-eyebrow" data-aos="fade-up">Save The Date</span>
+      <h2 class="section-title" data-aos="fade-up">Upcoming <span>Events</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        Tournaments, community events &amp; special trainings — all in one place.
+      </p>
+
+      <div class="s-events-scroll" data-aos="fade-up" data-aos-delay="200">
+
+        <div class="s-event-card">
+          <div class="s-event-img-wrap">
+            <img class="s-event-img" src="sc5.webp" alt="Annual Football Cup">
+            <span class="s-event-date-tag">Oct 5</span>
+            <span class="s-event-category">Tournament</span>
+          </div>
+          <div class="s-event-body">
+            <h4>Annual Football Cup</h4>
+            <p>16 teams, 3 days of knockout football. Cash prizes and trophies for the top 3 teams.</p>
+            <div class="s-event-info">
+              <span><i class="fas fa-clock"></i> 10 AM</span>
+              <span><i class="fas fa-map-marker-alt"></i> Main Ground</span>
+            </div>
+            <a href="404.html" class="btn-gold">Register Team</a>
+          </div>
+        </div>
+
+        <div class="s-event-card">
+          <div class="s-event-img-wrap">
+            <img class="s-event-img" src="swim1.webp" alt="Cricket Championship">
+            <span class="s-event-date-tag">Oct 12</span>
+            <span class="s-event-category">Championship</span>
+          </div>
+          <div class="s-event-body">
+            <h4>Cricket Championship</h4>
+            <p>Inter-club cricket tournament featuring 8 teams across 2 weeks. Live streaming for all matches.</p>
+            <div class="s-event-info">
+              <span><i class="fas fa-clock"></i> 9 AM</span>
+              <span><i class="fas fa-map-marker-alt"></i> Cricket Ground</span>
+            </div>
+            <a href="404.html" class="btn-gold">Register Team</a>
+          </div>
+        </div>
+
+        <div class="s-event-card">
+          <div class="s-event-img-wrap">
+            <img class="s-event-img" src="swim2.webp" alt="Basketball Night">
+            <span class="s-event-date-tag">Oct 18</span>
+            <span class="s-event-category">Exhibition</span>
+          </div>
+          <div class="s-event-body">
+            <h4>Basketball Night</h4>
+            <p>An evening of 3-on-3 exhibition games. Live music, food trucks, and family-friendly fun.</p>
+            <div class="s-event-info">
+              <span><i class="fas fa-clock"></i> 6 PM</span>
+              <span><i class="fas fa-map-marker-alt"></i> Indoor Arena</span>
+            </div>
+            <a href="404.html" class="btn-gold">Buy Tickets</a>
+          </div>
+        </div>
+
+        <div class="s-event-card">
+          <div class="s-event-img-wrap">
+            <img class="s-event-img" src="swim3.webp" alt="Kids Sports Camp">
+            <span class="s-event-date-tag">Oct 25</span>
+            <span class="s-event-category">Kids Camp</span>
+          </div>
+          <div class="s-event-body">
+            <h4>Kids Sports Camp</h4>
+            <p>Ages 6–14. Multi-sport camp with 6 different activities, coaching, and free club kit for every kid.</p>
+            <div class="s-event-info">
+              <span><i class="fas fa-clock"></i> 9 AM</span>
+              <span><i class="fas fa-map-marker-alt"></i> Training Center</span>
+            </div>
+            <a href="404.html" class="btn-gold">Enroll Child</a>
+          </div>
+        </div>
+
+        <div class="s-event-card">
+          <div class="s-event-img-wrap">
+            <img class="s-event-img" src="ten1.webp" alt="Marathon 2026">
+            <span class="s-event-date-tag">Nov 2</span>
+            <span class="s-event-category">Marathon</span>
+          </div>
+          <div class="s-event-body">
+            <h4>Sports Club Marathon 2026</h4>
+            <p>5K, 10K, and 21K categories. Open to all members and the public. All proceeds to charity.</p>
+            <div class="s-event-info">
+              <span><i class="fas fa-clock"></i> 6 AM</span>
+              <span><i class="fas fa-map-marker-alt"></i> City Route</span>
+            </div>
+            <a href="404.html" class="btn-gold">Register Now</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="btn-row" data-aos="fade-up" data-aos-delay="300">
+        <a href="404.html" class="btn-gold"><i class="fas fa-list"></i> View All Events</a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 9 — TRAINING SPLITS
+         ============================================================ -->
+    <section class="block" id="splitsSection">
+      <span class="section-eyebrow" data-aos="fade-up">Training Breakdown</span>
+      <h2 class="section-title" data-aos="fade-up">Weekly <span>Training Splits</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        How much each sport trains per week at Sports Club.
+      </p>
+
+      <div class="s-splits">
+
+        <div class="s-split" data-aos="fade-up" data-aos-delay="0">
+          <div class="s-split-icon"><i class="fas fa-futbol"></i></div>
+          <div class="s-split-name">Football</div>
+          <div class="s-split-days">Mon · Wed · Fri · Sat</div>
+          <div class="s-split-bar"><div class="s-split-bar-fill" style="width: 90%;"></div></div>
+          <div class="s-split-percent">12 Hours / Week</div>
+        </div>
+
+        <div class="s-split" data-aos="fade-up" data-aos-delay="100">
+          <div class="s-split-icon"><i class="fas fa-baseball"></i></div>
+          <div class="s-split-name">Cricket</div>
+          <div class="s-split-days">Tue · Thu · Sat</div>
+          <div class="s-split-bar"><div class="s-split-bar-fill" style="width: 75%;"></div></div>
+          <div class="s-split-percent">9 Hours / Week</div>
+        </div>
+
+        <div class="s-split" data-aos="fade-up" data-aos-delay="200">
+          <div class="s-split-icon"><i class="fas fa-basketball"></i></div>
+          <div class="s-split-name">Basketball</div>
+          <div class="s-split-days">Mon · Wed · Fri</div>
+          <div class="s-split-bar"><div class="s-split-bar-fill" style="width: 60%;"></div></div>
+          <div class="s-split-percent">7 Hours / Week</div>
+        </div>
+
+        <div class="s-split" data-aos="fade-up" data-aos-delay="300">
+          <div class="s-split-icon"><i class="fas fa-person-swimming"></i></div>
+          <div class="s-split-name">Swimming</div>
+          <div class="s-split-days">Tue · Thu · Sun</div>
+          <div class="s-split-bar"><div class="s-split-bar-fill" style="width: 45%;"></div></div>
+          <div class="s-split-percent">5 Hours / Week</div>
+        </div>
+
+      </div>
+
+      <div class="btn-row" data-aos="fade-up" data-aos-delay="400">
+        <a href="404.html" class="btn-gold"><i class="fas fa-clipboard-list"></i> Full Training Program</a>
+        <a href="404.html" class="btn-outline"><i class="fas fa-user-tie"></i> Ask A Coach</a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 10 — REGISTRATION CTA
+         ============================================================ -->
+    <section class="s-cta" id="ctaSection">
+      <div class="s-cta-content">
+        <span class="s-cta-tag" data-aos="fade-right">
+          <i class="fas fa-bell"></i> Never Miss A Match
+        </span>
+        <h2 data-aos="fade-up">Get Schedule <span>Alerts Directly</span></h2>
+        <p data-aos="fade-up" data-aos-delay="100">
+          Subscribe to receive daily schedules, match reminders, and last-minute changes right in your inbox or phone.
+        </p>
+
+        <form class="s-cta-form" data-aos="fade-up" data-aos-delay="200" id="subscribeForm" novalidate>
+          <input type="email" id="subscribeEmail" placeholder="Enter your email address" required>
+          <button type="submit" class="btn-gold" id="subscribeBtn">
+            <i class="fas fa-paper-plane"></i> Subscribe Now
+          </button>
+        </form>
+        <div class="s-subscribe-feedback" id="subscribeFeedback" role="status" aria-live="polite"></div>
+
+        <div class="s-cta-form" style="margin-top:12px;" data-aos="fade-up" data-aos-delay="300">
+          <a href="#" class="btn-outline" id="pushNotifyBtn" style="color:#fff;border-color:rgba(255,255,255,0.4);width:100%;justify-content:center;">
+            <i class="fas fa-mobile-screen"></i> Or get push notifications
+          </a>
+        </div>
+      </div>
+      <div class="s-cta-image">
+        <img src="ten2.webp" alt="Sports Club Schedule">
+      </div>
+    </section>
+
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    /* ===== AOS ===== */
+    AOS.init({
+      duration: 800,
+      easing: 'ease-out-cubic',
+      once: true,
+      offset: 80
+    });
+
+    /* ===== GSAP: safe animations ===== */
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Gentle pulse on hero play button (only when paused)
+    const heroBtnPulse = gsap.to("#heroPlayBtn", {
+      scale: 1.08,
+      duration: 1.4,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+
+    // Bar chart animate in
+    gsap.utils.toArray(".s-bar").forEach((bar, i) => {
+      const targetHeight = bar.style.height;
+      bar.style.height = "0%";
+      gsap.to(bar, {
+        height: targetHeight,
+        duration: 1.2,
+        delay: 0.05 * i,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".s-weekstats",
+          start: "top 85%",
+          once: true
+        }
+      });
+    });
+
+    // Split bars animate width
+    gsap.utils.toArray(".s-split-bar-fill").forEach((bar, i) => {
+      const targetWidth = bar.style.width;
+      bar.style.width = "0%";
+      gsap.to(bar, {
+        width: targetWidth,
+        duration: 1.4,
+        delay: 0.1 * i,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".s-splits",
+          start: "top 85%",
+          once: true
+        }
+      });
+    });
+
+    /* ============================================================
+       HERO VIDEO — REAL PLAY/PAUSE
+       ============================================================ */
+    (function() {
+      const heroVideo = document.getElementById('heroVideo');
+      const heroBtn = document.getElementById('heroPlayBtn');
+      const heroIcon = document.getElementById('heroPlayIcon');
+      if (!heroVideo || !heroBtn || !heroIcon) return;
+
+      heroVideo.pause();
+
+      function updateHeroUI() {
+        if (heroVideo.paused) {
+          heroIcon.className = 'fas fa-play';
+          heroBtn.classList.remove('playing');
+          heroBtnPulse.play();
+        } else {
+          heroIcon.className = 'fas fa-pause';
+          heroBtn.classList.add('playing');
+          heroBtnPulse.pause();
+        }
+      }
+
+      heroVideo.addEventListener('play', updateHeroUI);
+      heroVideo.addEventListener('pause', updateHeroUI);
+
+      heroBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (heroVideo.paused) {
+          heroVideo.play().catch(function(err) {
+            console.warn('Hero video play failed:', err);
+          });
+        } else {
+          heroVideo.pause();
+        }
+      });
+
+      heroVideo.addEventListener('click', function() {
+        if (heroVideo.paused) {
+          heroVideo.play().catch(function(err) {
+            console.warn('Hero video play failed:', err);
+          });
+        } else {
+          heroVideo.pause();
+        }
+      });
+
+      updateHeroUI();
+    })();
+
+    /* ============================================================
+       HIGHLIGHT VIDEO — REAL PLAY/PAUSE
+       ============================================================ */
+    (function() {
+      const video = document.getElementById('highlightVideo');
+      const playBtn = document.getElementById('videoPlayBtn');
+      const playIcon = document.getElementById('videoPlayIcon');
+      if (!video || !playBtn || !playIcon) return;
+
+      function updateUI() {
+        if (video.paused) {
+          playIcon.className = 'fas fa-play';
+          playBtn.classList.remove('playing');
+        } else {
+          playIcon.className = 'fas fa-pause';
+          playBtn.classList.add('playing');
+        }
+      }
+
+      video.addEventListener('play', updateUI);
+      video.addEventListener('pause', updateUI);
+
+      playBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (video.paused) {
+          video.play().catch(function(err) {
+            console.warn('Highlight video play failed:', err);
+          });
+        } else {
+          video.pause();
+        }
+      });
+
+      video.addEventListener('click', function() {
+        if (video.paused) {
+          video.play().catch(function(err) {
+            console.warn('Highlight video play failed:', err);
+          });
+        } else {
+          video.pause();
+        }
+      });
+
+      updateUI();
+    })();
+
+    /* ============================================================
+       MONTHLY CALENDAR WITH NAVIGATION
+       ============================================================ */
+    (function() {
+      const calendarGrid = document.getElementById('calendarGrid');
+      const calendarTitle = document.getElementById('calendarTitle');
+      const calMonthLabel = document.getElementById('calMonthLabel');
+      const prevBtn = document.getElementById('calPrevBtn');
+      const nextBtn = document.getElementById('calNextBtn');
+
+      if (!calendarGrid) return;
+
+      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                          'July', 'August', 'September', 'October', 'November', 'December'];
+      const monthShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+      let currentYear = 2026;
+      let currentMonth = 8; // September
+
+      const today = { year: 2026, month: 8, day: 17 };
+
+      const eventsMap = {
+        '2026-08': [2, 4, 5, 7, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 24, 26, 27, 28, 30],
+        '2026-09': [1, 3, 5, 6, 8, 10, 12, 14, 15, 17, 19, 20, 22, 25, 27, 29, 31],
+        '2026-07': [2, 3, 7, 10, 14, 15, 18, 21, 24, 28, 29]
+      };
+
+      function getKey(year, month) {
+        return year + '-' + String(month).padStart(2, '0');
+      }
+
+      function renderCalendar(year, month) {
+        calendarTitle.textContent = monthNames[month] + ' ' + year;
+        calMonthLabel.textContent = monthShort[month] + ' ' + year;
+
+        calendarGrid.innerHTML = '';
+
+        dayHeaders.forEach(function(day) {
+          const el = document.createElement('div');
+          el.className = 's-cal-dow';
+          el.textContent = day;
+          calendarGrid.appendChild(el);
+        });
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const totalDays = new Date(year, month + 1, 0).getDate();
+
+        const key = getKey(year, month);
+        const eventDays = eventsMap[key] || [];
+
+        for (let i = 0; i < firstDay; i++) {
+          const el = document.createElement('div');
+          el.className = 's-cal-day empty';
+          calendarGrid.appendChild(el);
+        }
+
+        for (let d = 1; d <= totalDays; d++) {
+          const el = document.createElement('div');
+          el.className = 's-cal-day';
+
+          const isToday = (year === today.year && month === today.month && d === today.day);
+          const hasEvent = eventDays.indexOf(d) !== -1;
+
+          if (isToday) el.classList.add('today');
+          if (hasEvent) el.classList.add('has-event');
+
+          el.textContent = d;
+          calendarGrid.appendChild(el);
+        }
+      }
+
+      renderCalendar(currentYear, currentMonth);
+
+      prevBtn.addEventListener('click', function() {
+        currentMonth--;
+        if (currentMonth < 0) {
+          currentMonth = 11;
+          currentYear--;
+        }
+        renderCalendar(currentYear, currentMonth);
+      });
+
+      nextBtn.addEventListener('click', function() {
+        currentMonth++;
+        if (currentMonth > 11) {
+          currentMonth = 0;
+          currentYear++;
+        }
+        renderCalendar(currentYear, currentMonth);
+      });
+    })();
+  </script>
+
+  <script>
+    /* ============================================================
+       BUG FIX #1 — Download Full Calendar (generates a real .ics file)
+       ============================================================ */
+    (function downloadCalendarFix() {
+      const buttons = [
+        document.getElementById('downloadCalendarBtn'),
+        document.getElementById('downloadCalendarBtnBottom')
+      ].filter(Boolean);
+
+      if (!buttons.length) return;
+
+      // Fixtures shown on the page — these become the .ics events
+      const fixtures = [
+        { sport: 'Football',   home: 'Sports Club',   away: 'Rivals FC',     date: '20260920', time: '180000', venue: 'Home Ground · Field 1' },
+        { sport: 'Cricket',    home: 'City CC',       away: 'Sports Club',   date: '20260921', time: '160000', venue: 'City Stadium' },
+        { sport: 'Basketball', home: 'Sports Club',   away: 'United BC',     date: '20260924', time: '193000', venue: 'Indoor Arena A' },
+        { sport: 'Tennis',     home: 'Elite TC',      away: 'Sports Club',   date: '20260927', time: '170000', venue: 'Elite Courts · 2' }
+      ];
+
+      function pad(n) { return String(n).padStart(2, '0'); }
+
+      function toICSDate(dateStr, timeStr) {
+        return dateStr + 'T' + timeStr;
+      }
+
+      function addHours(dateStr, timeStr, hours) {
+        const y = +dateStr.slice(0, 4);
+        const m = +dateStr.slice(4, 6) - 1;
+        const d = +dateStr.slice(6, 8);
+        const hh = +timeStr.slice(0, 2);
+        const mm = +timeStr.slice(2, 4);
+        const ss = +timeStr.slice(4, 6);
+        const dt = new Date(Date.UTC(y, m, d, hh, mm, ss));
+        dt.setUTCHours(dt.getUTCHours() + hours);
+        return (
+          dt.getUTCFullYear() +
+          pad(dt.getUTCMonth() + 1) +
+          pad(dt.getUTCDate()) +
+          'T' +
+          pad(dt.getUTCHours()) +
+          pad(dt.getUTCMinutes()) +
+          pad(dt.getUTCSeconds()) +
+          'Z'
+        );
+      }
+
+      function buildICS() {
+        const lines = [
+          'BEGIN:VCALENDAR',
+          'VERSION:2.0',
+          'PRODID:-//Sports Club//Schedule 2026//EN',
+          'CALSCALE:GREGORIAN',
+          'METHOD:PUBLISH',
+          'X-WR-CALNAME:Sports Club · Season 2026',
+          'X-WR-TIMEZONE:UTC'
+        ];
+
+        const now = new Date();
+        const stamp =
+          now.getUTCFullYear() +
+          pad(now.getUTCMonth() + 1) +
+          pad(now.getUTCDate()) +
+          'T' +
+          pad(now.getUTCHours()) +
+          pad(now.getUTCMinutes()) +
+          pad(now.getUTCSeconds()) +
+          'Z';
+
+        fixtures.forEach(function (fx, i) {
+          const start = toICSDate(fx.date, fx.time) + 'Z';
+          const end = addHours(fx.date, fx.time, 2);
+
+          lines.push('BEGIN:VEVENT');
+          lines.push('UID:sportsclub-fixture-' + fx.date + '-' + i + '@sportsclub');
+          lines.push('DTSTAMP:' + stamp);
+          lines.push('DTSTART:' + start);
+          lines.push('DTEND:' + end);
+          lines.push('SUMMARY:' + fx.sport + ': ' + fx.home + ' vs ' + fx.away);
+          lines.push('LOCATION:' + fx.venue);
+          lines.push('DESCRIPTION:' + fx.sport + ' fixture · Sports Club Season 2026');
+          lines.push('STATUS:CONFIRMED');
+          lines.push('END:VEVENT');
+        });
+
+        lines.push('END:VCALENDAR');
+        return lines.join('\r\n');
+      }
+
+      function downloadICS(btn) {
+        try {
+          const ics = buildICS();
+          const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'sports-club-schedule-2026.ics';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+
+          // Visual confirmation on the clicked button
+          const originalHTML = btn.innerHTML;
+          btn.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
+          btn.style.background = '#1B8A3E';
+          btn.style.color = '#fff';
+          btn.style.pointerEvents = 'none';
+          setTimeout(function () {
+            btn.innerHTML = originalHTML;
+            btn.style.background = '';
+            btn.style.color = '';
+            btn.style.pointerEvents = '';
+          }, 2200);
+        } catch (err) {
+          console.error('ICS generation failed:', err);
+          alert('Sorry, could not generate the calendar file in this browser.');
+        }
+      }
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          downloadICS(btn);
+        });
+      });
+    })();
+
+    /* ============================================================
+       BUG FIX #2 — Subscribe form does real work (no 404 redirect)
+       ============================================================ */
+    (function subscribeFix() {
+      const form = document.getElementById('subscribeForm');
+      const emailInput = document.getElementById('subscribeEmail');
+      const feedback = document.getElementById('subscribeFeedback');
+      const btn = document.getElementById('subscribeBtn');
+      if (!form || !emailInput || !feedback || !btn) return;
+
+      const STORAGE_KEY = 'sc_schedule_subscribers';
+      const validateEmail = function (e) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+      };
+
+      function showFeedback(message, type) {
+        feedback.className = 's-subscribe-feedback show ' + type;
+        const icon = type === 'success'
+          ? '<i class="fas fa-check-circle"></i>'
+          : '<i class="fas fa-exclamation-circle"></i>';
+        feedback.innerHTML = icon + message;
+      }
+
+      function clearFeedback() {
+        feedback.className = 's-subscribe-feedback';
+        feedback.innerHTML = '';
+      }
+
+      function getSubscribers() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          return raw ? JSON.parse(raw) : [];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      function saveSubscribers(list) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+        } catch (e) {}
+      }
+
+      emailInput.addEventListener('input', clearFeedback);
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearFeedback();
+
+        const email = emailInput.value.trim().toLowerCase();
+
+        if (!email) {
+          showFeedback('Please enter your email address.', 'error');
+          emailInput.focus();
+          return;
+        }
+
+        if (!validateEmail(email)) {
+          showFeedback('Please enter a valid email address (e.g. you@example.com).', 'error');
+          emailInput.focus();
+          return;
+        }
+
+        const subscribers = getSubscribers();
+
+        if (subscribers.indexOf(email) !== -1) {
+          showFeedback('You are already subscribed to schedule alerts with this email.', 'success');
+          emailInput.value = '';
+          return;
+        }
+
+        const originalHTML = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing…';
+
+        setTimeout(function () {
+          subscribers.push(email);
+          saveSubscribers(subscribers);
+
+          btn.disabled = false;
+          btn.innerHTML = originalHTML;
+
+          showFeedback(
+            'Success! ' + email + ' is now subscribed to Sports Club schedule alerts.',
+            'success'
+          );
+          emailInput.value = '';
+        }, 700);
+      });
+    })();
+
+    /* ============================================================
+       Push notifications button — graceful no-op (no 404)
+       ============================================================ */
+    (function pushNotifyFix() {
+      const btn = document.getElementById('pushNotifyBtn');
+      if (!btn) return;
+
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (!('Notification' in window)) {
+          alert('Push notifications are not supported in this browser.');
+          return;
+        }
+        if (Notification.permission === 'granted') {
+          alert('Push notifications are already enabled for Sports Club.');
+          return;
+        }
+        if (Notification.permission === 'denied') {
+          alert('Push notifications are blocked. Please enable them in your browser settings.');
+          return;
+        }
+        Notification.requestPermission().then(function (perm) {
+          if (perm === 'granted') {
+            alert('Push notifications enabled! You will now receive Sports Club schedule alerts.');
+            try {
+              new Notification('Sports Club', {
+                body: 'Push notifications are now active.',
+                icon: 'SLogo.webp'
+              });
+            } catch (e) {}
+          } else {
+            alert('Push notifications were not enabled.');
+          }
+        });
+      });
+    })();
+  </script>
+
+  <script>
+    /* ===== HEADER + FOOTER LOADER ===== */
+    (function loadHeaderFooter() {
+      fetch('header.html')
+        .then(r => { if (!r.ok) throw new Error('Header not found'); return r.text(); })
+        .then(data => { document.getElementById('header-placeholder').innerHTML = data; initHeader(); })
+        .catch(err => {
+          console.error(err);
+          document.getElementById('header-placeholder').innerHTML =
+            '<div style="background:#0A1F44; color:#F5B301; padding:16px; text-align:center; font-weight:600; border-bottom:3px solid #F5B301;">⚠️ Header failed to load</div>';
+        });
+
+      fetch('footer.html')
+        .then(r => { if (!r.ok) throw new Error('Footer not found'); return r.text(); })
+        .then(data => { document.getElementById('footer-placeholder').innerHTML = data; initFooter(); })
+        .catch(err => {
+          console.error(err);
+          document.getElementById('footer-placeholder').innerHTML =
+            '<div style="background:#0A1F44; color:#E6ECF5; padding:20px; text-align:center; border-top:3px solid #F5B301;">⚠️ Footer failed to load</div>';
+        });
+    })();
+
+    function initHeader() {
+      const menuBtn = document.getElementById('menuBtn');
+      const closeBtn = document.getElementById('closeBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const mobileOverlay = document.getElementById('mobileOverlay');
+      const mobileLinks = mobileMenu ? mobileMenu.querySelectorAll('a') : [];
+      const header = document.getElementById('mainHeader');
+
+      if (menuBtn) menuBtn.addEventListener('click', e => {
+        e.preventDefault(); e.stopPropagation();
+        if (mobileMenu) mobileMenu.classList.add('open');
+        if (mobileOverlay) mobileOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+      if (closeBtn) closeBtn.addEventListener('click', e => {
+        e.preventDefault();
+        if (mobileMenu) mobileMenu.classList.remove('open');
+        if (mobileOverlay) mobileOverlay.classList.remove('open');
+        document.body.style.overflow = 'auto';
+      });
+      if (mobileOverlay) mobileOverlay.addEventListener('click', e => {
+        e.preventDefault();
+        if (mobileMenu) mobileMenu.classList.remove('open');
+        mobileOverlay.classList.remove('open');
+        document.body.style.overflow = 'auto';
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          if (mobileMenu) mobileMenu.classList.remove('open');
+          if (mobileOverlay) mobileOverlay.classList.remove('open');
+          document.body.style.overflow = 'auto';
+        }
+      });
+      mobileLinks.forEach(l => l.addEventListener('click', e => {
+        e.preventDefault();
+        const href = l.getAttribute('href');
+        if (mobileMenu) mobileMenu.classList.remove('open');
+        if (mobileOverlay) mobileOverlay.classList.remove('open');
+        document.body.style.overflow = 'auto';
+        setTimeout(() => window.location.href = href, 200);
+      }));
+      if (header) window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 20);
+      });
+      document.querySelectorAll('.desktop-nav a').forEach(l => l.addEventListener('click', e => {
+        e.preventDefault(); window.location.href = l.getAttribute('href');
+      }));
+      const hLogin = document.querySelector('.login-btn');
+      if (hLogin) hLogin.addEventListener('click', e => { e.preventDefault(); window.location.href = hLogin.getAttribute('href'); });
+      const hSignup = document.querySelector('.signup-btn');
+      if (hSignup) hSignup.addEventListener('click', e => { e.preventDefault(); window.location.href = hSignup.getAttribute('href'); });
+    }
+
+    function initFooter() {
+      const ham = document.getElementById('mobileHamburger');
+      const nav = document.getElementById('mobileNavMenu');
+      if (ham && nav) ham.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); nav.classList.toggle('open'); });
+      document.querySelectorAll('.footer-nav a').forEach(l => l.addEventListener('click', e => { e.preventDefault(); window.location.href = l.getAttribute('href'); }));
+      document.querySelectorAll('.mobile-nav-menu a').forEach(l => l.addEventListener('click', e => {
+        e.preventDefault();
+        if (nav) nav.classList.remove('open');
+        window.location.href = l.getAttribute('href');
+      }));
+      document.querySelectorAll('.footer-social a, .mobile-social a').forEach(l => l.addEventListener('click', e => {
+        e.preventDefault(); window.location.href = l.getAttribute('href');
+      }));
+    }
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 868) {
+        const mm = document.getElementById('mobileMenu');
+        const mo = document.getElementById('mobileOverlay');
+        if (mm) mm.classList.remove('open');
+        if (mo) mo.classList.remove('open');
+        const fn = document.getElementById('mobileNavMenu');
+        if (fn) fn.classList.remove('open');
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    console.log('✅ Schedule page ready — calendar download & subscribe bugs fixed');
+  </script>
+
+</body>
+</html>

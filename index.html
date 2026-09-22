@@ -1,0 +1,2937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sports Club | Home</title>
+  <meta name="description" content="Premier sports club — football, cricket, basketball, tennis, swimming, and athletics. Join the champions.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    :root {
+      --navy: #0A1F44;
+      --navy-dark: #061530;
+      --gold: #F5B301;
+      --gold-hover: #FFC933;
+      --bg: #F5F7FA;
+      --white: #ffffff;
+      --text: #3A4A63;
+      --muted: #7A8AA3;
+      --green: #1B8A3E;
+      --red: #EF4444;
+      --blue: #3B82F6;
+      --purple: #8B5CF6;
+      --cream: #FAF7F1;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    #header-placeholder { width: 100%; flex-shrink: 0; }
+    #footer-placeholder { width: 100%; flex-shrink: 0; margin-top: auto; }
+
+    .iwrap {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem 16px 0;
+      overflow-x: hidden;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---------- shared ---------- */
+    .section-eyebrow {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 10px;
+      line-height: 1.15;
+    }
+    .section-title span { color: var(--gold); }
+    .section-sub {
+      font-size: 0.92rem;
+      color: var(--text);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      text-align: center;
+      line-height: 1.7;
+      font-weight: 500;
+    }
+    .section-sub strong { color: var(--gold); font-weight: 700; }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--navy);
+      padding: 13px 28px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      transition: all 0.35s ease;
+      box-shadow: 0 6px 20px rgba(245, 179, 1, 0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+    .btn-gold:hover {
+      background: var(--gold-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(245, 179, 1, 0.55);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--navy);
+      padding: 13px 28px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-decoration: none;
+      border: 2px solid var(--navy);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      transition: all 0.35s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+    .btn-outline:hover {
+      background: var(--navy);
+      color: #fff;
+      transform: translateY(-3px);
+    }
+    .btn-dark {
+      background: var(--navy);
+      color: #fff;
+      padding: 13px 28px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      transition: all 0.35s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+    .btn-dark:hover {
+      background: var(--gold);
+      color: var(--navy);
+      transform: translateY(-3px);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: #fff;
+      padding: 13px 28px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-decoration: none;
+      border: 2px solid rgba(255,255,255,0.5);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      transition: all 0.35s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+    .btn-ghost:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--navy);
+      transform: translateY(-3px);
+    }
+
+    .btn-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    section.iblock {
+      padding: 2.5rem 0;
+      overflow: visible;
+    }
+
+    /* ============================================================
+       SECTION 1 — HERO with BACKGROUND VIDEO
+       ============================================================ */
+    .i-hero {
+      position: relative;
+      border-radius: 26px;
+      overflow: hidden;
+      min-height: 620px;
+      margin-bottom: 3rem;
+      box-shadow: 0 24px 70px rgba(10, 31, 68, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--navy);
+    }
+    .i-hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.35;
+      z-index: 1;
+    }
+    .i-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at center, transparent 0%, rgba(10,31,68,0.8) 85%),
+        linear-gradient(to top, rgba(10,31,68,0.95) 0%, rgba(10,31,68,0.4) 60%, transparent 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .i-hero-inner {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      padding: 70px 40px;
+      max-width: 900px;
+    }
+    .i-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--gold);
+      background: rgba(245,179,1,0.15);
+      border: 1px solid rgba(245,179,1,0.4);
+      padding: 8px 18px;
+      border-radius: 30px;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      margin-bottom: 26px;
+    }
+    .i-hero-badge i { color: var(--gold); }
+    .i-hero-title {
+      font-size: 4.2rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      color: #fff;
+      margin-bottom: 22px;
+      text-transform: uppercase;
+    }
+    .i-hero-title span {
+      color: var(--gold);
+      font-style: italic;
+      display: inline-block;
+    }
+    .i-hero-desc {
+      font-size: 1.05rem;
+      color: #D6DEF0;
+      line-height: 1.7;
+      margin-bottom: 34px;
+      max-width: 620px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 500;
+    }
+    .i-hero-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 44px;
+    }
+    .i-hero-btns .btn-outline {
+      color: #fff;
+      border-color: rgba(255,255,255,0.5);
+    }
+    .i-hero-btns .btn-outline:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--navy);
+    }
+    .i-hero-meta {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding-top: 30px;
+      border-top: 1px solid rgba(245,179,1,0.25);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .i-hero-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: center;
+    }
+    .i-hero-meta-num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+      letter-spacing: -0.5px;
+    }
+    .i-hero-meta-num em {
+      font-style: normal;
+      color: var(--gold);
+    }
+    .i-hero-meta-lbl {
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: #B9C4D6;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    /* Hero video play/pause button */
+    .i-hero-play {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(10,31,68,0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(245,179,1,0.4);
+      padding: 8px 20px 8px 8px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.35s ease;
+    }
+    .i-hero-play:hover {
+      border-color: var(--gold);
+      background: rgba(10,31,68,0.95);
+      transform: translateY(-2px);
+    }
+    .i-hero-play button {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 18px rgba(245,179,1,0.4);
+    }
+    .i-hero-play button.playing {
+      background: var(--red);
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(239,68,68,0.4);
+    }
+    .i-hero-play span {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    /* ============================================================
+       SECTION 2 — TRUST MARQUEE
+       ============================================================ */
+    .i-marquee {
+      background: var(--navy);
+      border-radius: 18px;
+      padding: 26px 0;
+      margin-bottom: 3rem;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 12px 36px rgba(10,31,68,0.2);
+    }
+    .i-marquee::before,
+    .i-marquee::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .i-marquee::before {
+      left: 0;
+      background: linear-gradient(to right, var(--navy), transparent);
+    }
+    .i-marquee::after {
+      right: 0;
+      background: linear-gradient(to left, var(--navy), transparent);
+    }
+    .i-marquee-track {
+      display: flex;
+      gap: 60px;
+      animation: i-marquee-scroll 30s linear infinite;
+      width: max-content;
+    }
+    @keyframes i-marquee-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .i-marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #D6DEF0;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+    .i-marquee-item:hover { opacity: 1; }
+    .i-marquee-item i {
+      color: var(--gold);
+      font-size: 1.2rem;
+    }
+
+    /* ============================================================
+       SECTION 3 — FEATURED SPORTS (bento)
+       ============================================================ */
+    .i-sports {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 220px;
+      gap: 16px;
+      margin-bottom: 2rem;
+    }
+    .i-sport {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--navy);
+      transition: all 0.4s ease;
+    }
+    .i-sport:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(10,31,68,0.25);
+    }
+    .i-sport img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+      opacity: 0.7;
+    }
+    .i-sport:hover img {
+      transform: scale(1.08);
+      opacity: 0.85;
+    }
+    .i-sport::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,31,68,0.92) 0%, rgba(10,31,68,0.3) 60%, transparent 100%);
+      transition: opacity 0.4s ease;
+    }
+    .i-sport-body {
+      position: absolute;
+      bottom: 22px;
+      left: 22px;
+      right: 22px;
+      z-index: 2;
+      color: #fff;
+    }
+    .i-sport-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      background: var(--gold);
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      transition: all 0.4s ease;
+    }
+    .i-sport:hover .i-sport-icon {
+      transform: rotate(-8deg) scale(1.1);
+    }
+    .i-sport-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+      line-height: 1.15;
+    }
+    .i-sport-desc {
+      font-size: 0.72rem;
+      color: #B9C4D6;
+      font-weight: 600;
+      line-height: 1.5;
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+    .i-sport:hover .i-sport-desc {
+      opacity: 1;
+      max-height: 50px;
+      margin-top: 6px;
+    }
+    .i-sport.big { grid-column: span 2; grid-row: span 2; }
+    .i-sport.wide { grid-column: span 2; grid-row: span 1; }
+
+    /* ============================================================
+       SECTION 4 — ABOUT SPLIT
+       ============================================================ */
+    .i-about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .i-about-img {
+      position: relative;
+      border-radius: 22px;
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      box-shadow: 0 24px 60px rgba(10,31,68,0.2);
+    }
+    .i-about-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .i-about-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,31,68,0.5) 0%, transparent 55%);
+    }
+    .i-about-badge {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      background: var(--gold);
+      color: var(--navy);
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 22px rgba(245,179,1,0.4);
+    }
+    .i-about-float {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(10px);
+      padding: 16px 20px;
+      border-radius: 14px;
+      z-index: 3;
+      box-shadow: 0 12px 34px rgba(10,31,68,0.2);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .i-about-float i {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--navy);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+    .i-about-float-txt {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      line-height: 1.3;
+    }
+    .i-about-content {
+      padding: 10px 0;
+    }
+    .i-about-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245,179,1,0.15);
+      color: #B37F00;
+      padding: 7px 14px;
+      border-radius: 30px;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .i-about-h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+    }
+    .i-about-h2 span { color: var(--gold); }
+    .i-about-p {
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.75;
+      margin-bottom: 26px;
+      font-weight: 500;
+    }
+    .i-about-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 30px;
+    }
+    .i-about-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 0.88rem;
+      color: var(--text);
+      font-weight: 600;
+      line-height: 1.55;
+    }
+    .i-about-list i {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(27,138,62,0.12);
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ============================================================
+       SECTION 5 — VIDEO (functional play/pause)
+       ============================================================ */
+    .i-video-wrap {
+      position: relative;
+      border-radius: 22px;
+      overflow: hidden;
+      aspect-ratio: 16/8;
+      background: #000;
+      box-shadow: 0 24px 70px rgba(10,31,68,0.3);
+      margin-bottom: 1rem;
+    }
+    .i-video-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      cursor: pointer;
+      opacity: 0.85;
+    }
+    .i-video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,31,68,0.85) 0%, rgba(10,31,68,0.2) 55%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 40px 46px;
+      color: #fff;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .i-video-overlay > * { pointer-events: auto; }
+    .i-video-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245,179,1,0.18);
+      color: var(--gold);
+      border: 1px solid rgba(245,179,1,0.4);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      align-self: flex-start;
+    }
+    .i-video-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.8px;
+      margin-bottom: 10px;
+      max-width: 620px;
+      text-transform: uppercase;
+    }
+    .i-video-title span { color: var(--gold); }
+    .i-video-desc {
+      font-size: 0.9rem;
+      color: #D6DEF0;
+      line-height: 1.65;
+      max-width: 520px;
+      font-weight: 500;
+      margin-bottom: 22px;
+    }
+    .i-video-play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--navy);
+      border: 8px solid rgba(255,255,255,0.25);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      z-index: 4;
+      transition: all 0.35s ease;
+      box-shadow: 0 20px 50px rgba(245,179,1,0.5);
+    }
+    .i-video-play:hover {
+      transform: translate(-50%, -50%) scale(1.08);
+      background: var(--gold-hover);
+    }
+    .i-video-play.playing {
+      background: var(--red);
+      color: #fff;
+      box-shadow: 0 20px 50px rgba(239,68,68,0.5);
+    }
+
+    /* ============================================================
+       SECTION 6 — STATS BANNER
+       ============================================================ */
+    .i-stats {
+      background: linear-gradient(135deg, #0A1F44 0%, #1E3A6B 100%);
+      border-radius: 22px;
+      padding: 50px 40px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(10,31,68,0.25);
+      margin-bottom: 2rem;
+    }
+    .i-stats::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(245,179,1,0.18), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .i-stats::after {
+      content: '';
+      position: absolute;
+      bottom: -100px;
+      left: -60px;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(245,179,1,0.1), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .i-stats-head {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 2;
+    }
+    .i-stats-head h3 {
+      font-size: 1.7rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .i-stats-head h3 span { color: var(--gold); }
+    .i-stats-head p {
+      font-size: 0.82rem;
+      color: #B9C4D6;
+      font-weight: 500;
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    .i-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      position: relative;
+      z-index: 2;
+    }
+    .i-stat-card {
+      text-align: center;
+      padding: 20px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(245,179,1,0.15);
+      transition: all 0.35s ease;
+    }
+    .i-stat-card:hover {
+      background: rgba(245,179,1,0.08);
+      border-color: rgba(245,179,1,0.4);
+      transform: translateY(-4px);
+    }
+    .i-stat-icon {
+      font-size: 1.5rem;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .i-stat-num {
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .i-stat-lbl {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #B9C4D6;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    /* ============================================================
+       SECTION 7 — UPCOMING MATCHES
+       ============================================================ */
+    .i-matches {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 2rem;
+    }
+    .i-match {
+      display: grid;
+      grid-template-columns: 100px 1fr auto auto;
+      gap: 24px;
+      align-items: center;
+      background: #fff;
+      border-radius: 16px;
+      padding: 22px 26px;
+      border: 1px solid rgba(245,179,1,0.15);
+      transition: all 0.35s ease;
+    }
+    .i-match:hover {
+      border-color: var(--gold);
+      box-shadow: 0 12px 34px rgba(245,179,1,0.15);
+      transform: translateX(6px);
+    }
+    .i-match-date {
+      text-align: center;
+      padding: 10px 8px;
+      background: linear-gradient(135deg, #0A1F44 0%, #1E3A6B 100%);
+      border-radius: 12px;
+      color: #fff;
+    }
+    .i-match-day {
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 3px;
+    }
+    .i-match-num {
+      font-size: 1.6rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .i-match-month {
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: #B9C4D6;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 3px;
+    }
+    .i-match-teams {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+    .i-match-team {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+    }
+    .i-match-team img {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 2px solid rgba(245,179,1,0.2);
+      flex-shrink: 0;
+    }
+    .i-match-team-name {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .i-match-vs {
+      font-size: 0.68rem;
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 2px;
+      padding: 4px 10px;
+      background: rgba(245,179,1,0.15);
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .i-match-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .i-match-time {
+      font-size: 0.92rem;
+      font-weight: 900;
+      color: var(--navy);
+    }
+    .i-match-venue {
+      font-size: 0.68rem;
+      color: var(--muted);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .i-match-venue i { color: var(--gold); }
+    .i-match-cta {
+      background: var(--navy);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    .i-match-cta:hover {
+      background: var(--gold);
+      color: var(--navy);
+      transform: translateX(3px);
+    }
+
+    /* ============================================================
+       SECTION 8 — PROGRAMS
+       ============================================================ */
+    .i-programs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    .i-program {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(245,179,1,0.15);
+      transition: all 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .i-program:hover {
+      transform: translateY(-8px);
+      border-color: var(--gold);
+      box-shadow: 0 20px 50px rgba(245,179,1,0.2);
+    }
+    .i-program-top {
+      height: 6px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-hover));
+    }
+    .i-program-top.green { background: linear-gradient(90deg, #22C55E, #16A34A); }
+    .i-program-top.blue { background: linear-gradient(90deg, #3B82F6, #1E40AF); }
+    .i-program-body {
+      padding: 32px 28px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .i-program-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 15px;
+      background: rgba(245,179,1,0.12);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      transition: all 0.35s ease;
+    }
+    .i-program:hover .i-program-icon {
+      background: var(--gold);
+      color: var(--navy);
+      transform: rotate(-6deg) scale(1.05);
+    }
+    .i-program-icon.green { background: rgba(34,197,94,0.12); color: #16A34A; }
+    .i-program:hover .i-program-icon.green { background: #22C55E; color: #fff; }
+    .i-program-icon.blue { background: rgba(59,130,246,0.12); color: #3B82F6; }
+    .i-program:hover .i-program-icon.blue { background: #3B82F6; color: #fff; }
+    .i-program-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .i-program-desc {
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.65;
+      font-weight: 500;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+    .i-program-meta {
+      display: flex;
+      gap: 16px;
+      padding-top: 18px;
+      border-top: 1px dashed rgba(245,179,1,0.3);
+      margin-bottom: 18px;
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 700;
+      flex-wrap: wrap;
+    }
+    .i-program-meta i { color: var(--gold); margin-right: 4px; }
+    .i-program-link {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+      align-self: flex-start;
+    }
+    .i-program-link:hover {
+      color: var(--gold);
+      gap: 10px;
+    }
+
+    /* ============================================================
+       SECTION 9 — TESTIMONIALS
+       ============================================================ */
+    .i-testimonials {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 26px;
+      align-items: stretch;
+    }
+    .i-testi-main {
+      background: linear-gradient(135deg, #0A1F44 0%, #1E3A6B 100%);
+      border-radius: 22px;
+      padding: 44px 42px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: 0 20px 60px rgba(10,31,68,0.25);
+    }
+    .i-testi-main::before {
+      content: '\201C';
+      position: absolute;
+      top: -20px;
+      right: 30px;
+      font-size: 12rem;
+      color: rgba(245,179,1,0.1);
+      font-family: Georgia, serif;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .i-testi-stars {
+      color: var(--gold);
+      font-size: 0.9rem;
+      letter-spacing: 4px;
+      margin-bottom: 20px;
+    }
+    .i-testi-quote {
+      font-size: 1.15rem;
+      font-weight: 600;
+      line-height: 1.6;
+      color: #fff;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 2;
+    }
+    .i-testi-author {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(245,179,1,0.25);
+      position: relative;
+      z-index: 2;
+    }
+    .i-testi-author img {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--gold);
+    }
+    .i-testi-author-name {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 4px;
+    }
+    .i-testi-author-role {
+      font-size: 0.7rem;
+      color: var(--gold);
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .i-testi-side {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .i-testi-mini {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px 22px;
+      border: 1px solid rgba(245,179,1,0.15);
+      transition: all 0.35s ease;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      flex: 1;
+    }
+    .i-testi-mini:hover {
+      border-color: var(--gold);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 26px rgba(245,179,1,0.15);
+    }
+    .i-testi-mini img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(245,179,1,0.3);
+      flex-shrink: 0;
+    }
+    .i-testi-mini-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .i-testi-mini-quote {
+      font-size: 0.8rem;
+      color: var(--text);
+      line-height: 1.55;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .i-testi-mini-name {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .i-testi-mini-role {
+      font-size: 0.62rem;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    /* ============================================================
+       SECTION 10 — GALLERY MOSAIC (equal heights)
+       ============================================================ */
+    .i-mosaic {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 80px;
+      gap: 12px;
+    }
+    .i-mosaic-item {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--navy);
+    }
+    .i-mosaic-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .i-mosaic-item:hover img { transform: scale(1.15); }
+    .i-mosaic-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,31,68,0.8) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .i-mosaic-item:hover::after { opacity: 1; }
+    .i-mosaic-cap {
+      position: absolute;
+      bottom: 14px;
+      left: 16px;
+      right: 16px;
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.4s ease;
+    }
+    .i-mosaic-item:hover .i-mosaic-cap {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* All items equal height (3 rows) so Court Practice matches Pool Sessions */
+    .i-mosaic-item.m1 { grid-column: span 5; grid-row: span 3; }
+    .i-mosaic-item.m2 { grid-column: span 4; grid-row: span 3; }
+    .i-mosaic-item.m3 { grid-column: span 3; grid-row: span 3; }
+    .i-mosaic-item.m4 { grid-column: span 4; grid-row: span 3; }
+    .i-mosaic-item.m5 { grid-column: span 4; grid-row: span 3; }
+    .i-mosaic-item.m6 { grid-column: span 4; grid-row: span 3; }
+
+    /* ============================================================
+       SECTION 11 — PRICING
+       ============================================================ */
+    .i-pricing {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+    .i-price {
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px 30px;
+      border: 1.5px solid rgba(245,179,1,0.15);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+    .i-price:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(245,179,1,0.15);
+      border-color: var(--gold);
+    }
+    .i-price.featured {
+      background: linear-gradient(135deg, #0A1F44 0%, #1E3A6B 100%);
+      color: #fff;
+      border-color: var(--gold);
+      transform: scale(1.03);
+      box-shadow: 0 20px 60px rgba(10,31,68,0.3);
+    }
+    .i-price.featured:hover { transform: scale(1.03) translateY(-6px); }
+    .i-price-popular {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--navy);
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.62rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      box-shadow: 0 6px 18px rgba(245,179,1,0.4);
+    }
+    .i-price-tier {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+    .i-price-name {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: -0.3px;
+      margin-bottom: 6px;
+      line-height: 1.15;
+    }
+    .i-price.featured .i-price-name { color: #fff; }
+    .i-price-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .i-price.featured .i-price-sub { color: #B9C4D6; }
+    .i-price-amount {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px dashed rgba(245,179,1,0.25);
+    }
+    .i-price-cur {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .i-price-num {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--navy);
+      letter-spacing: -2px;
+      line-height: 1;
+    }
+    .i-price.featured .i-price-num { color: #fff; }
+    .i-price-per {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 700;
+      margin-left: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .i-price.featured .i-price-per { color: #B9C4D6; }
+    .i-price-feats {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+      flex: 1;
+    }
+    .i-price-feats li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.82rem;
+      color: var(--text);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+    .i-price.featured .i-price-feats li { color: #D6DEF0; }
+    .i-price-feats i {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(27,138,62,0.15);
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .i-price.featured .i-price-feats i {
+      background: rgba(245,179,1,0.2);
+      color: var(--gold);
+    }
+
+    /* ============================================================
+       SECTION 12 — NEWS (THREE EQUAL-WIDTH CARDS)
+       ============================================================ */
+    .i-news {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .i-news-feature,
+    .i-news-mini {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(245,179,1,0.15);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.35s ease;
+      width: 100%;
+    }
+
+    .i-news-feature:hover,
+    .i-news-mini:hover {
+      transform: translateY(-6px);
+      border-color: var(--gold);
+      box-shadow: 0 18px 45px rgba(245,179,1,0.15);
+    }
+
+    .i-news-img,
+    .i-news-mini-img {
+      position: relative;
+      aspect-ratio: 16/10;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .i-news-img img,
+    .i-news-mini-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .i-news-feature:hover .i-news-img img,
+    .i-news-mini:hover .i-news-mini-img img {
+      transform: scale(1.06);
+    }
+
+    .i-news-tag {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: var(--gold);
+      color: var(--navy);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.62rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      z-index: 2;
+      box-shadow: 0 6px 18px rgba(245,179,1,0.4);
+    }
+
+    .i-news-body,
+    .i-news-mini-body {
+      padding: 24px 26px 28px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .i-news-date {
+      font-size: 0.66rem;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .i-news-date i { color: var(--gold); }
+
+    .i-news-title,
+    .i-news-mini-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.3;
+      margin-bottom: 12px;
+      letter-spacing: -0.2px;
+    }
+
+    .i-news-excerpt,
+    .i-news-mini-excerpt {
+      font-size: 0.84rem;
+      color: var(--text);
+      line-height: 1.65;
+      font-weight: 500;
+      margin-bottom: 18px;
+      flex: 1;
+    }
+
+    .i-news-link {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+      align-self: flex-start;
+    }
+    .i-news-link:hover { color: var(--gold); gap: 10px; }
+
+    /* ============================================================
+       SECTION 13 — PARTNERS GRID
+       ============================================================ */
+    .i-partners {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+    }
+    .i-partner {
+      aspect-ratio: 1;
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid rgba(245,179,1,0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px;
+      transition: all 0.35s ease;
+      cursor: pointer;
+    }
+    .i-partner:hover {
+      transform: translateY(-5px);
+      border-color: var(--gold);
+      box-shadow: 0 14px 30px rgba(245,179,1,0.15);
+    }
+    .i-partner i {
+      font-size: 1.6rem;
+      color: var(--navy);
+      transition: all 0.35s ease;
+    }
+    .i-partner:hover i {
+      color: var(--gold);
+      transform: scale(1.15);
+    }
+    .i-partner-name {
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      line-height: 1.3;
+    }
+
+    /* ============================================================
+       SECTION 14 — FAQ
+       ============================================================ */
+    .i-faq {
+      max-width: 820px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .i-faq-item {
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid rgba(245,179,1,0.15);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .i-faq-item[open] {
+      border-color: var(--gold);
+      box-shadow: 0 12px 30px rgba(245,179,1,0.12);
+    }
+    .i-faq-item summary {
+      padding: 20px 26px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--navy);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      list-style: none;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .i-faq-item summary::-webkit-details-marker { display: none; }
+    .i-faq-item summary::after {
+      content: '\f067';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(245,179,1,0.12);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+    .i-faq-item[open] summary::after {
+      content: '\f068';
+      background: var(--gold);
+      color: var(--navy);
+      transform: rotate(180deg);
+    }
+    .i-faq-body {
+      padding: 0 26px 22px;
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.75;
+      font-weight: 500;
+    }
+
+    /* ============================================================
+       SECTION 15 — FINAL CTA
+       ============================================================ */
+    .i-final {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      min-height: 400px;
+      margin: 2rem 0 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 24px 70px rgba(10,31,68,0.3);
+    }
+    .i-final img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .i-final::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(10,31,68,0.92) 0%, rgba(10,31,68,0.75) 100%);
+      pointer-events: none;
+    }
+    .i-final-inner {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      padding: 60px 30px;
+      max-width: 720px;
+    }
+    .i-final-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245,179,1,0.18);
+      border: 1px solid rgba(245,179,1,0.4);
+      color: var(--gold);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+    .i-final h2 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -1.2px;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .i-final h2 span { color: var(--gold); }
+    .i-final p {
+      font-size: 0.98rem;
+      color: #D6DEF0;
+      line-height: 1.7;
+      margin-bottom: 30px;
+      font-weight: 500;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .i-final-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 1100px) {
+      .i-sports { grid-template-columns: repeat(3, 1fr); }
+      .i-news { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .i-partners { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    @media (max-width: 960px) {
+      .section-title { font-size: 1.8rem; }
+      .i-hero { min-height: 540px; }
+      .i-hero-title { font-size: 3rem; letter-spacing: -1.4px; }
+      .i-about { grid-template-columns: 1fr; gap: 34px; }
+      .i-about-img { aspect-ratio: 16/10; }
+      .i-about-h2 { font-size: 1.8rem; }
+      .i-stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .i-programs { grid-template-columns: 1fr; }
+      .i-testimonials { grid-template-columns: 1fr; }
+      .i-news { grid-template-columns: repeat(2, 1fr); }
+      .i-pricing { grid-template-columns: 1fr; }
+      .i-price.featured { transform: none; }
+      .i-price.featured:hover { transform: translateY(-6px); }
+      .i-match { grid-template-columns: 90px 1fr auto; padding: 18px 20px; gap: 18px; }
+      .i-match-info { display: none; }
+      .i-partners { grid-template-columns: repeat(3, 1fr); }
+      .i-final h2 { font-size: 2.2rem; }
+    }
+
+    @media (max-width: 768px) {
+      .section-title { font-size: 1.55rem; }
+      .section-sub { font-size: 0.85rem; margin-bottom: 1.8rem; }
+      section.iblock { padding: 2rem 0; }
+      .btn-gold, .btn-outline, .btn-dark, .btn-ghost { padding: 11px 22px; font-size: 0.76rem; }
+      .i-hero { min-height: 520px; border-radius: 20px; }
+      .i-hero-inner { padding: 50px 24px; }
+      .i-hero-title { font-size: 2.3rem; letter-spacing: -1px; }
+      .i-hero-desc { font-size: 0.9rem; }
+      .i-hero-btns { flex-direction: column; margin-bottom: 32px; }
+      .i-hero-btns a { width: 100%; justify-content: center; }
+      .i-hero-meta { gap: 22px; padding-top: 24px; }
+      .i-hero-meta-num { font-size: 1.5rem; }
+      .i-hero-play { bottom: 18px; right: 18px; padding: 6px 16px 6px 6px; gap: 10px; }
+      .i-hero-play button { width: 38px; height: 38px; font-size: 0.85rem; }
+      .i-hero-play span { font-size: 0.6rem; }
+      .i-sports { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
+      .i-sport.big { grid-column: span 2; grid-row: span 2; }
+      .i-sport.wide { grid-column: span 2; }
+      .i-about-h2 { font-size: 1.55rem; }
+      .i-about-p { font-size: 0.86rem; }
+      .i-about-list li { font-size: 0.82rem; }
+      .i-video-wrap { aspect-ratio: 4/3; }
+      .i-video-overlay { padding: 26px 22px; }
+      .i-video-title { font-size: 1.45rem; }
+      .i-video-desc { font-size: 0.82rem; margin-bottom: 14px; }
+      .i-video-play { width: 72px; height: 72px; font-size: 1.3rem; border-width: 5px; }
+      .i-stats { padding: 36px 22px; }
+      .i-stats-head h3 { font-size: 1.35rem; }
+      .i-stats-grid { gap: 12px; }
+      .i-stat-num { font-size: 1.9rem; }
+      .i-match { grid-template-columns: 1fr; gap: 14px; padding: 20px; }
+      .i-match-date { padding: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+      .i-match-day { margin: 0; }
+      .i-match-num { font-size: 1.3rem; }
+      .i-match-month { margin: 0; }
+      .i-match-teams { width: 100%; }
+      .i-match-team-name { font-size: 0.82rem; }
+      .i-match-cta { width: 100%; justify-content: center; }
+      .i-program-body { padding: 26px 22px; }
+      .i-program-title { font-size: 1rem; }
+      .i-testi-main { padding: 32px 26px; }
+      .i-testi-quote { font-size: 1rem; }
+      .i-mosaic { grid-auto-rows: 70px; gap: 10px; }
+      .i-mosaic-item.m1 { grid-column: span 6; grid-row: span 3; }
+      .i-mosaic-item.m2 { grid-column: span 6; grid-row: span 3; }
+      .i-mosaic-item.m3 { grid-column: span 6; grid-row: span 3; }
+      .i-mosaic-item.m4 { grid-column: span 6; grid-row: span 3; }
+      .i-mosaic-item.m5 { grid-column: span 6; grid-row: span 3; }
+      .i-mosaic-item.m6 { grid-column: span 6; grid-row: span 3; }
+      .i-price { padding: 32px 24px; }
+      .i-price-num { font-size: 2.5rem; }
+      .i-news { grid-template-columns: 1fr; }
+      .i-partners { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .i-final { min-height: 340px; }
+      .i-final-inner { padding: 44px 22px; }
+      .i-final h2 { font-size: 1.75rem; }
+      .i-final p { font-size: 0.88rem; }
+      .i-final-btns { flex-direction: column; }
+      .i-final-btns a { width: 100%; justify-content: center; }
+      .btn-row { flex-direction: column; }
+      .btn-row > * { width: 100%; justify-content: center; }
+    }
+
+    @media (max-width: 520px) {
+      .iwrap { padding: 1rem 12px 0; }
+      .section-title { font-size: 1.35rem; }
+      .i-hero { border-radius: 18px; min-height: 460px; }
+      .i-hero-inner { padding: 40px 18px; }
+      .i-hero-badge { font-size: 0.6rem; padding: 6px 14px; letter-spacing: 1.8px; margin-bottom: 20px; }
+      .i-hero-title { font-size: 1.9rem; letter-spacing: -0.8px; }
+      .i-hero-desc { font-size: 0.85rem; margin-bottom: 26px; }
+      .i-hero-meta { gap: 16px; padding-top: 20px; margin-top: 4px; }
+      .i-hero-meta-num { font-size: 1.25rem; }
+      .i-hero-meta-lbl { font-size: 0.55rem; letter-spacing: 1px; }
+      .i-hero-play { bottom: 14px; right: 14px; padding: 5px 12px 5px 5px; gap: 8px; }
+      .i-hero-play button { width: 32px; height: 32px; font-size: 0.75rem; }
+      .i-hero-play span { font-size: 0.55rem; letter-spacing: 1px; }
+      .i-marquee { padding: 20px 0; }
+      .i-marquee-track { gap: 40px; }
+      .i-marquee-item { font-size: 0.8rem; }
+      .i-marquee-item i { font-size: 1rem; }
+      .i-sports { grid-template-columns: 1fr; grid-auto-rows: 200px; }
+      .i-sport.big, .i-sport.wide { grid-column: span 1; grid-row: span 1; }
+      .i-sport-name { font-size: 1rem; }
+      .i-about-img { aspect-ratio: 1; }
+      .i-about-h2 { font-size: 1.3rem; }
+      .i-about-tag { font-size: 0.6rem; padding: 6px 12px; }
+      .i-video-title { font-size: 1.15rem; }
+      .i-video-desc { font-size: 0.75rem; }
+      .i-video-play { width: 60px; height: 60px; font-size: 1.05rem; border-width: 4px; }
+      .i-stats { padding: 28px 16px; }
+      .i-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .i-stat-card { padding: 16px 8px; }
+      .i-stat-icon { font-size: 1.2rem; margin-bottom: 8px; }
+      .i-stat-num { font-size: 1.55rem; }
+      .i-stat-lbl { font-size: 0.58rem; letter-spacing: 1px; }
+      .i-match { padding: 16px; gap: 12px; border-radius: 14px; }
+      .i-match-team img { width: 34px; height: 34px; }
+      .i-match-team-name { font-size: 0.75rem; }
+      .i-match-vs { font-size: 0.6rem; padding: 3px 8px; }
+      .i-match-cta { padding: 9px 16px; font-size: 0.62rem; }
+      .i-program-body { padding: 22px 18px; }
+      .i-program-icon { width: 50px; height: 50px; font-size: 1.25rem; }
+      .i-program-title { font-size: 0.95rem; }
+      .i-program-desc { font-size: 0.8rem; }
+      .i-testi-main { padding: 26px 20px; }
+      .i-testi-quote { font-size: 0.88rem; }
+      .i-testi-author img { width: 44px; height: 44px; }
+      .i-testi-author-name { font-size: 0.85rem; }
+      .i-testi-mini { padding: 16px 18px; }
+      .i-testi-mini img { width: 38px; height: 38px; }
+      .i-testi-mini-quote { font-size: 0.72rem; }
+      .i-mosaic { grid-auto-rows: 60px; }
+      .i-mosaic-item.m1 { grid-column: span 12; grid-row: span 3; }
+      .i-mosaic-item.m2 { grid-column: span 12; grid-row: span 3; }
+      .i-mosaic-item.m3 { grid-column: span 12; grid-row: span 3; }
+      .i-mosaic-item.m4 { grid-column: span 12; grid-row: span 3; }
+      .i-mosaic-item.m5 { grid-column: span 12; grid-row: span 3; }
+      .i-mosaic-item.m6 { grid-column: span 12; grid-row: span 3; }
+      .i-price { padding: 28px 20px; border-radius: 16px; }
+      .i-price-name { font-size: 1.15rem; }
+      .i-price-num { font-size: 2.1rem; }
+      .i-price-popular { font-size: 0.55rem; padding: 5px 12px; }
+      .i-news-body,
+      .i-news-mini-body { padding: 18px 18px 22px; }
+      .i-news-title,
+      .i-news-mini-title { font-size: 1rem; }
+      .i-news-excerpt,
+      .i-news-mini-excerpt { font-size: 0.78rem; }
+      .i-partners { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .i-partner i { font-size: 1.3rem; }
+      .i-partner-name { font-size: 0.55rem; }
+      .i-faq-item summary { padding: 16px 18px; font-size: 0.85rem; }
+      .i-faq-item summary::after { width: 26px; height: 26px; font-size: 0.65rem; }
+      .i-faq-body { padding: 0 18px 18px; font-size: 0.8rem; }
+      .i-final { border-radius: 18px; }
+      .i-final-inner { padding: 34px 18px; }
+      .i-final h2 { font-size: 1.5rem; letter-spacing: -0.5px; }
+      .i-final p { font-size: 0.82rem; margin-bottom: 22px; }
+      .i-final-badge { font-size: 0.6rem; padding: 6px 14px; letter-spacing: 1.5px; }
+    }
+
+    @media (max-width: 400px) {
+      .i-hero-title { font-size: 1.65rem; }
+      .i-final h2 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="header-placeholder"></div>
+
+  <div class="iwrap">
+
+    <!-- ============================================================
+         SECTION 1 — HERO with BACKGROUND VIDEO
+         ============================================================ -->
+    <section class="i-hero" id="heroSection">
+      <video class="i-hero-video" id="heroVideo" muted loop playsinline autoplay
+             poster="ground1.webp">
+        <source src="sportv1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+
+      <div class="i-hero-inner">
+        <span class="i-hero-badge" data-aos="fade-down">
+          <i class="fas fa-star"></i> Premier Sports Club · Est. 1987
+        </span>
+        <h1 class="i-hero-title" data-aos="fade-up" data-aos-delay="100">
+          Where Champions<br>
+          Are <span>Forged</span>
+        </h1>
+        <p class="i-hero-desc" data-aos="fade-up" data-aos-delay="200">
+          Six elite sports under one crest. From the pitch to the pool, we train, compete, and win — together. Welcome to Sports Club.
+        </p>
+        <div class="i-hero-btns" data-aos="fade-up" data-aos-delay="300">
+          <a href="404.html" class="btn-gold">
+            <i class="fas fa-arrow-right"></i> Explore Our Club
+          </a>
+          <a href="404.html" class="btn-outline">
+            <i class="fas fa-play"></i> Watch Story
+          </a>
+        </div>
+        <div class="i-hero-meta" data-aos="fade-up" data-aos-delay="400">
+          <div class="i-hero-meta-item">
+            <div class="i-hero-meta-num">30<em>+</em></div>
+            <div class="i-hero-meta-lbl">Years</div>
+          </div>
+          <div class="i-hero-meta-item">
+            <div class="i-hero-meta-num">42</div>
+            <div class="i-hero-meta-lbl">Trophies</div>
+          </div>
+          <div class="i-hero-meta-item">
+            <div class="i-hero-meta-num">184</div>
+            <div class="i-hero-meta-lbl">Athletes</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero video play/pause -->
+      <div class="i-hero-play" id="heroPlayWrap">
+        <button id="heroPlayBtn" aria-label="Play hero video">
+          <i class="fas fa-play" id="heroPlayIcon"></i>
+        </button>
+        <span>Play Background</span>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 2 — TRUST MARQUEE
+         ============================================================ -->
+    <section class="iblock" id="marqueeSection" style="padding-top:0;padding-bottom:1rem;">
+      <div class="i-marquee" data-aos="fade-up">
+        <div class="i-marquee-track">
+          <div class="i-marquee-item"><i class="fas fa-futbol"></i> Football</div>
+          <div class="i-marquee-item"><i class="fas fa-baseball"></i> Cricket</div>
+          <div class="i-marquee-item"><i class="fas fa-basketball"></i> Basketball</div>
+          <div class="i-marquee-item"><i class="fas fa-table-tennis-paddle-ball"></i> Tennis</div>
+          <div class="i-marquee-item"><i class="fas fa-person-swimming"></i> Swimming</div>
+          <div class="i-marquee-item"><i class="fas fa-dumbbell"></i> Athletics</div>
+          <div class="i-marquee-item"><i class="fas fa-trophy"></i> Champions 2025</div>
+          <div class="i-marquee-item"><i class="fas fa-medal"></i> 42 Titles</div>
+          <div class="i-marquee-item"><i class="fas fa-futbol"></i> Football</div>
+          <div class="i-marquee-item"><i class="fas fa-baseball"></i> Cricket</div>
+          <div class="i-marquee-item"><i class="fas fa-basketball"></i> Basketball</div>
+          <div class="i-marquee-item"><i class="fas fa-table-tennis-paddle-ball"></i> Tennis</div>
+          <div class="i-marquee-item"><i class="fas fa-person-swimming"></i> Swimming</div>
+          <div class="i-marquee-item"><i class="fas fa-dumbbell"></i> Athletics</div>
+          <div class="i-marquee-item"><i class="fas fa-trophy"></i> Champions 2025</div>
+          <div class="i-marquee-item"><i class="fas fa-medal"></i> 42 Titles</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 3 — FEATURED SPORTS (bento)
+         ============================================================ -->
+    <section class="iblock" id="sportsSection">
+      <span class="section-eyebrow" data-aos="fade-up">Our Disciplines</span>
+      <h2 class="section-title" data-aos="fade-up">Six Sports, <span>One Club</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        From pitch to pool to court — we compete at the highest level across six disciplines.
+      </p>
+
+      <div class="i-sports">
+        <div class="i-sport big" data-aos="fade-up" data-aos-delay="0">
+          <img src="fb1.webp" alt="Football">
+          <div class="i-sport-body">
+            <div class="i-sport-icon"><i class="fas fa-futbol"></i></div>
+            <div class="i-sport-name">Football</div>
+            <div class="i-sport-desc">Our flagship squad — 12 league titles and counting.</div>
+          </div>
+        </div>
+        <div class="i-sport" data-aos="fade-up" data-aos-delay="100">
+          <img src="cri1.webp" alt="Cricket">
+          <div class="i-sport-body">
+            <div class="i-sport-icon"><i class="fas fa-baseball"></i></div>
+            <div class="i-sport-name">Cricket</div>
+            <div class="i-sport-desc">Inter-club champions two years running.</div>
+          </div>
+        </div>
+        <div class="i-sport" data-aos="fade-up" data-aos-delay="200">
+          <img src="bb1.webp" alt="Basketball">
+          <div class="i-sport-body">
+            <div class="i-sport-icon"><i class="fas fa-basketball"></i></div>
+            <div class="i-sport-name">Basketball</div>
+            <div class="i-sport-desc">Fast-paced indoor action all season long.</div>
+          </div>
+        </div>
+        <div class="i-sport wide" data-aos="fade-up" data-aos-delay="300">
+          <img src="ten1.webp" alt="Tennis">
+          <div class="i-sport-body">
+            <div class="i-sport-icon"><i class="fas fa-table-tennis-paddle-ball"></i></div>
+            <div class="i-sport-name">Tennis</div>
+            <div class="i-sport-desc">Elite coaching on 6 championship courts.</div>
+          </div>
+        </div>
+        <div class="i-sport wide" data-aos="fade-up" data-aos-delay="400">
+          <img src="swim1.webp" alt="Swimming">
+          <div class="i-sport-body">
+            <div class="i-sport-icon"><i class="fas fa-person-swimming"></i></div>
+            <div class="i-sport-name">Swimming</div>
+            <div class="i-sport-desc">Olympic-size pool & professional coaching team.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 4 — ABOUT SPLIT
+         ============================================================ -->
+    <section class="iblock" id="aboutSection">
+      <div class="i-about">
+        <div class="i-about-img" data-aos="fade-right">
+          <img src="running1.webp" alt="Training session">
+          <div class="i-about-badge">
+            <i class="fas fa-shield-halved"></i> Since 1987
+          </div>
+          <div class="i-about-float">
+            <i class="fas fa-users"></i>
+            <div class="i-about-float-txt">
+              184 Active<br>Athletes
+            </div>
+          </div>
+        </div>
+
+        <div class="i-about-content" data-aos="fade-left">
+          <span class="i-about-tag">
+            <i class="fas fa-info-circle"></i> About Sports Club
+          </span>
+          <h2 class="i-about-h2">Built On <span>Discipline</span>, Driven By Passion</h2>
+          <p class="i-about-p">
+            For over three decades, Sports Club has been the home of champions — nurturing raw talent into world-class athletes across six disciplines.
+          </p>
+          <ul class="i-about-list">
+            <li><i class="fas fa-check"></i> World-class facilities and coaching staff across all sports</li>
+            <li><i class="fas fa-check"></i> Youth academy producing national-level athletes</li>
+            <li><i class="fas fa-check"></i> Community-first philosophy with 40+ charity events yearly</li>
+            <li><i class="fas fa-check"></i> Direct pathway to professional leagues and national teams</li>
+          </ul>
+          <a href="404.html" class="btn-dark">
+            <i class="fas fa-arrow-right"></i> Learn More About Us
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 5 — VIDEO (functional play/pause)
+         ============================================================ -->
+    <section class="iblock" id="videoSection">
+      <span class="section-eyebrow" data-aos="fade-up">Club Film</span>
+      <h2 class="section-title" data-aos="fade-up">A Day Inside <span>The Club</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        From morning training to evening matches — see how a champion is made.
+      </p>
+
+      <div class="i-video-wrap" data-aos="zoom-in">
+        <video id="clubVideo" muted loop playsinline
+               poster="ground1.webp">
+          <source src="sportsv2.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="i-video-play" id="clubVideoBtn" aria-label="Play club film">
+          <i class="fas fa-play" id="clubVideoIcon"></i>
+        </button>
+        <div class="i-video-overlay">
+          <span class="i-video-badge"><i class="fas fa-video"></i> Official Club Film 2026</span>
+          <h3 class="i-video-title">Built to <span>Win</span></h3>
+          <p class="i-video-desc">An exclusive inside look at the routines, rivalries, and moments that define Sports Club.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 6 — STATS BANNER
+         ============================================================ -->
+    <section class="iblock" id="statsSection">
+      <div class="i-stats" data-aos="fade-up">
+        <div class="i-stats-head">
+          <h3>Numbers That <span>Define Us</span></h3>
+          <p>Three decades of excellence, measured in moments of glory.</p>
+        </div>
+        <div class="i-stats-grid">
+          <div class="i-stat-card" data-aos="zoom-in" data-aos-delay="0">
+            <div class="i-stat-icon"><i class="fas fa-trophy"></i></div>
+            <div class="i-stat-num" data-count="42">42</div>
+            <div class="i-stat-lbl">Trophies Won</div>
+          </div>
+          <div class="i-stat-card" data-aos="zoom-in" data-aos-delay="100">
+            <div class="i-stat-icon"><i class="fas fa-users"></i></div>
+            <div class="i-stat-num" data-count="184">184</div>
+            <div class="i-stat-lbl">Pro Athletes</div>
+          </div>
+          <div class="i-stat-card" data-aos="zoom-in" data-aos-delay="200">
+            <div class="i-stat-icon"><i class="fas fa-calendar-check"></i></div>
+            <div class="i-stat-num" data-count="1200">1200+</div>
+            <div class="i-stat-lbl">Matches Played</div>
+          </div>
+          <div class="i-stat-card" data-aos="zoom-in" data-aos-delay="300">
+            <div class="i-stat-icon"><i class="fas fa-heart"></i></div>
+            <div class="i-stat-num" data-count="38">38+</div>
+            <div class="i-stat-lbl">Years Strong</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 7 — UPCOMING MATCHES
+         ============================================================ -->
+    <section class="iblock" id="matchesSection">
+      <span class="section-eyebrow" data-aos="fade-up">Fixtures</span>
+      <h2 class="section-title" data-aos="fade-up">Next <span>Matches</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        Come support your team — home and away fixtures across the next two weeks.
+      </p>
+
+      <div class="i-matches">
+
+        <div class="i-match" data-aos="fade-up" data-aos-delay="0">
+          <div class="i-match-date">
+            <div>
+              <div class="i-match-day">Sat</div>
+              <div class="i-match-num">20</div>
+              <div class="i-match-month">Sep</div>
+            </div>
+          </div>
+          <div class="i-match-teams">
+            <div class="i-match-team">
+              <img src="ten2.webp" alt="Sports Club">
+              <div class="i-match-team-name">Sports Club</div>
+            </div>
+            <div class="i-match-vs">VS</div>
+            <div class="i-match-team">
+              <img src="swim2.webp" alt="Rivals FC">
+              <div class="i-match-team-name">Rivals FC</div>
+            </div>
+          </div>
+          <div class="i-match-info">
+            <div class="i-match-time">6:00 PM</div>
+            <div class="i-match-venue"><i class="fas fa-map-marker-alt"></i> Home Ground</div>
+          </div>
+          <a href="404.html" class="i-match-cta">Tickets <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="i-match" data-aos="fade-up" data-aos-delay="100">
+          <div class="i-match-date">
+            <div>
+              <div class="i-match-day">Sun</div>
+              <div class="i-match-num">21</div>
+              <div class="i-match-month">Sep</div>
+            </div>
+          </div>
+          <div class="i-match-teams">
+            <div class="i-match-team">
+              <img src="sc1.webp" alt="City CC">
+              <div class="i-match-team-name">City CC</div>
+            </div>
+            <div class="i-match-vs">VS</div>
+            <div class="i-match-team">
+              <img src="running2.webp" alt="Sports Club">
+              <div class="i-match-team-name">Sports Club</div>
+            </div>
+          </div>
+          <div class="i-match-info">
+            <div class="i-match-time">4:00 PM</div>
+            <div class="i-match-venue"><i class="fas fa-map-marker-alt"></i> City Stadium</div>
+          </div>
+          <a href="404.html" class="i-match-cta">Tickets <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="i-match" data-aos="fade-up" data-aos-delay="200">
+          <div class="i-match-date">
+            <div>
+              <div class="i-match-day">Wed</div>
+              <div class="i-match-num">24</div>
+              <div class="i-match-month">Sep</div>
+            </div>
+          </div>
+          <div class="i-match-teams">
+            <div class="i-match-team">
+              <img src="pers1.webp" alt="Sports Club">
+              <div class="i-match-team-name">Sports Club</div>
+            </div>
+            <div class="i-match-vs">VS</div>
+            <div class="i-match-team">
+              <img src="ground2.webp" alt="United BC">
+              <div class="i-match-team-name">United BC</div>
+            </div>
+          </div>
+          <div class="i-match-info">
+            <div class="i-match-time">7:30 PM</div>
+            <div class="i-match-venue"><i class="fas fa-map-marker-alt"></i> Indoor Arena</div>
+          </div>
+          <a href="404.html" class="i-match-cta">Tickets <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+      </div>
+
+      <div class="btn-row" data-aos="fade-up" data-aos-delay="300">
+        <a href="404.html" class="btn-gold"><i class="fas fa-calendar"></i> View Full Schedule</a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 8 — PROGRAMS
+         ============================================================ -->
+    <section class="iblock" id="programsSection">
+      <span class="section-eyebrow" data-aos="fade-up">Programs</span>
+      <h2 class="section-title" data-aos="fade-up">Train With <span>The Best</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        Whether you're a beginner or a pro, we have a program built for you.
+      </p>
+
+      <div class="i-programs">
+
+        <div class="i-program" data-aos="fade-up" data-aos-delay="0">
+          <div class="i-program-top"></div>
+          <div class="i-program-body">
+            <div class="i-program-icon"><i class="fas fa-child"></i></div>
+            <h3 class="i-program-title">Youth Academy</h3>
+            <p class="i-program-desc">Ages 6–16. Multi-sport development program focused on fundamentals, fitness, and fun.</p>
+            <div class="i-program-meta">
+              <span><i class="fas fa-clock"></i> 3 days/week</span>
+              <span><i class="fas fa-users"></i> Ages 6–16</span>
+            </div>
+            <a href="404.html" class="i-program-link">Learn More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="i-program" data-aos="fade-up" data-aos-delay="100">
+          <div class="i-program-top green"></div>
+          <div class="i-program-body">
+            <div class="i-program-icon green"><i class="fas fa-dumbbell"></i></div>
+            <h3 class="i-program-title">Pro Training</h3>
+            <p class="i-program-desc">Advanced conditioning for competitive athletes. Strength, speed, and injury prevention.</p>
+            <div class="i-program-meta">
+              <span><i class="fas fa-clock"></i> 5 days/week</span>
+              <span><i class="fas fa-users"></i> Ages 16+</span>
+            </div>
+            <a href="404.html" class="i-program-link">Learn More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="i-program" data-aos="fade-up" data-aos-delay="200">
+          <div class="i-program-top blue"></div>
+          <div class="i-program-body">
+            <div class="i-program-icon blue"><i class="fas fa-heart-pulse"></i></div>
+            <h3 class="i-program-title">Adult Fitness</h3>
+            <p class="i-program-desc">Stay active, stay healthy. Group fitness classes led by certified trainers.</p>
+            <div class="i-program-meta">
+              <span><i class="fas fa-clock"></i> Flexible</span>
+              <span><i class="fas fa-users"></i> All levels</span>
+            </div>
+            <a href="404.html" class="i-program-link">Learn More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 9 — TESTIMONIALS
+         ============================================================ -->
+    <section class="iblock" id="testimonialsSection">
+      <span class="section-eyebrow" data-aos="fade-up">Voices</span>
+      <h2 class="section-title" data-aos="fade-up">What Our <span>Members Say</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        Real stories from real athletes and families who call Sports Club home.
+      </p>
+
+      <div class="i-testimonials">
+
+        <div class="i-testi-main" data-aos="fade-up" data-aos-delay="200">
+          <div class="i-testi-stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="i-testi-quote">
+            "Sports Club didn't just make me a better athlete — it made me a better person. The coaches, the community, the discipline — everything here shapes you for life."
+          </p>
+          <div class="i-testi-author">
+            <img src="fb2.webp" alt="Javier Martinez">
+            <div>
+              <div class="i-testi-author-name">Javier Martinez</div>
+              <div class="i-testi-author-role">Pro Footballer · Alumni 2018</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="i-testi-side">
+          <div class="i-testi-mini" data-aos="fade-left" data-aos-delay="300">
+            <img src="cycling2.webp" alt="Priya Sharma">
+            <div class="i-testi-mini-body">
+              <p class="i-testi-mini-quote">"Both my kids train here. The youth program is world-class and the coaches genuinely care."</p>
+              <div class="i-testi-mini-name">Priya Sharma</div>
+              <div class="i-testi-mini-role">Parent of 2 · Member since 2021</div>
+            </div>
+          </div>
+
+          <div class="i-testi-mini" data-aos="fade-left" data-aos-delay="400">
+            <img src="cri2.webp" alt="Daniel Okonkwo">
+            <div class="i-testi-mini-body">
+              <p class="i-testi-mini-quote">"I joined for fitness and stayed for the friendships. Best decision I've made in years."</p>
+              <div class="i-testi-mini-name">Daniel Okonkwo</div>
+              <div class="i-testi-mini-role">Adult Fitness · Member since 2022</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 10 — GALLERY MOSAIC (equal heights)
+         ============================================================ -->
+    <section class="iblock" id="gallerySection">
+      <span class="section-eyebrow" data-aos="fade-up">Gallery</span>
+      <h2 class="section-title" data-aos="fade-up">Moments That <span>Matter</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        From training grounds to championship podiums — a glimpse inside our world.
+      </p>
+
+      <div class="i-mosaic" data-aos="fade-up" data-aos-delay="200">
+        <div class="i-mosaic-item m1">
+          <img src="sc1.webp" alt="Football match">
+          <span class="i-mosaic-cap">Championship Final</span>
+        </div>
+        <div class="i-mosaic-item m2">
+          <img src="cri3.webp" alt="Cricket">
+          <span class="i-mosaic-cap">Cricket Nets</span>
+        </div>
+        <div class="i-mosaic-item m3">
+          <img src="sc2.webp" alt="Basketball">
+          <span class="i-mosaic-cap">Court Action</span>
+        </div>
+        <div class="i-mosaic-item m4">
+          <img src="ground2.webp" alt="Tennis">
+          <span class="i-mosaic-cap">Court Practice</span>
+        </div>
+        <div class="i-mosaic-item m5">
+          <img src="swim2.webp" alt="Swimming">
+          <span class="i-mosaic-cap">Pool Sessions</span>
+        </div>
+        <div class="i-mosaic-item m6">
+          <img src="fb3.webp" alt="Athletics">
+          <span class="i-mosaic-cap">Track & Field</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 11 — PRICING / MEMBERSHIP
+         ============================================================ -->
+    <section class="iblock" id="pricingSection">
+      <span class="section-eyebrow" data-aos="fade-up">Membership</span>
+      <h2 class="section-title" data-aos="fade-up">Choose Your <span>Plan</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        Three tiers designed for every level of commitment. All include access to club facilities.
+      </p>
+
+      <div class="i-pricing">
+
+        <div class="i-price" data-aos="fade-up" data-aos-delay="0">
+          <div class="i-price-tier">Basic</div>
+          <div class="i-price-name">Starter</div>
+          <div class="i-price-sub">Perfect for casual athletes</div>
+          <div class="i-price-amount">
+            <span class="i-price-cur">$</span>
+            <span class="i-price-num">29</span>
+            <span class="i-price-per">/ month</span>
+          </div>
+          <ul class="i-price-feats">
+            <li><i class="fas fa-check"></i> Access to gym & pool</li>
+            <li><i class="fas fa-check"></i> 2 group classes per week</li>
+            <li><i class="fas fa-check"></i> Member discounts on events</li>
+            <li><i class="fas fa-check"></i> Locker room access</li>
+          </ul>
+          <a href="404.html" class="btn-outline" style="width:100%;justify-content:center;">Get Started</a>
+        </div>
+
+        <div class="i-price featured" data-aos="fade-up" data-aos-delay="100">
+          <div class="i-price-popular">Most Popular</div>
+          <div class="i-price-tier">Standard</div>
+          <div class="i-price-name">Athlete</div>
+          <div class="i-price-sub">Our best-value plan</div>
+          <div class="i-price-amount">
+            <span class="i-price-cur">$</span>
+            <span class="i-price-num">79</span>
+            <span class="i-price-per">/ month</span>
+          </div>
+          <ul class="i-price-feats">
+            <li><i class="fas fa-check"></i> Everything in Starter</li>
+            <li><i class="fas fa-check"></i> Unlimited group classes</li>
+            <li><i class="fas fa-check"></i> Personal training (2/mo)</li>
+            <li><i class="fas fa-check"></i> Nutrition consultation</li>
+            <li><i class="fas fa-check"></i> Priority match tickets</li>
+          </ul>
+          <a href="404.html" class="btn-gold" style="width:100%;justify-content:center;">Join Now</a>
+        </div>
+
+        <div class="i-price" data-aos="fade-up" data-aos-delay="200">
+          <div class="i-price-tier">Elite</div>
+          <div class="i-price-name">Champion</div>
+          <div class="i-price-sub">For serious competitors</div>
+          <div class="i-price-amount">
+            <span class="i-price-cur">$</span>
+            <span class="i-price-num">149</span>
+            <span class="i-price-per">/ month</span>
+          </div>
+          <ul class="i-price-feats">
+            <li><i class="fas fa-check"></i> Everything in Athlete</li>
+            <li><i class="fas fa-check"></i> Unlimited personal training</li>
+            <li><i class="fas fa-check"></i> Sports psychology sessions</li>
+            <li><i class="fas fa-check"></i> Private locker & laundry</li>
+            <li><i class="fas fa-check"></i> All club events included</li>
+          </ul>
+          <a href="404.html" class="btn-outline" style="width:100%;justify-content:center;">Go Elite</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 12 — NEWS (THREE EQUAL-WIDTH CARDS)
+         ============================================================ -->
+    <section class="iblock" id="newsSection">
+      <span class="section-eyebrow" data-aos="fade-up">Latest News</span>
+      <h2 class="section-title" data-aos="fade-up">From The <span>Clubhouse</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        Match reports, transfer news, and stories from around the club.
+      </p>
+
+      <div class="i-news">
+
+        <div class="i-news-mini" data-aos="fade-up" data-aos-delay="0">
+          <div class="i-news-mini-img">
+            <img src="ground4.webp" alt="Feature">
+            <span class="i-news-tag">Headline</span>
+          </div>
+          <div class="i-news-mini-body">
+            <div class="i-news-date"><i class="fas fa-calendar"></i> 15 September 2026</div>
+            <h3 class="i-news-mini-title">Lions seal historic third consecutive league title in dramatic fashion</h3>
+            <p class="i-news-mini-excerpt">
+              A last-minute winner at home ground secured Sports Club's third straight Premier League title — capping off a perfect season with zero defeats and a record 42 goals scored.
+            </p>
+            <a href="404.html" class="i-news-link">Read Full Story <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="i-news-mini" data-aos="fade-up" data-aos-delay="100">
+          <div class="i-news-mini-img">
+            <img src="sc4.webp" alt="Cricket news">
+          </div>
+          <div class="i-news-mini-body">
+            <div class="i-news-date"><i class="fas fa-calendar"></i> 12 Sep 2026</div>
+            <h3 class="i-news-mini-title">Cricket squad announces new signings for upcoming season</h3>
+            <p class="i-news-mini-excerpt">
+              Three international players join the roster ahead of the new campaign, strengthening both batting and bowling departments.
+            </p>
+            <a href="404.html" class="i-news-link">Read More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="i-news-mini" data-aos="fade-up" data-aos-delay="200">
+          <div class="i-news-mini-img">
+            <img src="bad4.webp" alt="Basketball news">
+          </div>
+          <div class="i-news-mini-body">
+            <div class="i-news-date"><i class="fas fa-calendar"></i> 08 Sep 2026</div>
+            <h3 class="i-news-mini-title">Youth academy graduates shine in national team call-ups</h3>
+            <p class="i-news-mini-excerpt">
+              Four academy prospects earn their first senior national team call-ups after standout performances this season.
+            </p>
+            <a href="404.html" class="i-news-link">Read More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="btn-row" data-aos="fade-up" data-aos-delay="300">
+        <a href="404.html" class="btn-dark"><i class="fas fa-newspaper"></i> All News & Stories</a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 13 — PARTNERS
+         ============================================================ -->
+    <section class="iblock" id="partnersSection">
+      <span class="section-eyebrow" data-aos="fade-up">Partners</span>
+      <h2 class="section-title" data-aos="fade-up">Trusted <span>By The Best</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        Official partners powering our athletes, facilities, and community programs.
+      </p>
+
+      <div class="i-partners">
+        <div class="i-partner" data-aos="zoom-in" data-aos-delay="0">
+          <i class="fas fa-bolt"></i>
+          <div class="i-partner-name">Volt Energy</div>
+        </div>
+        <div class="i-partner" data-aos="zoom-in" data-aos-delay="50">
+          <i class="fas fa-crown"></i>
+          <div class="i-partner-name">Crown Kit</div>
+        </div>
+        <div class="i-partner" data-aos="zoom-in" data-aos-delay="100">
+          <i class="fas fa-dumbbell"></i>
+          <div class="i-partner-name">IronFit</div>
+        </div>
+        <div class="i-partner" data-aos="zoom-in" data-aos-delay="150">
+          <i class="fas fa-shoe-prints"></i>
+          <div class="i-partner-name">Stride Pro</div>
+        </div>
+        <div class="i-partner" data-aos="zoom-in" data-aos-delay="200">
+          <i class="fas fa-heartbeat"></i>
+          <div class="i-partner-name">PulseMed</div>
+        </div>
+        <div class="i-partner" data-aos="zoom-in" data-aos-delay="250">
+          <i class="fas fa-tint"></i>
+          <div class="i-partner-name">AquaPure</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 14 — FAQ
+         ============================================================ -->
+    <section class="iblock" id="faqSection">
+      <span class="section-eyebrow" data-aos="fade-up">Questions</span>
+      <h2 class="section-title" data-aos="fade-up">Frequently <span>Asked</span></h2>
+      <p class="section-sub" data-aos="fade-up" data-aos-delay="100">
+        Answers to the questions we hear most often from new and returning members.
+      </p>
+
+      <div class="i-faq" data-aos="fade-up" data-aos-delay="200">
+        <details class="i-faq-item">
+          <summary>How do I become a member of Sports Club?</summary>
+          <div class="i-faq-body">
+            Simply choose a membership plan above, fill in the signup form, and visit our reception desk with a valid ID. Your membership card is issued on the same day. You can start using the facilities immediately.
+          </div>
+        </details>
+
+        <details class="i-faq-item">
+          <summary>Do you offer trial sessions before joining?</summary>
+          <div class="i-faq-body">
+            Yes — we offer a complimentary 3-day trial pass for first-time visitors. This gives you full access to gym, pool, and one group class per day. Just drop by or contact us to book your trial.
+          </div>
+        </details>
+
+        <details class="i-faq-item">
+          <summary>What age groups do you accept?</summary>
+          <div class="i-faq-body">
+            Our Youth Academy starts at age 6. Adult programs are open to ages 16+. There's no upper age limit — we have active members well into their 70s, with tailored programs for every fitness level.
+          </div>
+        </details>
+
+        <details class="i-faq-item">
+          <summary>Can I switch membership plans later?</summary>
+          <div class="i-faq-body">
+            Absolutely. You can upgrade or downgrade your membership at any time through your member portal or by speaking to reception. Any price differences are prorated for the remaining billing cycle.
+          </div>
+        </details>
+
+        <details class="i-faq-item">
+          <summary>Are there discounts for families or students?</summary>
+          <div class="i-faq-body">
+            Yes. We offer 20% off for verified students, and family plans save up to 30% for 3+ members. Corporate packages are also available — contact our membership team for details.
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 15 — FINAL CTA
+         ============================================================ -->
+    <section class="i-final" id="finalSection">
+      <img src="ground3.webp" alt="Sports Club finale">
+
+      <div class="i-final-inner">
+        <span class="i-final-badge" data-aos="fade-down">
+          <i class="fas fa-rocket"></i> Ready To Join?
+        </span>
+        <h2 data-aos="fade-up">Your Journey <span>Starts Today</span></h2>
+        <p data-aos="fade-up" data-aos-delay="100">
+          Take the first step toward becoming the athlete you've always wanted to be. Our doors are open — come train with champions.
+        </p>
+        <div class="i-final-btns" data-aos="fade-up" data-aos-delay="200">
+          <a href="404.html" class="btn-gold">
+            <i class="fas fa-user-plus"></i> Become A Member
+          </a>
+          <a href="404.html" class="btn-ghost">
+            <i class="fas fa-calendar"></i> Book A Tour
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    /* ===== AOS ===== */
+    AOS.init({
+      duration: 800,
+      easing: 'ease-out-cubic',
+      once: true,
+      offset: 80
+    });
+
+    /* ===== GSAP: safe animations only ===== */
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Sport icons subtle rotate on scroll
+    gsap.utils.toArray(".i-sport-icon").forEach(function(el, i) {
+      gsap.from(el, {
+        rotation: -15,
+        scale: 0.85,
+        duration: 0.8,
+        delay: 0.04 * i,
+        ease: "back.out(1.6)",
+        scrollTrigger: {
+          trigger: ".i-sports",
+          start: "top 85%",
+          once: true
+        }
+      });
+    });
+
+    // Stat cards count-up on scroll
+    gsap.utils.toArray(".i-stat-num").forEach(function(el) {
+      const target = el.getAttribute("data-count");
+      if (!target) return;
+      const finalText = el.textContent;
+      el.textContent = "0";
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 85%",
+        once: true,
+        onEnter: function() {
+          const obj = { val: 0 };
+          gsap.to(obj, {
+            val: parseInt(target, 10),
+            duration: 1.6,
+            ease: "power2.out",
+            onUpdate: function() {
+              if (finalText.indexOf("+") !== -1) {
+                el.textContent = Math.floor(obj.val) + "+";
+              } else {
+                el.textContent = Math.floor(obj.val);
+              }
+            }
+          });
+        }
+      });
+    });
+
+    /* ============================================================
+       HERO VIDEO — real play/pause (autoplay muted)
+       ============================================================ */
+    (function() {
+      const v = document.getElementById('heroVideo');
+      const btn = document.getElementById('heroPlayBtn');
+      const icon = document.getElementById('heroPlayIcon');
+      const wrap = document.getElementById('heroPlayWrap');
+      if (!v || !btn || !icon) return;
+
+      function sync() {
+        if (v.paused) {
+          icon.className = 'fas fa-play';
+          btn.classList.remove('playing');
+        } else {
+          icon.className = 'fas fa-pause';
+          btn.classList.add('playing');
+        }
+      }
+
+      v.addEventListener('play', sync);
+      v.addEventListener('pause', sync);
+
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (v.paused) v.play().catch(function(){});
+        else v.pause();
+      });
+
+      if (wrap) {
+        wrap.addEventListener('click', function(e) {
+          if (e.target === btn) return;
+          if (v.paused) v.play().catch(function(){});
+          else v.pause();
+        });
+      }
+
+      v.addEventListener('click', function() {
+        if (v.paused) v.play().catch(function(){});
+        else v.pause();
+      });
+
+      // Attempt autoplay (muted, should be allowed)
+      v.play().catch(function() {
+        sync();
+      });
+      sync();
+    })();
+
+    /* ============================================================
+       CLUB VIDEO — real play/pause (section 5)
+       ============================================================ */
+    (function() {
+      const v = document.getElementById('clubVideo');
+      const btn = document.getElementById('clubVideoBtn');
+      const icon = document.getElementById('clubVideoIcon');
+      if (!v || !btn || !icon) return;
+
+      v.pause();
+
+      function updateUI() {
+        if (v.paused) {
+          icon.className = 'fas fa-play';
+          btn.classList.remove('playing');
+        } else {
+          icon.className = 'fas fa-pause';
+          btn.classList.add('playing');
+        }
+      }
+
+      v.addEventListener('play', updateUI);
+      v.addEventListener('pause', updateUI);
+
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (v.paused) {
+          v.play().catch(function(err) { console.warn('Video play failed:', err); });
+        } else {
+          v.pause();
+        }
+      });
+
+      v.addEventListener('click', function() {
+        if (v.paused) {
+          v.play().catch(function(err) { console.warn('Video play failed:', err); });
+        } else {
+          v.pause();
+        }
+      });
+
+      updateUI();
+    })();
+  </script>
+
+  <script>
+    /* ===== HEADER + FOOTER LOADER ===== */
+    (function loadHeaderFooter() {
+      fetch('header.html')
+        .then(r => { if (!r.ok) throw new Error('Header not found'); return r.text(); })
+        .then(data => { document.getElementById('header-placeholder').innerHTML = data; initHeader(); })
+        .catch(err => {
+          console.error(err);
+          document.getElementById('header-placeholder').innerHTML =
+            '<div style="background:#0A1F44; color:#F5B301; padding:16px; text-align:center; font-weight:600; border-bottom:3px solid #F5B301;">⚠️ Header failed to load</div>';
+        });
+
+      fetch('footer.html')
+        .then(r => { if (!r.ok) throw new Error('Footer not found'); return r.text(); })
+        .then(data => { document.getElementById('footer-placeholder').innerHTML = data; initFooter(); })
+        .catch(err => {
+          console.error(err);
+          document.getElementById('footer-placeholder').innerHTML =
+            '<div style="background:#0A1F44; color:#E6ECF5; padding:20px; text-align:center; border-top:3px solid #F5B301;">⚠️ Footer failed to load</div>';
+        });
+    })();
+
+    function initHeader() {
+      const menuBtn = document.getElementById('menuBtn');
+      const closeBtn = document.getElementById('closeBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const mobileOverlay = document.getElementById('mobileOverlay');
+      const mobileLinks = mobileMenu ? mobileMenu.querySelectorAll('a') : [];
+      const header = document.getElementById('mainHeader');
+
+      if (menuBtn) menuBtn.addEventListener('click', e => {
+        e.preventDefault(); e.stopPropagation();
+        if (mobileMenu) mobileMenu.classList.add('open');
+        if (mobileOverlay) mobileOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+      if (closeBtn) closeBtn.addEventListener('click', e => {
+        e.preventDefault();
+        if (mobileMenu) mobileMenu.classList.remove('open');
+        if (mobileOverlay) mobileOverlay.classList.remove('open');
+        document.body.style.overflow = 'auto';
+      });
+      if (mobileOverlay) mobileOverlay.addEventListener('click', e => {
+        e.preventDefault();
+        if (mobileMenu) mobileMenu.classList.remove('open');
+        mobileOverlay.classList.remove('open');
+        document.body.style.overflow = 'auto';
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          if (mobileMenu) mobileMenu.classList.remove('open');
+          if (mobileOverlay) mobileOverlay.classList.remove('open');
+          document.body.style.overflow = 'auto';
+        }
+      });
+      mobileLinks.forEach(l => l.addEventListener('click', e => {
+        e.preventDefault();
+        const href = l.getAttribute('href');
+        if (mobileMenu) mobileMenu.classList.remove('open');
+        if (mobileOverlay) mobileOverlay.classList.remove('open');
+        document.body.style.overflow = 'auto';
+        setTimeout(() => window.location.href = href, 200);
+      }));
+      if (header) window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 20);
+      });
+      document.querySelectorAll('.desktop-nav a').forEach(l => l.addEventListener('click', e => {
+        e.preventDefault(); window.location.href = l.getAttribute('href');
+      }));
+      const hLogin = document.querySelector('.login-btn');
+      if (hLogin) hLogin.addEventListener('click', e => { e.preventDefault(); window.location.href = hLogin.getAttribute('href'); });
+      const hSignup = document.querySelector('.signup-btn');
+      if (hSignup) hSignup.addEventListener('click', e => { e.preventDefault(); window.location.href = hSignup.getAttribute('href'); });
+    }
+
+    function initFooter() {
+      const ham = document.getElementById('mobileHamburger');
+      const nav = document.getElementById('mobileNavMenu');
+      if (ham && nav) ham.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); nav.classList.toggle('open'); });
+      document.querySelectorAll('.footer-nav a').forEach(l => l.addEventListener('click', e => { e.preventDefault(); window.location.href = l.getAttribute('href'); }));
+      document.querySelectorAll('.mobile-nav-menu a').forEach(l => l.addEventListener('click', e => {
+        e.preventDefault();
+        if (nav) nav.classList.remove('open');
+        window.location.href = l.getAttribute('href');
+      }));
+      document.querySelectorAll('.footer-social a, .mobile-social a').forEach(l => l.addEventListener('click', e => {
+        e.preventDefault(); window.location.href = l.getAttribute('href');
+      }));
+    }
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 868) {
+        const mm = document.getElementById('mobileMenu');
+        const mo = document.getElementById('mobileOverlay');
+        if (mm) mm.classList.remove('open');
+        if (mo) mo.classList.remove('open');
+        const fn = document.getElementById('mobileNavMenu');
+        if (fn) fn.classList.remove('open');
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    console.log('✅ Sports Club landing page ready — 15 sections, hero bg video, equal-width news cards');
+  </script>
+
+</body>
+</html>

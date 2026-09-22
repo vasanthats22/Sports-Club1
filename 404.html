@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sports Club | 404 - Page Not Found </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        /* ===== FULL PAGE LAYOUT ===== */
+        body {
+            background: #F5F7FA;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER PLACEHOLDER ===== */
+        #header-placeholder {
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+
+        /* ===== FOOTER PLACEHOLDER ===== */
+        #footer-placeholder {
+            width: 100%;
+            flex-shrink: 0;
+            margin-top: auto;
+        }
+
+        /* ----- ERROR CARD (white with navy + gold accents) ----- */
+        .error-page {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            padding: 3.5rem 3rem;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 30px rgba(10, 31, 68, 0.08),
+                        inset 0 -3px 0 0 #F5B301;
+            border: 1px solid rgba(245, 179, 1, 0.15);
+        }
+
+        /* ===== LEFT COLUMN ===== */
+        .error-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .error-number {
+            font-size: 8rem;
+            font-weight: 900;
+            letter-spacing: -6px;
+            line-height: 1;
+            margin-bottom: 0.3rem;
+            background: linear-gradient(135deg, #0A1F44 0%, #1E3A6B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .error-heading {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #0A1F44;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.3px;
+        }
+
+        .error-description {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            max-width: 420px;
+            color: #3A4A63;
+            margin-bottom: 2rem;
+        }
+
+        .error-description strong {
+            color: #F5B301;
+            font-weight: 700;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 0.8rem 2.2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            font-family: inherit;
+            border: none;
+            min-width: 150px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: #F5B301;
+            color: #0A1F44;
+            box-shadow: 0 4px 16px rgba(245, 179, 1, 0.35);
+        }
+
+        .btn-primary:hover {
+            background: #FFC933;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(245, 179, 1, 0.55);
+        }
+
+        .btn-primary i {
+            color: #0A1F44;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #0A1F44;
+            border: 1.5px solid #0A1F44;
+        }
+
+        .btn-secondary:hover {
+            background: #0A1F44;
+            color: #FFFFFF;
+            border-color: #0A1F44;
+            transform: translateY(-3px);
+        }
+
+        .btn i {
+            font-size: 0.85rem;
+        }
+
+        /* ===== RIGHT COLUMN - ILLUSTRATION ===== */
+        .error-illustration {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 280px;
+        }
+
+        .error-illustration img {
+            width: 100%;
+            max-width: 480px;
+            height: auto;
+            display: block;
+        }
+
+        /* ===== 404 SVG FALLBACK ===== */
+        .error-svg-fallback {
+            width: 100%;
+            max-width: 480px;
+            height: auto;
+        }
+
+        .error-svg-fallback svg {
+            width: 100%;
+            height: auto;
+        }
+
+        /* ============================================================ */
+        /*  RESPONSIVE - TABLET                                         */
+        /* ============================================================ */
+        @media (max-width: 992px) {
+            .error-number {
+                font-size: 6rem;
+            }
+
+            .error-heading {
+                font-size: 2rem;
+            }
+
+            .error-illustration img {
+                max-width: 380px;
+            }
+
+            .error-page {
+                padding: 2.5rem 2rem;
+                gap: 30px;
+            }
+        }
+
+        /* ============================================================ */
+        /*  RESPONSIVE - MOBILE                                         */
+        /* ============================================================ */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 30px 16px;
+            }
+
+            .error-page {
+                flex-direction: column-reverse;
+                padding: 2rem 1.5rem;
+                text-align: center;
+                gap: 25px;
+                border-radius: 16px;
+            }
+
+            .error-content {
+                align-items: center;
+            }
+
+            .error-description {
+                max-width: 340px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .button-row {
+                justify-content: center;
+            }
+
+            .error-number {
+                font-size: 5rem;
+                letter-spacing: -4px;
+            }
+
+            .error-heading {
+                font-size: 1.8rem;
+            }
+
+            .error-description {
+                font-size: 0.95rem;
+            }
+
+            .error-illustration {
+                min-height: 180px;
+                width: 100%;
+            }
+
+            .error-illustration img {
+                max-width: 320px;
+            }
+
+            .btn {
+                font-size: 0.8rem;
+                padding: 0.65rem 1.6rem;
+                min-width: 130px;
+            }
+        }
+
+        /* ============================================================ */
+        /*  RESPONSIVE - SMALL MOBILE                                   */
+        /* ============================================================ */
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 20px 12px;
+            }
+
+            .error-page {
+                padding: 1.5rem 1rem;
+                gap: 18px;
+                border-radius: 12px;
+            }
+
+            .error-number {
+                font-size: 4rem;
+                letter-spacing: -3px;
+            }
+
+            .error-heading {
+                font-size: 1.4rem;
+            }
+
+            .error-description {
+                font-size: 0.85rem;
+                max-width: 260px;
+                margin-bottom: 1.5rem;
+            }
+
+            .button-row {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                gap: 10px;
+            }
+
+            .btn {
+                font-size: 0.75rem;
+                padding: 0.6rem 1.2rem;
+                min-width: 100%;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .error-illustration img {
+                max-width: 240px;
+            }
+
+            .error-illustration {
+                min-height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER PLACEHOLDER ===== -->
+    <div id="header-placeholder"></div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+        <div class="error-page">
+
+            <!-- ===== LEFT COLUMN ===== -->
+            <div class="error-content">
+                <div class="error-number">404</div>
+                <h1 class="error-heading">Out Of Bounds</h1>
+                <p class="error-description">
+                    This page has left the field. It might have been traded, retired, or never made the team. 
+                    Let's get you back in the game with <strong>Sports Club</strong>.
+                </p>
+                <div class="button-row">
+                    <a href="index.html" class="btn btn-primary" id="goHomeBtn">
+                        <i class="fas fa-home"></i> Homepage
+                    </a>
+                    <a href="#" class="btn btn-secondary" id="goBackBtn">
+                        <i class="fas fa-arrow-left"></i> Go Back
+                    </a>
+                </div>
+            </div>
+
+            <!-- ===== RIGHT COLUMN ===== -->
+            <div class="error-illustration">
+                <!-- Try to load image, fallback to SVG if missing -->
+                <img src="ground1.webp" alt="404 illustration - out of bounds"
+                     onerror="this.style.display='none'; document.getElementById('svgFallback').style.display='block';" />
+
+                <!-- SVG Fallback — Sports Club theme -->
+                <div id="svgFallback" class="error-svg-fallback" style="display:none;">
+                    <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Background -->
+                        <rect width="400" height="300" rx="12" fill="#F5F7FA"/>
+
+                        <!-- Field / pitch ring -->
+                        <circle cx="200" cy="120" r="80" fill="#0A1F44" opacity="0.06" stroke="#F5B301" stroke-width="2.5"/>
+                        <circle cx="200" cy="120" r="50" fill="#F5B301" opacity="0.12"/>
+
+                        <!-- 404 text -->
+                        <text x="200" y="135" text-anchor="middle" font-family="Inter, sans-serif" font-size="64" font-weight="900" fill="#0A1F44">404</text>
+
+                        <!-- Brand -->
+                        <text x="200" y="180" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#0A1F44" letter-spacing="1">SPORTS CLUB</text>
+
+                        <!-- Gold underline -->
+                        <rect x="140" y="210" width="120" height="3" rx="1.5" fill="#F5B301"/>
+
+                        <!-- Decorative dots (gold + navy) -->
+                        <circle cx="80" cy="40" r="4" fill="#F5B301" opacity="0.35"/>
+                        <circle cx="320" cy="40" r="4" fill="#F5B301" opacity="0.35"/>
+                        <circle cx="80" cy="260" r="4" fill="#0A1F44" opacity="0.1"/>
+                        <circle cx="320" cy="260" r="4" fill="#0A1F44" opacity="0.1"/>
+
+                        <!-- Decorative lines -->
+                        <line x1="60" y1="100" x2="120" y2="100" stroke="#F5B301" stroke-width="1.5" opacity="0.25"/>
+                        <line x1="280" y1="100" x2="340" y2="100" stroke="#F5B301" stroke-width="1.5" opacity="0.25"/>
+                        <line x1="60" y1="140" x2="110" y2="140" stroke="#0A1F44" stroke-width="1.5" opacity="0.12"/>
+                        <line x1="290" y1="140" x2="340" y2="140" stroke="#0A1F44" stroke-width="1.5" opacity="0.12"/>
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== FOOTER PLACEHOLDER ===== -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // ===== Load Header and Footer =====
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('header.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Header not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('header-placeholder').innerHTML = data;
+                    initHeader();
+                })
+                .catch(error => {
+                    console.error('Error loading header:', error);
+                    document.getElementById('header-placeholder').innerHTML =
+                        '<div style="background:#0A1F44; color:#F5B301; padding:16px 20px; text-align:center; font-weight:600; border-bottom:3px solid #F5B301;">⚠️ Header failed to load</div>';
+                });
+
+            fetch('footer.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Footer not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('footer-placeholder').innerHTML = data;
+                    initFooter();
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                    document.getElementById('footer-placeholder').innerHTML =
+                        '<div style="background:#0A1F44; color:#E6ECF5; padding:30px 20px; text-align:center; border-top:3px solid #F5B301;">⚠️ Footer failed to load</div>';
+                });
+        });
+
+        function initHeader() {
+            const menuBtn = document.getElementById('menuBtn');
+            const closeBtn = document.getElementById('closeBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            const mobileLinks = mobileMenu ? mobileMenu.querySelectorAll('a') : [];
+            const header = document.getElementById('mainHeader');
+
+            if (menuBtn) {
+                menuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (mobileMenu) mobileMenu.classList.add('open');
+                    if (mobileOverlay) mobileOverlay.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (mobileMenu) mobileMenu.classList.remove('open');
+                    if (mobileOverlay) mobileOverlay.classList.remove('open');
+                    document.body.style.overflow = 'auto';
+                });
+            }
+
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (mobileMenu) mobileMenu.classList.remove('open');
+                    mobileOverlay.classList.remove('open');
+                    document.body.style.overflow = 'auto';
+                });
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (mobileMenu) mobileMenu.classList.remove('open');
+                    if (mobileOverlay) mobileOverlay.classList.remove('open');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    if (mobileMenu) mobileMenu.classList.remove('open');
+                    if (mobileOverlay) mobileOverlay.classList.remove('open');
+                    document.body.style.overflow = 'auto';
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 200);
+                });
+            });
+
+            if (header) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 20) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                });
+            }
+
+            document.querySelectorAll('.desktop-nav a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    document.querySelectorAll('.desktop-nav a').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    window.location.href = href;
+                });
+            });
+
+            const loginBtn = document.querySelector('.login-btn');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = this.getAttribute('href');
+                });
+            }
+
+            const signupBtn = document.querySelector('.signup-btn');
+            if (signupBtn) {
+                signupBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = this.getAttribute('href');
+                });
+            }
+
+            const loginMobile = document.querySelector('.login-mobile');
+            if (loginMobile) {
+                loginMobile.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (mobileMenu) mobileMenu.classList.remove('open');
+                    if (mobileOverlay) mobileOverlay.classList.remove('open');
+                    document.body.style.overflow = 'auto';
+                    setTimeout(() => {
+                        window.location.href = this.getAttribute('href');
+                    }, 200);
+                });
+            }
+
+            const signupMobile = document.querySelector('.signup-mobile');
+            if (signupMobile) {
+                signupMobile.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (mobileMenu) mobileMenu.classList.remove('open');
+                    if (mobileOverlay) mobileOverlay.classList.remove('open');
+                    document.body.style.overflow = 'auto';
+                    setTimeout(() => {
+                        window.location.href = this.getAttribute('href');
+                    }, 200);
+                });
+            }
+
+            console.log('✅ Sports Club header initialized for 404 page');
+        }
+
+        function initFooter() {
+            const footerHamburger = document.getElementById('mobileHamburger');
+            const footerNavMenu = document.getElementById('mobileNavMenu');
+
+            if (footerHamburger && footerNavMenu) {
+                footerHamburger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    footerNavMenu.classList.toggle('open');
+                });
+            }
+
+            document.querySelectorAll('.footer-nav a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = this.getAttribute('href');
+                });
+            });
+
+            document.querySelectorAll('.mobile-nav-menu a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (footerNavMenu) footerNavMenu.classList.remove('open');
+                    window.location.href = this.getAttribute('href');
+                });
+            });
+
+            document.querySelectorAll('.footer-social a, .mobile-social a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = this.getAttribute('href');
+                });
+            });
+
+            console.log('✅ Sports Club footer initialized for 404 page');
+        }
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 868) {
+                const mobileMenu = document.getElementById('mobileMenu');
+                const mobileOverlay = document.getElementById('mobileOverlay');
+                if (mobileMenu) mobileMenu.classList.remove('open');
+                if (mobileOverlay) mobileOverlay.classList.remove('open');
+
+                const footerNavMenu = document.getElementById('mobileNavMenu');
+                if (footerNavMenu) footerNavMenu.classList.remove('open');
+
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // ===== BUTTON FUNCTIONALITY =====
+        document.getElementById('goHomeBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'index.html';
+        });
+
+        document.getElementById('goBackBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.history.back();
+        });
+
+        console.log('✅ Sports Club 404 page ready!');
+        console.log('🎨 Navy #0A1F44 + Gold #F5B301');
+        console.log('🏆 "Out Of Bounds" — sports-themed 404');
+    </script>
+
+</body>
+</html>
